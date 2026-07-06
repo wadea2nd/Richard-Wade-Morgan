@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rsync -a --delete --exclude .claude '/Users/richardmorgan/Desktop/My Claude Website RWM/' /private/tmp/claude-501/-Users-richardmorgan-Desktop-My-Claude-Website-RWM/3ad62da6-3790-43be-a0a2-5860c01f6ea2/scratchpad/site/)",
+      "Bash(rsync -a --delete --exclude '.claude' --exclude 'serve.py' \"/Users/richardmorgan/Desktop/My Claude Website RWM/\" \"/private/tmp/claude-501/-Users-richardmorgan-Desktop-My-Claude-Website-RWM/3ad62da6-3790-43be-a0a2-5860c01f6ea2/scratchpad/site/\")",
+      "Bash(node --check js/main.js)",
+      "Bash(node --check js/projects.js)",
+      "WebFetch(domain:steep.app)",
+      "WebFetch(domain:phantom.com)",
+      "Bash(rsync -a --delete --exclude '.claude' --exclude 'serve.py' ./ \"/private/tmp/claude-501/-Users-richardmorgan-Desktop-My-Claude-Website-RWM/3ad62da6-3790-43be-a0a2-5860c01f6ea2/scratchpad/site/\")",
+      "Bash(rsync -a --delete --exclude '.claude' --exclude 'serve.py' \"/Users/richardmorgan/Desktop/My Claude Website RWM/\" \"/private/tmp/claude-501/-Users-richardmorgan-Desktop-My-Claude-Website-RWM/0f56f212-eaf8-4382-8135-162b022089b2/scratchpad/site/\")"
+    ]
+  }
+}
