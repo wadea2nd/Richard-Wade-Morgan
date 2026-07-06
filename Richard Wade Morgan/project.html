@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project — Richard Wade Morgan</title>
+  <meta name="description" content="Selected project by Richard Wade Morgan, design lead.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..500&family=Inter:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Deploy safety net: if css/styles.css can't be found (usually because
+       the css/js/assets folders weren't uploaded with the .html files),
+       show a plain-English explanation instead of a broken-looking page. -->
+  <script>
+    window.addEventListener("load", function () {
+      var css = getComputedStyle(document.documentElement).getPropertyValue("--bg");
+      if (css && css.trim()) return; // stylesheet loaded — all good
+      var note = document.createElement("div");
+      note.style.cssText = "padding:16px 20px;margin:0 0 20px;background:#fdecec;border:2px solid #b3261e;color:#5c1a15;font-family:monospace;font-size:14px;line-height:1.6";
+      note.textContent = "This page can't find its styling (css/styles.css). When uploading the site, include the ENTIRE folder — the css, js, and assets folders too — not just the .html files.";
+      document.body.insertBefore(note, document.body.firstChild);
+    });
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <canvas id="cloudCanvas" class="cloud-canvas" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="Richard Wade Morgan — home">Richard Wade Morgan</a>
+      <nav class="site-nav" aria-label="Primary">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="work.html" aria-current="page">Work</a>
+        <a class="nav-link" href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="project-layout wrap">
+      <!-- Left (top on mobile): description, built from js/projects.js -->
+      <div id="projectInfo" class="project-info fade-in"></div>
+
+      <!-- Right: horizontal image carousel; each card expands -->
+      <div class="carousel fade-in" aria-label="Project images">
+        <div id="carouselTrack" class="carousel-track" tabindex="0"></div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <nav id="projectPager" class="project-pager" aria-label="More projects"></nav>
+    </div>
+    <noscript><div class="wrap"><p class="caption">Enable JavaScript to view this project — or email me and I'll send a PDF.</p></div></noscript>
+  </main>
+
+  <!-- Lightbox (hidden until an image is expanded) -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Expanded image viewer">
+    <figure>
+      <img src="" alt="">
+      <figcaption></figcaption>
+    </figure>
+    <button type="button" class="lightbox-close" aria-label="Close image viewer">✕</button>
+    <button type="button" class="lightbox-arrow lightbox-arrow--prev" aria-label="Previous image">←</button>
+    <button type="button" class="lightbox-arrow lightbox-arrow--next" aria-label="Next image">→</button>
+  </div>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span class="caption">© <span id="footerYear">2026</span> Richard Wade Morgan</span>
+      <div class="footer-cacti" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+          <path d="M12 21V4"/>
+          <path d="M12 13h-2.5a2 2 0 0 1-2-2V8"/>
+          <path d="M12 10h2.5a2 2 0 0 0 2-2V6.5"/>
+          <path d="M8 21h8"/>
+        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+          <rect x="7" y="8" width="10" height="13" rx="5"/>
+          <path d="M12 8.4V21"/>
+          <path d="M9.4 9.4v10.4"/>
+          <path d="M14.6 9.4v10.4"/>
+          <path d="M5 21h14"/>
+        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+          <ellipse cx="12" cy="16" rx="3.8" ry="5"/>
+          <ellipse cx="8.6" cy="10.2" rx="2.4" ry="3.2" transform="rotate(-28 8.6 10.2)"/>
+          <ellipse cx="15.6" cy="9.4" rx="2" ry="2.8" transform="rotate(24 15.6 9.4)"/>
+          <path d="M6 21h12"/>
+        </svg>
+      </div>
+      <div class="footer-links">
+        <a href="mailto:wadewadedonttellme@gmail.com">Email</a>
+        <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://example.com/" target="_blank" rel="noopener noreferrer">Art Studio</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/projects.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

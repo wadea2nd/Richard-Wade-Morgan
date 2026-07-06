@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Portrait placeholder — replace with a real photo">
+  <rect width="800" height="1000" fill="#e6dfd0"/>
+  <rect x="24" y="24" width="752" height="952" fill="none" stroke="#3a3428" stroke-width="2"/>
+  <circle cx="400" cy="360" r="150" fill="#8a5a83" stroke="#3a3428" stroke-width="2"/>
+  <path d="M160 976 C160 700 640 700 640 976 Z" fill="#527389" stroke="#3a3428" stroke-width="2"/>
+  <text x="400" y="940" text-anchor="middle" font-family="'Space Mono', monospace" font-size="28" letter-spacing="3" fill="#3a3428">PORTRAIT.SVG — REPLACE ME</text>
+</svg>
