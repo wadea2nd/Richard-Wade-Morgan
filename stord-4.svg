@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Stord placeholder image 4">
+  <rect width="1200" height="900" fill="#e2e3d6"/>
+  <rect x="24" y="24" width="1152" height="852" fill="none" stroke="#3a3428" stroke-width="2"/>
+  <circle cx="760" cy="410" r="238" fill="#6e7f4c" stroke="#3a3428" stroke-width="2"/>
+  <rect x="600" y="550" width="300" height="236" fill="none" stroke="#3a3428" stroke-width="2"/>
+  <line x1="24" y1="752" x2="1176" y2="752" stroke="#3a3428" stroke-width="2"/>
+  <text x="56" y="836" font-family="'Space Mono', monospace" font-size="30" letter-spacing="3" fill="#3a3428">Stord — 04 / PLACEHOLDER</text>
+</svg>
