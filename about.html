@@ -8,8 +8,22 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..500&family=Inter:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=Inter:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Deploy safety net: if css/styles.css can't be found (usually because
+       the css/js/assets folders weren't uploaded with the .html files),
+       show a plain-English explanation instead of a broken-looking page. -->
+  <script>
+    window.addEventListener("load", function () {
+      var css = getComputedStyle(document.documentElement).getPropertyValue("--bg");
+      if (css && css.trim()) return; // stylesheet loaded — all good
+      var note = document.createElement("div");
+      note.style.cssText = "padding:16px 20px;margin:0 0 20px;background:#fdecec;border:2px solid #b3261e;color:#5c1a15;font-family:monospace;font-size:14px;line-height:1.6";
+      note.textContent = "This page can't find its styling (css/styles.css). When uploading the site, include the ENTIRE folder — the css, js, and assets folders too — not just the .html files.";
+      document.body.insertBefore(note, document.body.firstChild);
+    });
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -28,33 +42,36 @@
   </header>
 
   <main id="main">
-    <!-- Lead bio -->
+    <!-- Lead bio: big statement left, supporting copy right -->
     <section class="about-lead wrap fade-in">
-      <div class="prose">
+      <div class="lead-grid">
         <p class="big">
           I&rsquo;m currently jaywalking at the intersection of brand, product, and
           software design to produce tools that streamline teams&rsquo; capabilities
           and inspire innovation.
         </p>
-        <p>
-          In prior roles, I&rsquo;ve crafted global creative campaigns, organizational
-          rebrands, and other vivid endeavors.
-        </p>
-        <p>I&rsquo;ve come to believe successful creative work is a variable combination of:</p>
+        <div class="lead-side">
+          <p>
+            In prior roles, I&rsquo;ve crafted global creative campaigns, organizational
+            rebrands, and other vivid endeavors.
+          </p>
+          <p>I&rsquo;ve come to believe successful creative work is a variable combination of:</p>
+
+          <!-- Values: directly under the sentence that introduces them -->
+          <ul class="values">
+            <li><span class="word">Authentic</span><span class="desc">native or relative to brand</span></li>
+            <li><span class="word">Clever</span><span class="desc">unique in presence and function</span></li>
+            <li><span class="word">Fun</span><span class="desc">exactly what it says</span></li>
+            <li><span class="word">Practical</span><span class="desc">lorem — your words here</span></li>
+            <li><span class="word">Useful</span><span class="desc">lorem — your words here</span></li>
+          </ul>
+
+          <p class="availability">
+            While my books are full at the moment, I&rsquo;m open for fun or unique
+            collaborations in 2027.
+          </p>
+        </div>
       </div>
-
-      <ul class="values">
-        <li><span class="word">Authentic</span><span class="desc">native or relative to brand</span></li>
-        <li><span class="word">Clever</span><span class="desc">unique in presence and function</span></li>
-        <li><span class="word">Fun</span><span class="desc">exactly what it says</span></li>
-        <li><span class="word">Practical</span><span class="desc">lorem — your words here</span></li>
-        <li><span class="word">Useful</span><span class="desc">lorem — your words here</span></li>
-      </ul>
-
-      <p class="availability">
-        While my books are full at the moment, I&rsquo;m open for fun or unique
-        collaborations in 2027.
-      </p>
     </section>
 
     <!-- Work history -->

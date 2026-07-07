@@ -8,8 +8,22 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..500&family=Inter:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=Inter:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Deploy safety net: if css/styles.css can't be found (usually because
+       the css/js/assets folders weren't uploaded with the .html files),
+       show a plain-English explanation instead of a broken-looking page. -->
+  <script>
+    window.addEventListener("load", function () {
+      var css = getComputedStyle(document.documentElement).getPropertyValue("--bg");
+      if (css && css.trim()) return; // stylesheet loaded — all good
+      var note = document.createElement("div");
+      note.style.cssText = "padding:16px 20px;margin:0 0 20px;background:#fdecec;border:2px solid #b3261e;color:#5c1a15;font-family:monospace;font-size:14px;line-height:1.6";
+      note.textContent = "This page can't find its styling (css/styles.css). When uploading the site, include the ENTIRE folder — the css, js, and assets folders too — not just the .html files.";
+      document.body.insertBefore(note, document.body.firstChild);
+    });
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
