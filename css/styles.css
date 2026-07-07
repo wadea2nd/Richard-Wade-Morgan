@@ -1,43 +1,108 @@
 /* ==========================================================================
-   Richard Wade Morgan — Portfolio
-   Muted 60s line-work aesthetic: thin dark rules contain everything,
-   no pure white, no pure black, no drop shadows anywhere.
-   Mobile-first. Sections:
-   1. Tokens  2. Base/typography  3. Background cloud  4. Header & nav
-   5. Buttons & ripple  6. Homepage  7. Work index  8. Project pages
-   9. About  10. Lightbox  11. Footer  12. Motion & accessibility
-   13. Breakpoints
+   RICHARD WADE MORGAN — PORTFOLIO
+   --------------------------------------------------------------------------
+   ARCHITECTURE
+
+   Grid        12 columns ≥ 1024px (desktop)
+                8 columns 768–1023px (tablet)
+                4 columns < 768px (mobile)
+               Gutters: 24px (16px on mobile). Content max-width: 1240px.
+               Any element with the grid pattern lays out on this system;
+               children are placed with explicit `grid-column` spans.
+
+   Breakpoints 768px (tablet) and 1024px (desktop), used consistently.
+               Media queries are co-located with the component they modify.
+
+   Tokens      All colors, type sizes, spacing, and radii are defined once
+               in :root below and referenced everywhere. No magic numbers
+               in component rules.
+
+   Type        Space Grotesk (300–500) display · Inter (300–500) body ·
+               Space Mono labels. Loaded in each page's <head>.
+
+   Palette     Muted, contained by thin dark rules. No pure white, no pure
+               black, no drop shadows anywhere.
+
+   CONTENTS
+   1. Design tokens          6. Buttons & ripple      11. Lightbox
+   2. Base & typography      7. Homepage              12. Footer
+   3. Layout primitives      8. Work index            13. Motion & a11y
+   4. Background canvas      9. Project pages
+   5. Header & nav          10. About
    ========================================================================== */
 
-/* 1. Tokens ------------------------------------------------------------- */
+
+/* 1. DESIGN TOKENS -------------------------------------------------------- */
 :root {
-  /* Muted palette — very light and very dark hues, never #fff / #000 */
+  /* Color */
   --bg: #eae4d6;                /* putty cream */
   --paper: #f1ecdf;             /* lighter panel fill */
   --ink: #26221a;               /* near-black warm brown */
   --ink-soft: #55503f;
   --ink-faint: #7a7461;
   --line: #3a3428;              /* the thin dark line that contains everything */
+  --nav-plate: #fffef9;         /* mobile bottom nav — stark against the page */
+  --accent: #a6503f;            /* JS rotates this through the muted palette */
 
-  /* Accent — JS picks one muted color per visit from the same family */
-  --accent: #a6503f;
-
+  /* Type families */
   --font-display: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
   --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "Space Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
+  /* Type scale */
+  --text-hero: clamp(1.45rem, 1rem + 2.4vw, 2.9rem);      /* homepage bio  */
+  --text-feature: clamp(1.5rem, 1.05rem + 2.2vw, 2.6rem); /* about lead    */
+  --text-index: clamp(1.45rem, 1rem + 2.2vw, 2.6rem);     /* work rows     */
+  --text-h1: clamp(1.1rem, 0.8rem + 1.7vw, 1.95rem);
+  --text-h2: clamp(1.35rem, 1.1rem + 1.1vw, 1.9rem);
+  --text-h3: 1.15rem;
+  --text-body: 1rem;
+  --text-sm: 0.92rem;
+  --text-mono: 0.72rem;         /* labels, nav, captions */
+  --text-mono-lg: 0.76rem;      /* buttons */
+  --text-mono-sm: 0.66rem;
+
+  /* Spacing scale (4px base) */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 20px;
+  --s6: 24px;
+  --s7: 32px;
+  --s8: 48px;
+  --s9: 64px;
+
+  /* Grid system — see ARCHITECTURE above */
+  --grid-cols: 4;
+  --gutter: var(--s4);
+  --content-max: 1240px;
+
+  /* Rules & radii */
   --rule: 1px solid var(--line);
   --radius: 10px;
   --radius-sm: 5px;
 
-  --space-gutter: 20px;
+  /* Chrome */
   --nav-height: 64px;
   --tap-min: 44px;              /* accessibility: minimum touch target */
 
+  /* Motion */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --fade-page: 0.45s ease;
+  --fade-ui: 0.2s ease;
 }
 
-/* 2. Base & typography --------------------------------------------------- */
+@media (min-width: 768px) {
+  :root { --grid-cols: 8; --gutter: var(--s6); }
+}
+
+@media (min-width: 1024px) {
+  :root { --grid-cols: 12; }
+}
+
+
+/* 2. BASE & TYPOGRAPHY ----------------------------------------------------- */
 *,
 *::before,
 *::after { box-sizing: border-box; }
@@ -58,7 +123,11 @@ body {
   min-height: 100dvh;
   overflow-x: hidden;
   opacity: 0;                   /* page fade-in; JS/noscript/anim-off reveals */
-  transition: opacity 0.45s ease;
+  transition: opacity var(--fade-page);
+}
+
+@media (min-width: 1024px) {
+  body { font-size: 18px; }
 }
 
 body.is-ready { opacity: 1; }
@@ -85,9 +154,9 @@ h1, h2, h3 {
   color: var(--ink);
 }
 
-h1 { font-size: clamp(1.1rem, 0.8rem + 1.7vw, 1.95rem); }
-h2 { font-size: clamp(1.35rem, 1.1rem + 1.1vw, 1.9rem); }
-h3 { font-size: 1.15rem; font-weight: 400; }
+h1 { font-size: var(--text-h1); }
+h2 { font-size: var(--text-h2); }
+h3 { font-size: var(--text-h3); font-weight: 400; }
 
 p { margin: 0 0 1.15em; color: var(--ink-soft); }
 p strong { color: var(--ink); font-weight: 500; }
@@ -98,7 +167,7 @@ img { max-width: 100%; display: block; }
 
 ::selection { background: var(--accent); color: var(--bg); }
 
-/* Monospace label / caption utility */
+/* Monospace label / caption utilities */
 .label {
   font-family: var(--font-mono);
   font-size: 0.7rem;
@@ -116,39 +185,6 @@ img { max-width: 100%; display: block; }
   letter-spacing: 0.03em;
 }
 
-/* Layout helpers */
-.wrap {
-  width: 100%;
-  max-width: 1240px;
-  margin-inline: auto;
-  padding-inline: var(--space-gutter);
-}
-
-section { position: relative; }
-
-main {
-  position: relative;
-  z-index: 1;
-  padding-top: calc(var(--nav-height) + 20px);
-}
-
-/* Skip link — first focusable element on every page */
-.skip-link {
-  position: absolute;
-  top: -60px;
-  left: 16px;
-  z-index: 200;
-  background: var(--ink);
-  color: var(--bg);
-  padding: 12px 20px;
-  border-radius: var(--radius-sm);
-  text-decoration: none;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  transition: top 0.2s ease;
-}
-.skip-link:focus { top: 12px; }
-
 /* Visible focus for keyboard users */
 :focus-visible {
   outline: 2px solid var(--accent);
@@ -156,7 +192,50 @@ main {
   border-radius: 3px;
 }
 
-/* 3. Background gradient-mesh cloud (canvas, behind everything) ---------- */
+/* Skip link — first focusable element on every page */
+.skip-link {
+  position: absolute;
+  top: -60px;
+  left: var(--s4);
+  z-index: 200;
+  background: var(--ink);
+  color: var(--bg);
+  padding: var(--s3) var(--s5);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  transition: top var(--fade-ui);
+}
+.skip-link:focus { top: var(--s3); }
+
+
+/* 3. LAYOUT PRIMITIVES ------------------------------------------------------
+   .wrap  — centered content container
+   grid   — components below use `display: grid` with the column variables;
+            children are placed with grid-column so every layout sits on
+            the same 12 / 8 / 4 system. */
+.wrap {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--s5);
+}
+
+@media (min-width: 768px) {
+  .wrap { padding-inline: var(--s7); }
+}
+
+section { position: relative; }
+
+main {
+  position: relative;
+  z-index: 1;
+  padding-top: calc(var(--nav-height) + var(--s5));
+}
+
+
+/* 4. BACKGROUND CANVAS (cursor-following gradient cloud) ------------------- */
 .cloud-canvas {
   position: fixed;
   inset: 0;
@@ -171,7 +250,8 @@ main {
   opacity: 0.55;
 }
 
-/* 4. Header & nav ----------------------------------------------------------
+
+/* 5. HEADER & NAV ------------------------------------------------------------
    Solid bg + hairline bottom rule; sticky on every size. */
 .site-header {
   position: fixed;
@@ -189,7 +269,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--s3);
 }
 
 .brand {
@@ -205,6 +285,10 @@ main {
   white-space: nowrap;
 }
 
+@media (min-width: 1024px) {
+  .brand { font-size: 1.45rem; }
+}
+
 .site-nav {
   display: flex;
   align-items: center;
@@ -217,29 +301,29 @@ main {
   justify-content: center;
   min-height: var(--tap-min);
   min-width: var(--tap-min);
-  padding: 0 16px;
+  padding: 0 var(--s4);
   text-decoration: none;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: var(--text-mono);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-soft);
   overflow: hidden;              /* clips the ripple */
   border-radius: var(--radius-sm);
-  transition: color 0.2s ease;
+  transition: color var(--fade-ui);
 }
 
 /* Hover = an underline appearing; color stays put */
 .nav-link::after {
   content: "";
   position: absolute;
-  left: 16px;
-  right: 16px;
-  bottom: 8px;
+  left: var(--s4);
+  right: var(--s4);
+  bottom: var(--s2);
   height: 1px;
   background: currentColor;
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--fade-ui);
 }
 
 .nav-link:hover::after,
@@ -248,27 +332,51 @@ main {
 .nav-link[aria-current="page"] { color: var(--ink); }
 .nav-link[aria-current="page"]::after { opacity: 1; }
 
-/* 5. Buttons & ripple ----------------------------------------------------- */
+/* Mobile: logo centered up top; nav docks bottom-center for thumbs */
+@media (max-width: 767px) {
+  .site-header .wrap { justify-content: center; }
+
+  .site-nav {
+    position: fixed;
+    left: 50%;
+    bottom: calc(var(--s3) + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
+    z-index: 120;
+    background: var(--nav-plate);
+    border: var(--rule);
+    border-radius: var(--radius);
+    padding: 3px;
+  }
+
+  .nav-link { padding: 0 14px; font-size: 0.68rem; }
+  .nav-link::after { left: 14px; right: 14px; bottom: 6px; }
+
+  /* Clearance so content and footer never hide behind the bottom bar */
+  body { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+}
+
+
+/* 6. BUTTONS & RIPPLE -------------------------------------------------------- */
 .btn {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: var(--s2);
   min-height: var(--tap-min);
-  padding: 11px 24px;
+  padding: 11px var(--s6);
   border-radius: var(--radius-sm);
   border: var(--rule);
   background: transparent;
   color: var(--ink);
   font-family: var(--font-mono);
-  font-size: 0.76rem;
+  font-size: var(--text-mono-lg);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
   overflow: hidden;              /* clips the ripple */
-  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  transition: color var(--fade-ui), background var(--fade-ui), border-color var(--fade-ui);
 }
 
 .btn:hover { background: var(--paper); color: var(--accent); border-color: var(--accent); }
@@ -291,16 +399,29 @@ main {
   to { transform: scale(2.6); opacity: 0; }
 }
 
-/* 6. Homepage --------------------------------------------------------------*/
-.hero { padding-block: 7vh 5vh; text-align: center; }
 
-/* The H1 bio — centered, all ink */
+/* 7. HOMEPAGE ----------------------------------------------------------------
+   Hero: the bio H1 sits on the grid — full width on mobile, columns
+   2–12 on desktop — and centers itself inside that span. */
+.hero {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
+  column-gap: var(--gutter);
+  padding-block: 7vh 5vh;
+  text-align: center;
+}
+
 .hero h1 {
-  font-size: clamp(1.45rem, 1rem + 2.4vw, 2.9rem);
+  grid-column: 1 / -1;
+  font-size: var(--text-hero);
   max-width: 30ch;
   margin-inline: auto;
   margin-bottom: 0;
   line-height: 1.28;
+}
+
+@media (min-width: 1024px) {
+  .hero h1 { grid-column: 2 / 12; }
 }
 
 /* Auto-rotating feature carousel, contained in a hairline box */
@@ -316,7 +437,11 @@ main {
 .feature-stage {
   position: relative;
   aspect-ratio: 4 / 3;
-  touch-action: pan-y;   /* horizontal swipes advance the slides */
+  touch-action: pan-y;           /* horizontal swipes advance the slides */
+}
+
+@media (min-width: 768px) {
+  .feature-stage { aspect-ratio: 16 / 9; }
 }
 
 .feature-slide {
@@ -336,24 +461,40 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--s3);
   min-height: var(--tap-min);
-  padding: 8px 16px;
+  padding: var(--s2) var(--s4);
   border-top: var(--rule);
   background: var(--bg);
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: var(--text-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-soft);
 }
 
-.feature-caption .counter { color: var(--ink-faint); }
+@media (max-width: 767px) {
+  .feature-caption { font-size: 0.6rem; padding: 6px var(--s3); }
+}
+
+/* The name may truncate; the counter never wraps below it */
+.feature-caption .name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.feature-caption .counter {
+  color: var(--ink-faint);
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
 
 .slider-dots {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: var(--s2);
+  right: var(--s2);
   z-index: 2;
   display: flex;
 }
@@ -377,13 +518,14 @@ main {
   border-radius: 50%;
   background: var(--bg);
   border: 1px solid var(--line);
-  transition: background 0.2s ease, transform 0.2s var(--ease-out);
+  transition: background var(--fade-ui), transform 0.2s var(--ease-out);
 }
 
 .slider-dot:hover::after { transform: scale(1.25); }
 .slider-dot[aria-pressed="true"]::after { background: var(--accent); }
 
-/* 7. Work index — six projects in a line, top to bottom -------------------- */
+
+/* 8. WORK INDEX — six projects in a line, top to bottom ---------------------- */
 .index-head { padding-block: 4vh 0; }
 
 .work-index {
@@ -395,7 +537,7 @@ main {
   position: relative;
   display: flex;
   align-items: center;          /* number + title share a horizontal axis */
-  gap: 16px;
+  gap: var(--s4);
   padding: 22px 6px;
   border-top: var(--rule);
   text-decoration: none;
@@ -407,8 +549,26 @@ main {
 .index-row:focus-visible,
 .index-row:active { background: var(--paper); }
 
+.index-num {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono);
+  color: var(--ink-faint);
+}
+
+.index-name {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--text-index);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  transition: color var(--fade-ui);
+}
+
+.index-row:hover .index-name { color: var(--accent); }
+
 /* Hover peek: the project's first image floats in on the right — just the
-   image, no frame, riding above the rows. */
+   image, no frame, riding above the rows. Hover-capable devices only. */
 .index-peek {
   position: absolute;
   right: 4%;
@@ -431,76 +591,54 @@ main {
   }
 }
 
-.index-num {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--ink-faint);
-}
 
-.index-name {
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-size: clamp(1.45rem, 1rem + 2.2vw, 2.6rem);
-  line-height: 1.15;
-  letter-spacing: -0.015em;
-  color: var(--ink);
-  transition: color 0.2s ease;
-}
-
-.index-row:hover .index-name { color: var(--accent); }
-
-/* 8. Project pages ---------------------------------------------------------*/
+/* 9. PROJECT PAGES ------------------------------------------------------------
+   Desktop: description on columns 1–4, carousel on 5–12; both sticky so
+   whichever is shorter holds still while the other scrolls. Mobile: the
+   description stacks on top. */
 .project-layout {
   display: grid;
-  /* minmax(0, 1fr) stops the carousel from forcing the page wider */
-  grid-template-columns: minmax(0, 1fr);
-  gap: 30px;
+  grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
+  column-gap: var(--gutter);
+  row-gap: var(--s7);
   padding-block: 2vh 9vh;
 }
 
-.project-layout > * { min-width: 0; }
+.project-layout > * {
+  min-width: 0;                  /* the carousel must not widen the page */
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 1024px) {
+  .project-info { grid-column: 1 / span 4; font-size: 0.95rem; }
+  .carousel { grid-column: 5 / -1; }
+
+  .project-info,
+  .carousel {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--s5));
+  }
+}
 
 .backlink {
   display: flex;
   width: max-content;
   margin-bottom: 0.8rem;
   align-items: center;
-  gap: 8px;
+  gap: var(--s2);
   min-height: var(--tap-min);
   text-decoration: none;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: var(--text-mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-faint);
 }
 .backlink:hover { color: var(--accent); }
 
-/* Spec table — client / role / year in hairline rows */
-.project-facts {
-  margin: 1.6rem 0 0;
-  border-top: var(--rule);
-}
-
-.project-facts div {
-  display: flex;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 10px 2px;
-  border-bottom: var(--rule);
-}
-.project-facts dt {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-}
-.project-facts dd { margin: 0; font-size: 0.88rem; text-align: right; color: var(--ink); }
-
 .project-summary { margin-top: 1.6rem; }
 
-/* Horizontal card carousel (Phantom-style) — hairline-contained cards.
+/* Horizontal card carousel — hairline-contained cards, natural scroll.
    Images are NEVER cropped: contain-fit inside the stage. */
 .carousel { position: relative; }
 
@@ -509,7 +647,7 @@ main {
   gap: 14px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding: 2px 2px 16px;
+  padding: 2px 2px var(--s4);
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
   scrollbar-color: var(--ink-faint) transparent;
@@ -541,41 +679,79 @@ main {
   background: var(--paper);
 }
 
+/* Desktop: cards size to the image — full height, natural width */
+@media (min-width: 1024px) {
+  .carousel-card { flex: 0 0 auto; }
+  .carousel-card img {
+    aspect-ratio: auto;
+    height: min(64vh, 660px);
+    width: auto;
+    max-width: 78vw;
+  }
+}
+
 /* Prev / next project pager */
 .project-pager {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
-  padding-block: 4px 8vh;
+  gap: var(--s3);
+  padding-block: var(--s1) 8vh;
 }
 
 .project-pager a {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--s2);
   min-height: var(--tap-min);
-  padding: 10px 4px;
+  padding: var(--s2) var(--s1);
   text-decoration: none;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: var(--text-mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-soft);
 }
 .project-pager a:hover { color: var(--accent); }
 
-/* 9. About page ------------------------------------------------------------*/
+/* Mobile: the two links stack deliberately — previous left, next right */
+@media (max-width: 767px) {
+  .project-pager { flex-direction: column; align-items: stretch; gap: 0; }
+  .project-pager a { min-width: 0; }
+  .project-pager a:first-child { justify-content: flex-start; text-align: left; }
+  .project-pager a:last-child { justify-content: flex-end; text-align: right; }
+}
+
+
+/* 10. ABOUT --------------------------------------------------------------------
+   Lead: big statement on columns 1–7, supporting copy + values + availability
+   on columns 9–12 (5:3 on tablet). Everything below follows the same grid. */
 .about-lead { padding-block: 3vh 2vh; }
 
 .prose { max-width: 64ch; }
 
-/* Lead grid: the big statement carries the left, support copy sits right */
-.lead-grid { display: grid; gap: 24px; }
+.lead-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
+  column-gap: var(--gutter);
+  row-gap: var(--s6);
+}
+
+.lead-grid > * { grid-column: 1 / -1; }
+
+@media (min-width: 768px) {
+  .lead-grid .big { grid-column: 1 / span 5; }
+  .lead-grid .lead-side { grid-column: 6 / -1; }
+}
+
+@media (min-width: 1024px) {
+  .lead-grid .big { grid-column: 1 / span 7; }
+  .lead-grid .lead-side { grid-column: 9 / -1; }
+}
 
 .big {
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: clamp(1.5rem, 1.05rem + 2.2vw, 2.6rem);
+  font-size: var(--text-feature);
   line-height: 1.24;
   letter-spacing: -0.015em;
   color: var(--ink);
@@ -583,30 +759,34 @@ main {
 }
 
 .lead-side p { margin-bottom: 0.9em; }
-.lead-side p:last-child { margin-bottom: 0; }
 
-/* Values — five compact columns reading left to right; each carries its
-   own short rule instead of one stretched line */
+@media (min-width: 768px) {
+  .lead-side {
+    font-size: 0.95rem;
+    padding-top: 0.5rem;   /* optically aligns with the statement's cap height */
+  }
+}
+
+/* Values — each in its own outlined container, reading left to right */
 .values {
   list-style: none;
   margin: 1.6rem 0 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 12px;
+  gap: var(--s3);
 }
 
-/* Each value in its own outlined container */
 .values li {
   border: var(--rule);
   border-radius: var(--radius-sm);
-  padding: 12px 14px;
+  padding: var(--s3) 14px;
 }
 
 .values .word {
   display: block;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: var(--text-mono);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
@@ -615,7 +795,7 @@ main {
 
 .values .desc {
   display: block;
-  font-size: 0.92rem;
+  font-size: var(--text-sm);
   line-height: 1.5;
   color: var(--ink-soft);
 }
@@ -630,7 +810,12 @@ main {
 
 .about-section { padding-block: 4.5vh 2vh; }
 
-/* History / speaking / press — simple hairline lists */
+@media (max-width: 767px) {
+  .about-lead { padding-block: 2vh 1vh; }
+  .about-section { padding-block: 3vh 1.5vh; }
+}
+
+/* History — simple hairline list */
 .history-list {
   list-style: none;
   margin: 1.4rem 0 0;
@@ -642,14 +827,13 @@ main {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 12px 18px;
+  gap: var(--s3) 18px;
   flex-wrap: wrap;
   padding: 14px 2px;
   border-bottom: var(--rule);
 }
 
 .history-list .org { color: var(--ink); }
-
 .history-list .role { color: var(--ink-soft); margin-left: auto; }
 .history-list .when {
   font-family: var(--font-mono);
@@ -657,6 +841,15 @@ main {
   letter-spacing: 0.08em;
   color: var(--ink-faint);
   text-align: right;
+}
+
+/* Mobile: rows small enough to fit on one line with nothing cut off */
+@media (max-width: 767px) {
+  .history-list li { flex-wrap: nowrap; gap: 6px; padding: var(--s3) 0; }
+  .history-list .org { font-size: 0.76rem; white-space: nowrap; flex: 0 0 auto; }
+  .history-list .org .caption { font-size: 0.5rem; }
+  .history-list .role { font-size: 0.6rem; white-space: nowrap; flex: 0 1 auto; }
+  .history-list .when { font-size: 0.54rem; white-space: nowrap; flex: 0 0 auto; }
 }
 
 /* Plain name lists (speaking, press) — open, no inner rules */
@@ -671,13 +864,51 @@ main {
   color: var(--ink-soft);
 }
 
-/* Speaking + press side by side on desktop, stacked on mobile */
-.two-up { display: grid; gap: 32px 56px; }
+@media (max-width: 767px) {
+  .name-list li { padding: 1px 2px; line-height: 1.45; }
+}
 
-/* Closing: portrait with the story to its right; stacked on mobile */
-.closing { display: grid; gap: 28px; }
+/* Speaking + press: columns 1–6 and 7–12 on the grid; stacked on mobile */
+.two-up {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
+  column-gap: var(--gutter);
+  row-gap: var(--s7);
+}
 
-/* Closing portrait, contained */
+.two-up > * { grid-column: 1 / -1; }
+
+@media (min-width: 768px) {
+  .two-up > *:first-child { grid-column: 1 / span 4; }
+  .two-up > *:last-child { grid-column: 5 / -1; }
+}
+
+@media (min-width: 1024px) {
+  .two-up > *:first-child { grid-column: 1 / span 6; }
+  .two-up > *:last-child { grid-column: 7 / -1; }
+}
+
+/* Closing: portrait on columns 1–4, the story beside it; stacked on mobile */
+.closing {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
+  column-gap: var(--gutter);
+  row-gap: var(--s6);
+  align-items: center;
+}
+
+.closing > * { grid-column: 1 / -1; }
+
+@media (min-width: 768px) {
+  .closing .portrait-box { grid-column: 1 / span 3; }
+  .closing .prose { grid-column: 4 / -1; }
+}
+
+@media (min-width: 1024px) {
+  .closing .portrait-box { grid-column: 1 / span 4; }
+  .closing .prose { grid-column: 6 / -1; }
+}
+
 .portrait-box {
   max-width: 440px;
   border: var(--rule);
@@ -690,7 +921,7 @@ main {
 
 .portrait-box .caption {
   display: block;
-  padding: 8px 12px;
+  padding: var(--s2) var(--s3);
   border-top: var(--rule);
   background: var(--bg);
 }
@@ -698,11 +929,12 @@ main {
 .contact-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: var(--s3);
   margin-top: 1.6rem;
 }
 
-/* 10. Lightbox --------------------------------------------------------------*/
+
+/* 11. LIGHTBOX -------------------------------------------------------------- */
 .lightbox {
   position: fixed;
   inset: 0;
@@ -710,8 +942,8 @@ main {
   display: none;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  background: rgba(38, 34, 26, 0.82);
+  padding: var(--s5);
+  background: rgba(38, 34, 26, 0.92);   /* deep, edge-to-edge darkening */
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   opacity: 0;
@@ -729,17 +961,15 @@ html.anim-off .lightbox { transition: none; }
   height: 92dvh;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--s2);
 }
 
+/* The image floats alone on the darkened page — no box, no letterbox */
 .lightbox img {
   flex: 1;
   min-height: 0;
   width: 100%;
   object-fit: contain;
-  border: var(--rule);
-  border-radius: var(--radius-sm);
-  background: var(--paper);
 }
 
 .lightbox figcaption {
@@ -764,40 +994,63 @@ html.anim-off .lightbox { transition: none; }
   display: grid;
   place-items: center;
   overflow: hidden;
-  transition: background 0.2s ease;
+  transition: background var(--fade-ui);
 }
 
 .lightbox-close:hover,
 .lightbox-arrow:hover { background: rgba(85, 80, 63, 0.7); }
 
 .lightbox-close { top: 18px; right: 18px; }
-.lightbox-arrow--prev { left: 12px; top: 50%; transform: translateY(-50%); }
-.lightbox-arrow--next { right: 12px; top: 50%; transform: translateY(-50%); }
+.lightbox-arrow--prev { left: var(--s3); top: 50%; transform: translateY(-50%); }
+.lightbox-arrow--next { right: var(--s3); top: 50%; transform: translateY(-50%); }
 
 body.lightbox-open { overflow: hidden; }
 
-/* 11. Footer -----------------------------------------------------------------*/
+@supports not ((backdrop-filter: blur(4px)) or (-webkit-backdrop-filter: blur(4px))) {
+  .lightbox { background: rgba(38, 34, 26, 0.94); }
+}
+
+
+/* 12. FOOTER -------------------------------------------------------------------
+   One line on the grid: copyright (1–4) · cacti (5–8, centered) · links
+   (9–12, right). Stacks centered on mobile. */
 .site-footer {
   position: relative;
   z-index: 1;
   background: var(--bg);        /* solid fill, matching the header */
   border-top: var(--rule);
-  padding-block: 32px 44px;
+  padding-block: var(--s7) 44px;
   margin-top: 4vh;
 }
 
-/* One line: copyright left · cacti in the middle · links right */
 .site-footer .wrap {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
+  column-gap: var(--gutter);
+  row-gap: 22px;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px 24px;
-  flex-wrap: wrap;
+}
+
+.site-footer .wrap > * {
+  grid-column: 1 / -1;
+  justify-self: center;
+}
+
+@media (min-width: 768px) {
+  .site-footer .caption { grid-column: 1 / span 2; justify-self: start; }
+  .footer-cacti { grid-column: 3 / span 4; justify-self: center; }
+  .footer-links { grid-column: 7 / span 2; justify-self: end; }
+}
+
+@media (min-width: 1024px) {
+  .site-footer .caption { grid-column: 1 / span 4; }
+  .footer-cacti { grid-column: 5 / span 4; }
+  .footer-links { grid-column: 9 / span 4; }
 }
 
 .site-footer .caption { white-space: nowrap; }
 
-/* Brand moniker: saguaro, barrel, and pencil cactus line icons */
+/* Brand moniker: saguaro, barrel, and prickly pear line icons */
 .footer-cacti {
   display: flex;
   align-items: flex-end;
@@ -806,8 +1059,8 @@ body.lightbox-open { overflow: hidden; }
 }
 
 .footer-cacti svg {
-  width: 22px;
-  height: 22px;
+  width: 27px;
+  height: 27px;
   display: block;
   transform-origin: 50% 92%;
 }
@@ -821,7 +1074,7 @@ body.lightbox-open { overflow: hidden; }
   80% { transform: rotate(-3deg); }
 }
 
-.footer-links { display: flex; flex-wrap: wrap; gap: 4px 24px; }
+.footer-links { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s6); }
 
 .footer-links a {
   display: inline-flex;
@@ -829,7 +1082,7 @@ body.lightbox-open { overflow: hidden; }
   min-height: var(--tap-min);
   text-decoration: none;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: var(--text-mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-faint);
@@ -837,7 +1090,16 @@ body.lightbox-open { overflow: hidden; }
 
 .footer-links a:hover { color: var(--accent); }
 
-/* 12. Motion & accessibility --------------------------------------------------*/
+@media (max-width: 767px) {
+  .site-footer .wrap { text-align: center; }
+  .site-footer .caption { font-size: 0.82rem; }
+  .footer-links { justify-content: center; gap: var(--s1) 28px; }
+  .footer-cacti { gap: 18px; }
+  .footer-cacti svg { width: 30px; height: 30px; }
+}
+
+
+/* 13. MOTION & ACCESSIBILITY ---------------------------------------------------*/
 /* Everything under the nav fades in as it enters the viewport */
 .fade-in {
   opacity: 0;
@@ -857,123 +1119,3 @@ body.lightbox-open { overflow: hidden; }
 
 /* If JS never runs, reveal everything (fade-in would otherwise hide content) */
 .no-js .fade-in { opacity: 1; transform: none; }
-
-@supports not ((backdrop-filter: blur(4px)) or (-webkit-backdrop-filter: blur(4px))) {
-  .lightbox { background: rgba(38, 34, 26, 0.94); }
-}
-
-/* 13. Breakpoints -------------------------------------------------------------*/
-/* Small screens: logo stays sticky on top; nav docks bottom-center in a
-   hairline box for thumbs. */
-@media (max-width: 767px) {
-  /* Logo centered up top; nav docked bottom-center for thumbs */
-  .site-header .wrap { justify-content: center; }
-
-  .site-nav {
-    position: fixed;
-    left: 50%;
-    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
-    transform: translateX(-50%);
-    z-index: 120;
-    background: #fffef9;        /* stark against the putty page — easy to spot */
-    border: var(--rule);
-    border-radius: var(--radius);
-    padding: 3px;
-  }
-
-  .nav-link { padding: 0 14px; font-size: 0.68rem; }
-  .nav-link[aria-current="page"]::after { left: 14px; right: 14px; bottom: 6px; }
-
-  /* Clearance so content and footer never hide behind the bottom bar */
-  body { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
-
-  /* Condensed rhythm — same content, tighter frame */
-  .hero { padding-block: 4.5vh 3vh; }
-  .about-lead { padding-block: 2vh 1vh; }
-  .about-section { padding-block: 3vh 1.5vh; }
-
-  /* History rows: small enough to fit on one line with nothing cut off */
-  .history-list li { flex-wrap: nowrap; gap: 6px; padding: 12px 0; }
-  .history-list .org { font-size: 0.76rem; white-space: nowrap; flex: 0 0 auto; }
-  .history-list .org .caption { font-size: 0.5rem; }
-  .history-list .role { font-size: 0.6rem; white-space: nowrap; flex: 0 1 auto; }
-  .history-list .when { font-size: 0.54rem; white-space: nowrap; flex: 0 0 auto; }
-
-  /* Tighter speaking / press lists */
-  .name-list li { padding: 1px 2px; line-height: 1.45; }
-
-  .feature-caption { font-size: 0.6rem; padding: 6px 12px; }
-
-  /* Footer stacks elegantly: copyright, cacti, links — centered,
-     evenly spaced, a touch larger */
-  .site-footer .wrap {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 22px;
-  }
-  .footer-links { justify-content: center; gap: 4px 28px; }
-  .site-footer .caption { font-size: 0.82rem; }
-  .footer-links a { font-size: 0.8rem; }
-  .footer-cacti { gap: 18px; }
-  .footer-cacti svg { width: 26px; height: 26px; }
-}
-
-@media (min-width: 640px) {
-  :root { --space-gutter: 32px; }
-  .feature-stage { aspect-ratio: 16 / 9; }
-}
-
-@media (min-width: 768px) {
-  .two-up { grid-template-columns: 1fr 1fr; }
-  .closing {
-    grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
-    gap: 48px;
-    align-items: center;
-  }
-
-  /* About lead: statement left, support copy right, on one shared axis */
-  .lead-grid {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: 64px;
-    align-items: start;
-  }
-
-  .lead-side {
-    font-size: 0.95rem;
-    padding-top: 0.5rem;   /* optically aligns with the statement's cap height */
-  }
-}
-
-@media (min-width: 1024px) {
-  body { font-size: 18px; }
-
-  .brand { font-size: 1.45rem; }
-
-  .hero { padding-block: 10vh 4vh; }
-
-  /* Project page: slim sticky description left, tall carousel right.
-     Whichever column is shorter holds still while the other scrolls. */
-  .project-layout {
-    grid-template-columns: minmax(260px, 4fr) minmax(0, 8fr);
-    gap: 48px;
-    align-items: start;
-  }
-
-  .project-info,
-  .carousel {
-    position: sticky;
-    top: calc(var(--nav-height) + 20px);
-  }
-
-  .project-info { font-size: 0.95rem; }
-
-  /* Cards size to the image: full height, natural width, no cropping */
-  .carousel-card { flex: 0 0 auto; }
-  .carousel-card img {
-    aspect-ratio: auto;
-    height: min(64vh, 660px);
-    width: auto;
-    max-width: 78vw;
-  }
-}

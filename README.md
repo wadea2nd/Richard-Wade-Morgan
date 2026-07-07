@@ -20,6 +20,14 @@ Vercel, or classic web hosting) and it works.
 
 ## Design system
 
+- **Grid**: 12 columns on desktop (≥1024px), 8 on tablet (768–1023px), 4 on
+  mobile (<768px), with 24px gutters (16px on mobile) inside a 1240px
+  container. Every multi-column layout places its children on this grid with
+  explicit column spans — see the architecture comment at the top of
+  `css/styles.css`.
+- **Tokens**: all colors, type sizes, spacing steps (4px base scale), radii,
+  and motion timings are defined once in `:root` and referenced everywhere.
+  To retune the site, change the token, not the components.
 - Palette: putty cream background `#eae4d6`, near-black warm ink `#26221a`,
   thin dark rules `#3a3428` — no pure white, no pure black, no drop shadows.
   One muted accent color (dusty red / gold / sage / slate / plum) is picked
@@ -28,6 +36,8 @@ Vercel, or classic web hosting) and it works.
   body · **Space Mono** for labels and buttons — loaded from Google Fonts.
 - Nav: sticky top header everywhere; on phones the nav docks to the bottom
   center for thumbs.
+- Small print: SVG favicon (`assets/favicon.svg`), `theme-color` meta, and a
+  `humans.txt` at the root.
 
 ## Built-in safeguards
 

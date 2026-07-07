@@ -1,0 +1,14 @@
+/* TEAM */
+Design & everything else: Richard Wade Morgan
+Location: United States
+Contact: wadewadedonttellme [at] gmail.com
+
+/* SITE */
+Stack: hand-written HTML, CSS, and JavaScript. No frameworks, no build step.
+Grid: 12 columns on desktop, 8 on tablet, 4 on mobile.
+Type: Space Grotesk, Inter, Space Mono (Google Fonts).
+Palette: putty cream, warm ink, thin dark rules. No pure white or black.
+Doodads: one muted accent color per visit, a grainy cursor cloud,
+and three cacti that jiggle if you find them.
+
+Raise Hell, Praise Dale, Go Dawgs.

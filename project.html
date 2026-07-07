@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=Inter:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <meta name="theme-color" content="#eae4d6">
   <link rel="stylesheet" href="css/styles.css">
 
   <!-- Deploy safety net: if css/styles.css can't be found (usually because
@@ -87,9 +89,11 @@
           <path d="M5 21h14"/>
         </svg>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" focusable="false">
-          <ellipse cx="12" cy="16" rx="3.8" ry="5"/>
-          <ellipse cx="8.6" cy="10.2" rx="2.4" ry="3.2" transform="rotate(-28 8.6 10.2)"/>
-          <ellipse cx="15.6" cy="9.4" rx="2" ry="2.8" transform="rotate(24 15.6 9.4)"/>
+          <!-- Pads are filled with the page color so they join cleanly
+               instead of showing crossed strokes where they overlap. -->
+          <ellipse cx="12" cy="16" rx="3.8" ry="5" style="fill: var(--bg)"/>
+          <ellipse cx="8.4" cy="9.8" rx="2.4" ry="3.2" transform="rotate(-28 8.4 9.8)" style="fill: var(--bg)"/>
+          <ellipse cx="15.9" cy="9" rx="2" ry="2.8" transform="rotate(24 15.9 9)" style="fill: var(--bg)"/>
           <path d="M6 21h12"/>
         </svg>
       </div>
