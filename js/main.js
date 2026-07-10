@@ -234,10 +234,11 @@
     if (!box || !items || !items.length) return;
 
     var stage = box.querySelector(".feature-stage");
+    var dotsHost = box.querySelector(".slider-dots");
+    if (!stage || !dotsHost) return;
+    /* Optional caption bar — the current design goes without one */
     var captionName = box.querySelector(".feature-caption .name");
     var counter = box.querySelector(".feature-caption .counter");
-    var dotsHost = box.querySelector(".slider-dots");
-    if (!stage || !captionName || !counter || !dotsHost) return;
 
     var slides = [], dots = [], current = 0, timer = null;
     var INTERVAL = 3000; /* 2–3 second rhythm */
@@ -275,10 +276,14 @@
         s.tabIndex = j === current ? 0 : -1;
       });
       dots.forEach(function (d, j) { d.setAttribute("aria-pressed", j === current ? "true" : "false"); });
-      captionName.textContent = (items[current].name || "") +
-        (items[current].year ? " — " + items[current].year : "");
-      counter.textContent = String(current + 1).padStart(2, "0") + " / " +
-        String(items.length).padStart(2, "0");
+      if (captionName) {
+        captionName.textContent = (items[current].name || "") +
+          (items[current].year ? " — " + items[current].year : "");
+      }
+      if (counter) {
+        counter.textContent = String(current + 1).padStart(2, "0") + " / " +
+          String(items.length).padStart(2, "0");
+      }
     }
 
     function stop() { if (timer) { clearInterval(timer); timer = null; } }

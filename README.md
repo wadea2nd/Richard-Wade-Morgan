@@ -14,9 +14,8 @@ Vercel, or classic web hosting) and it works.
 - **Images** — replace the placeholder `.svg` files in `assets/img/` with real
   JPG/PNG files and update the `src` paths in `js/projects.js`. Keep the alt
   text meaningful — screen readers depend on it.
-- **Links** — the LinkedIn (`https://www.linkedin.com/`) and Art Studio
-  (`https://example.com/`) URLs in every page's footer are placeholders;
-  search-and-replace them with your real profiles. The email is already real.
+- **Links** — the footer Email (mailto), LinkedIn, and Art Studio
+  (Instagram) links are live and real on every page.
 
 ## Design system
 
