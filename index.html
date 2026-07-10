@@ -21,6 +21,10 @@
        show a plain-English explanation instead of a broken-looking page. -->
   <script>
     window.addEventListener("load", function () {
+      // Only meaningful on a real server (Netlify, localhost). Opening this
+      // file directly (file:// or an app's single-file preview) can't load
+      // the css folder, and that's normal — stay quiet there.
+      if (location.protocol !== "http:" && location.protocol !== "https:") return;
       var css = getComputedStyle(document.documentElement).getPropertyValue("--bg");
       if (css && css.trim()) return; // stylesheet loaded — all good
       var note = document.createElement("div");
