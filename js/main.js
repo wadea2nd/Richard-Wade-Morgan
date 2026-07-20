@@ -294,7 +294,7 @@
     var counter = box.querySelector(".feature-caption .counter");
 
     var slides = [], current = 0, timer = null;
-    var INTERVAL = 2200; /* brisk, control-free rhythm */
+    var INTERVAL = 1500; /* quick, control-free rhythm */
 
     items.forEach(function (item, i) {
       var el = document.createElement(item.href ? "a" : "div");
