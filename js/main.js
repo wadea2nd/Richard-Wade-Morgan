@@ -360,7 +360,7 @@
       a.appendChild(num);
       a.appendChild(name);
 
-      /* Hover peek: first carousel image floats in on the right */
+      /* Hover peek: first gallery image floats in on the right */
       if (p.images && p.images[0]) {
         var peek = document.createElement("img");
         peek.className = "index-peek";
@@ -377,11 +377,11 @@
   }
 
   /* --------------------------------------------------------------------------
-     9. Project page: build info column, carousel, pager from the URL slug
+     9. Project page: build info column, gallery, pager from the URL slug
      -------------------------------------------------------------------------- */
   function initProjectPage() {
     var infoHost = document.getElementById("projectInfo");
-    var trackHost = document.getElementById("carouselTrack");
+    var trackHost = document.getElementById("galleryTrack");
     if (!infoHost || !trackHost) return;
 
     var params = new URLSearchParams(window.location.search);
@@ -429,12 +429,12 @@
     infoHost.appendChild(h1);
     infoHost.appendChild(summary);
 
-    /* Right column: carousel cards (each opens the lightbox) */
+    /* Right column: gallery cards (each opens the lightbox) */
     var images = project.images || [];
     images.forEach(function (imgData, i) {
       var card = document.createElement("button");
       card.type = "button";
-      card.className = "carousel-card";
+      card.className = "gallery-card";
       card.setAttribute("aria-label", "Expand image " + (i + 1) + " of " + images.length +
         (imgData.caption ? ": " + imgData.caption : ""));
 
@@ -465,46 +465,10 @@
       pager.appendChild(prev);
       pager.appendChild(next);
     }
-
-    initCarouselControls();
   }
 
   /* --------------------------------------------------------------------------
-     10. Carousel: natural horizontal scroll + drag with the mouse
-     -------------------------------------------------------------------------- */
-  function initCarouselControls() {
-    var track = document.getElementById("carouselTrack");
-    if (!track) return;
-
-    /* Mouse drag-to-scroll (touch scrolls natively) */
-    var dragging = false, moved = false, startX = 0, startLeft = 0;
-    track.addEventListener("pointerdown", function (e) {
-      if (e.pointerType !== "mouse") return;
-      dragging = true; moved = false;
-      startX = e.clientX; startLeft = track.scrollLeft;
-    });
-    window.addEventListener("pointermove", function (e) {
-      if (!dragging) return;
-      var dx = e.clientX - startX;
-      if (Math.abs(dx) > 6) {
-        moved = true;
-        track.classList.add("is-dragging");
-        track.scrollLeft = startLeft - dx;
-      }
-    });
-    window.addEventListener("pointerup", function () {
-      if (!dragging) return;
-      dragging = false;
-      track.classList.remove("is-dragging");
-    });
-    /* Swallow the click that ends a drag so it doesn't open the lightbox. */
-    track.addEventListener("click", function (e) {
-      if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; }
-    }, true);
-  }
-
-  /* --------------------------------------------------------------------------
-     11. Lightbox — keyboard accessible image expansion
+     10. Lightbox — keyboard accessible image expansion
      -------------------------------------------------------------------------- */
   var lightboxState = { images: [], index: 0, lastFocus: null };
 
@@ -582,7 +546,7 @@
   }
 
   /* --------------------------------------------------------------------------
-     12. Scroll fade-ins — with fallbacks for observers that never fire
+     11. Scroll fade-ins — with fallbacks for observers that never fire
      -------------------------------------------------------------------------- */
   function initFadeIns() {
     var items = document.querySelectorAll(".fade-in");
@@ -616,7 +580,7 @@
   }
 
   /* --------------------------------------------------------------------------
-     13. Footer year
+     12. Footer year
      -------------------------------------------------------------------------- */
   function initYear() {
     var el = document.getElementById("footerYear");

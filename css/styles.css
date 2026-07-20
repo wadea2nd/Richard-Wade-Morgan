@@ -566,9 +566,10 @@ main {
 
 
 /* 9. PROJECT PAGES ------------------------------------------------------------
-   Desktop: description on columns 1–4, carousel on 5–12; both sticky so
-   whichever is shorter holds still while the other scrolls. Mobile: the
-   description stacks on top. */
+   Tablet+: description on the left columns, image gallery on the right.
+   The gallery stacks vertically and rides the page's own scroll; the
+   description is sticky so it holds still beside the passing images.
+   Mobile: the description stacks on top, images follow. */
 .project-layout {
   display: grid;
   grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
@@ -578,19 +579,24 @@ main {
 }
 
 .project-layout > * {
-  min-width: 0;                  /* the carousel must not widen the page */
+  min-width: 0;
   grid-column: 1 / -1;
+}
+
+@media (min-width: 768px) {
+  .project-info { grid-column: 1 / span 3; }
+  .gallery { grid-column: 4 / -1; }
+
+  .project-info {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--s5));
+    align-self: start;           /* sticky needs the item, not the track, to size it */
+  }
 }
 
 @media (min-width: 1024px) {
   .project-info { grid-column: 1 / span 4; font-size: 0.95rem; }
-  .carousel { grid-column: 5 / -1; }
-
-  .project-info,
-  .carousel {
-    position: sticky;
-    top: calc(var(--nav-height) + var(--s5));
-  }
+  .gallery { grid-column: 5 / -1; }
 }
 
 .backlink {
@@ -611,56 +617,31 @@ main {
 
 .project-summary { margin-top: 1.6rem; }
 
-/* Horizontal card carousel — hairline-contained cards, natural scroll.
-   Images are NEVER cropped: contain-fit inside the stage. */
-.carousel { position: relative; }
+/* Vertical image gallery — hairline-contained cards stacked top to
+   bottom. Each expands into the lightbox; images are never cropped. */
+.gallery { position: relative; }
 
-.carousel-track {
+.gallery-track {
   display: flex;
-  gap: 0.85rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding: 2px 2px var(--s4);
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: var(--ink-faint) transparent;
-  -webkit-user-select: none;
-  user-select: none;             /* mouse-dragging must scroll, not select */
+  flex-direction: column;
+  gap: var(--s5);
 }
 
-.carousel-track.is-dragging { cursor: grabbing; scroll-snap-type: none; }
-.carousel-track.is-dragging .carousel-card { cursor: grabbing; }
-
-.carousel-card {
-  flex: 0 0 min(84vw, 30.5rem);
-  scroll-snap-align: start;
+.gallery-card {
   border: var(--rule);
   padding: 0;
   background: var(--paper);
   cursor: zoom-in;
   border-radius: var(--radius);
   overflow: hidden;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.carousel-card img {
+  display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: contain;           /* the full image always shows */
-  background: var(--paper);
 }
 
-/* Desktop: cards size to the image — full height, natural width */
-@media (min-width: 1024px) {
-  .carousel-card { flex: 0 0 auto; }
-  .carousel-card img {
-    aspect-ratio: auto;
-    height: min(64vh, 38.5rem);
-    width: auto;
-    max-width: 78vw;
-  }
+.gallery-card img {
+  width: 100%;
+  height: auto;                  /* natural aspect ratio, never cropped */
+  display: block;
 }
 
 /* Prev / next project pager */
@@ -1084,7 +1065,7 @@ body.lightbox-open { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  body, .fade-in, .feature-slide, .btn, .index-row, .carousel-card { transition: none !important; }
+  body, .fade-in, .feature-slide, .btn, .index-row, .gallery-card { transition: none !important; }
   .fade-in { opacity: 1; transform: none; }
   .ripple { animation: none; opacity: 0; }
   .footer-cacti svg { animation: none !important; }
