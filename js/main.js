@@ -208,7 +208,7 @@
     if (prefersReducedMotion) return;
     document.addEventListener("pointerdown", function (e) {
       var host = e.target && e.target.closest
-        ? e.target.closest(".btn, .nav-link, .slider-dot, .lightbox-close, .lightbox-arrow")
+        ? e.target.closest(".btn, .nav-link, .lightbox-close, .lightbox-arrow")
         : null;
       if (!host) return;
       var rect = host.getBoundingClientRect();
@@ -234,14 +234,13 @@
     if (!box || !items || !items.length) return;
 
     var stage = box.querySelector(".feature-stage");
-    var dotsHost = box.querySelector(".slider-dots");
-    if (!stage || !dotsHost) return;
+    if (!stage) return;
     /* Optional caption bar — the current design goes without one */
     var captionName = box.querySelector(".feature-caption .name");
     var counter = box.querySelector(".feature-caption .counter");
 
-    var slides = [], dots = [], current = 0, timer = null;
-    var INTERVAL = 3000; /* 2–3 second rhythm */
+    var slides = [], current = 0, timer = null;
+    var INTERVAL = 2200; /* brisk, control-free rhythm */
 
     items.forEach(function (item, i) {
       var el = document.createElement(item.href ? "a" : "div");
@@ -258,15 +257,6 @@
       el.appendChild(img);
       stage.appendChild(el);
       slides.push(el);
-
-      var dot = document.createElement("button");
-      dot.type = "button";
-      dot.className = "slider-dot";
-      dot.setAttribute("aria-label", "Show slide " + (i + 1) + " of " + items.length + ": " + item.name);
-      dot.setAttribute("aria-pressed", i === 0 ? "true" : "false");
-      dot.addEventListener("click", function () { show(i); restart(); });
-      dotsHost.appendChild(dot);
-      dots.push(dot);
     });
 
     function show(i) {
@@ -275,7 +265,6 @@
         s.classList.toggle("is-active", j === current);
         s.tabIndex = j === current ? 0 : -1;
       });
-      dots.forEach(function (d, j) { d.setAttribute("aria-pressed", j === current ? "true" : "false"); });
       if (captionName) {
         captionName.textContent = (items[current].name || "") +
           (items[current].year ? " — " + items[current].year : "");
@@ -580,7 +569,23 @@
   }
 
   /* --------------------------------------------------------------------------
-     12. Footer year
+     12. Image guard — deter casual saving of the work. Blocks drag-to-
+     desktop and the right-click "Save Image As…" menu on images only
+     (right-click elsewhere on the page behaves normally).
+     -------------------------------------------------------------------------- */
+  function initImageGuard() {
+    document.addEventListener("dragstart", function (e) {
+      if (e.target && e.target.tagName === "IMG") e.preventDefault();
+    });
+    document.addEventListener("contextmenu", function (e) {
+      if (e.target && (e.target.tagName === "IMG" || e.target.closest(".gallery-card, .feature-slide, .lightbox"))) {
+        e.preventDefault();
+      }
+    });
+  }
+
+  /* --------------------------------------------------------------------------
+     13. Footer year
      -------------------------------------------------------------------------- */
   function initYear() {
     var el = document.getElementById("footerYear");
@@ -598,5 +603,6 @@
   safeInit("projectPage", initProjectPage);
   safeInit("lightbox", initLightbox);
   safeInit("fadeIns", initFadeIns);
+  safeInit("imageGuard", initImageGuard);
   safeInit("year", initYear);
 })();
