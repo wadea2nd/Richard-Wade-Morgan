@@ -57,11 +57,11 @@
   --font-mono: "Space Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
   /* Type scale — deliberately restrained; elegance over volume */
-  --text-hero: clamp(1.25rem, 0.95rem + 1.8vw, 2.3rem);   /* homepage bio  */
-  --text-feature: clamp(1.3rem, 1rem + 1.6vw, 2.05rem);   /* about lead    */
-  --text-index: clamp(1.25rem, 0.95rem + 1.7vw, 2.05rem); /* work rows     */
-  --text-h1: clamp(1rem, 0.78rem + 1.3vw, 1.6rem);
-  --text-h3: 1.05rem;
+  --text-hero: clamp(1.15rem, 0.9rem + 1.4vw, 1.85rem);   /* homepage bio  */
+  --text-feature: clamp(1.15rem, 0.92rem + 1.2vw, 1.65rem); /* about lead  */
+  --text-index: clamp(1.1rem, 0.9rem + 1.2vw, 1.6rem);    /* work rows     */
+  --text-h1: clamp(0.95rem, 0.75rem + 1vw, 1.35rem);
+  --text-h3: 0.95rem;
   --text-body: 1rem;
   --text-sm: 0.92rem;
   --text-mono: 0.72rem;         /* labels, nav, captions */
@@ -128,8 +128,8 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-body);
-  font-weight: 300;             /* thin body per spec — 17px+ keeps it readable */
-  font-size: 1rem;
+  font-weight: 300;             /* thin body per spec */
+  font-size: 0.95rem;
   line-height: 1.7;
   min-height: 100dvh;
   overflow-x: hidden;
@@ -168,7 +168,7 @@ h3 { font-size: var(--text-h3); font-weight: 400; }
    out in caps; quiet markers, not shouts */
 h2 {
   font-family: var(--font-display);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -315,7 +315,7 @@ main {
   text-decoration: none;
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   letter-spacing: 0.05em;
   color: var(--ink);
   display: inline-flex;
@@ -325,7 +325,7 @@ main {
 }
 
 @media (min-width: 1024px) {
-  .brand { font-size: 1.02rem; }
+  .brand { font-size: 0.92rem; }
 }
 
 .site-nav {
@@ -344,7 +344,7 @@ main {
   text-decoration: none;
   font-family: var(--font-display);
   font-weight: 450;
-  font-size: 0.78rem;
+  font-size: 0.68rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-soft);
@@ -404,7 +404,7 @@ main {
   text-decoration: none;
   font-family: var(--font-display);
   font-weight: 450;
-  font-size: 0.74rem;
+  font-size: 0.66rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-soft);
@@ -442,7 +442,7 @@ main {
     padding: 3px;
   }
 
-  .nav-link { padding: 0 14px; font-size: 0.68rem; }
+  .nav-link { padding: 0 14px; font-size: 0.64rem; }
   .nav-link::after { left: 14px; right: 14px; bottom: 6px; }
 
   /* Clearance so content and footer never hide behind the bottom bar */
@@ -519,11 +519,13 @@ main {
 }
 
 /* Auto-playing slideshow — no controls, a brisk crossfade rhythm.
-   The stage is a shorter cinematic band so it lives inside the first
-   viewport instead of demanding a scroll. */
+   A contained 16:9 frame, centered and deliberately smaller than the
+   full content width. */
 .feature-box {
   position: relative;
   margin-block: 4vh 7vh;
+  max-width: min(100%, 46rem);
+  margin-inline: auto;
   border: var(--rule);
   border-radius: var(--radius);
   overflow: hidden;
@@ -541,7 +543,7 @@ main {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: opacity 0.45s ease;
+  transition: opacity 0.3s ease;
   text-decoration: none;
 }
 
@@ -871,36 +873,36 @@ main {
   .two-up > *:last-child { grid-column: 7 / -1; }
 }
 
-/* Closing: portrait on columns 1–4, the story beside it; stacked on mobile */
+/* Closing: story on the left columns, square portrait on the right —
+   both flush with the grid edges the rest of the page uses */
 .closing {
   display: grid;
   grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
   column-gap: var(--gutter);
   row-gap: var(--s6);
-  align-items: center;
+  align-items: start;
 }
 
 .closing > * { grid-column: 1 / -1; }
 
 @media (min-width: 768px) {
-  .closing .portrait-box { grid-column: 1 / span 3; }
-  .closing .prose { grid-column: 4 / -1; }
+  .closing .prose { grid-column: 1 / span 5; }
+  .closing .portrait-box { grid-column: 6 / -1; }
 }
 
 @media (min-width: 1024px) {
-  .closing .portrait-box { grid-column: 1 / span 4; }
-  .closing .prose { grid-column: 6 / -1; }
+  .closing .prose { grid-column: 1 / span 7; }
+  .closing .portrait-box { grid-column: 9 / -1; }
 }
 
 .portrait-box {
-  max-width: 26rem;
   border: var(--rule);
   border-radius: var(--radius);
   overflow: hidden;
   background: var(--paper);
 }
 
-.portrait-box img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.portrait-box img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; }
 
 .portrait-box .caption {
   display: block;
