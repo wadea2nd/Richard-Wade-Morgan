@@ -693,13 +693,11 @@ main {
 .lead-grid > * { grid-column: 1 / -1; }
 
 @media (min-width: 768px) {
-  .lead-grid .big { grid-column: 1 / span 5; }
-  .lead-grid .lead-side { grid-column: 6 / -1; }
+  .lead-grid .bio-copy { grid-column: 1 / span 6; }
 }
 
 @media (min-width: 1024px) {
-  .lead-grid .big { grid-column: 1 / span 7; }
-  .lead-grid .lead-side { grid-column: 9 / -1; }
+  .lead-grid .bio-copy { grid-column: 1 / span 7; }
 }
 
 .big {
@@ -709,56 +707,37 @@ main {
   line-height: 1.24;
   letter-spacing: -0.015em;
   color: var(--ink);
-  margin: 0;
+  margin: 0 0 0.7em;
 }
 
-.lead-side p { margin-bottom: 0.9em; }
-
-@media (min-width: 768px) {
-  .lead-side {
-    font-size: 0.95rem;
-    padding-top: 0.5rem;   /* optically aligns with the statement's cap height */
-  }
-}
-
-/* Values — each in its own outlined container, reading left to right */
-.values {
+/* Values — plain bullets inside the bio copy, dash-marked */
+.values-inline {
   list-style: none;
-  margin: 1.6rem 0 0;
+  margin: 0 0 1.15em;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: var(--s3);
 }
 
-.values li {
-  border: var(--rule);
-  border-radius: var(--radius-sm);
-  padding: var(--s3) 0.85rem;
-}
-
-.values .word {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: var(--text-mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 6px;
-}
-
-.values .desc {
-  display: block;
-  font-size: var(--text-sm);
-  line-height: 1.5;
+.values-inline li {
+  position: relative;
+  padding-left: 1.3em;
+  margin-bottom: 0.3em;
   color: var(--ink-soft);
 }
 
-/* Availability note — plain body copy, closing out the right column */
+.values-inline li::before {
+  content: "–";
+  position: absolute;
+  left: 0.2em;
+  color: var(--accent);
+}
+
+.values-inline .word { color: var(--ink); font-weight: 500; }
+
+/* Availability note — plain body copy closing the bio */
 .availability {
   color: var(--ink-soft);
   max-width: 64ch;
-  margin-top: 1.8rem;
+  margin-top: 1.6rem;
   margin-bottom: 0;
 }
 
