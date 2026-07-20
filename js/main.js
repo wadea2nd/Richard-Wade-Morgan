@@ -225,6 +225,60 @@
   }
 
   /* --------------------------------------------------------------------------
+     6b. Work dropdown — project links under the WORK nav item, injected
+     from projects.js. Desktop opens on hover/keyboard focus (CSS); on
+     touch devices the first tap opens the menu, the second follows the
+     link to the full index.
+     -------------------------------------------------------------------------- */
+  function initWorkMenu() {
+    var group = document.querySelector(".nav-work");
+    if (!group || !window.RWM_PROJECTS || !window.RWM_PROJECT_ORDER) return;
+    var menu = group.querySelector(".nav-menu");
+    var link = group.querySelector(".nav-link");
+    if (!menu || !link) return;
+
+    window.RWM_PROJECT_ORDER.forEach(function (slug, i) {
+      var p = window.RWM_PROJECTS[slug];
+      if (!p) return;
+      var a = document.createElement("a");
+      a.href = "project.html?p=" + encodeURIComponent(slug);
+      var num = document.createElement("span");
+      num.className = "num";
+      num.textContent = String(i + 1).padStart(2, "0");
+      var name = document.createElement("span");
+      name.textContent = p.title;
+      a.appendChild(num);
+      a.appendChild(name);
+      menu.appendChild(a);
+    });
+
+    function close() {
+      group.classList.remove("is-open");
+      link.setAttribute("aria-expanded", "false");
+    }
+
+    var touchOnly = window.matchMedia && window.matchMedia("(hover: none)").matches;
+    if (touchOnly) {
+      link.addEventListener("click", function (e) {
+        if (!group.classList.contains("is-open")) {
+          e.preventDefault();                 /* first tap opens the menu */
+          group.classList.add("is-open");
+          link.setAttribute("aria-expanded", "true");
+        }                                     /* second tap follows the link */
+      });
+      document.addEventListener("click", function (e) {
+        if (!group.contains(e.target)) close();
+      });
+    } else {
+      group.addEventListener("mouseenter", function () { link.setAttribute("aria-expanded", "true"); });
+      group.addEventListener("mouseleave", function () { link.setAttribute("aria-expanded", "false"); });
+    }
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") close();
+    });
+  }
+
+  /* --------------------------------------------------------------------------
      7. Homepage: auto-rotating feature carousel (also advances on
      horizontal scroll/swipe with the same crossfade)
      -------------------------------------------------------------------------- */
@@ -598,6 +652,7 @@
   safeInit("pageTransitions", initPageTransitions);
   safeInit("cloud", initCloud);
   safeInit("ripple", initRipple);
+  safeInit("workMenu", initWorkMenu);
   safeInit("featureSlider", initFeatureSlider);
   safeInit("workIndex", initWorkIndex);
   safeInit("projectPage", initProjectPage);
