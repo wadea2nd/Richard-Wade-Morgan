@@ -20,13 +20,17 @@ Vercel, or classic web hosting) and it works.
 ## Design system
 
 - **Grid**: 12 columns on desktop (≥1024px), 8 on tablet (768–1023px), 4 on
-  mobile (<768px), with 24px gutters (16px on mobile) inside a 1240px
-  container. Every multi-column layout places its children on this grid with
-  explicit column spans — see the architecture comment at the top of
+  mobile (<768px). Every multi-column layout places its children on this grid
+  with explicit column spans — see the architecture comment at the top of
   `css/styles.css`.
-- **Tokens**: all colors, type sizes, spacing steps (4px base scale), radii,
-  and motion timings are defined once in `:root` and referenced everywhere.
-  To retune the site, change the token, not the components.
+- **Fluid sizing**: the root font-size scales smoothly with viewport width
+  (~17px on phones to ~21px on large monitors), and all spacing, the content
+  container, and component sizes are in rem — so the site scales continuously
+  at any screen size, including very large and unusual ones. Hairline rules
+  stay a crisp 1px everywhere.
+- **Tokens**: all colors, type sizes, spacing steps, radii, and motion
+  timings are defined once in `:root` and referenced everywhere. To retune
+  the site, change the token, not the components.
 - Palette: putty cream background `#eae4d6`, near-black warm ink `#26221a`,
   thin dark rules `#3a3428` — no pure white, no pure black, no drop shadows.
   One muted accent color (dusty red / gold / sage / slate / plum) is picked

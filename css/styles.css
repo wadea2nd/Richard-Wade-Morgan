@@ -6,11 +6,18 @@
    Grid        12 columns ≥ 1024px (desktop)
                 8 columns 768–1023px (tablet)
                 4 columns < 768px (mobile)
-               Gutters: 24px (16px on mobile). Content max-width: 1240px.
                Any element with the grid pattern lays out on this system;
                children are placed with explicit `grid-column` spans.
 
-   Breakpoints 768px (tablet) and 1024px (desktop), used consistently.
+   Fluidity    The root font-size scales smoothly with the viewport
+               (≈17px on phones → ≈21px on large monitors), and every
+               spacing step, the content max-width, and component sizes
+               are in rem — so the whole site scales continuously at ANY
+               width, not just at the breakpoints. Hairline rules stay
+               exactly 1px at every size.
+
+   Breakpoints 768px (tablet) and 1024px (desktop) reflow the layout;
+               everything between and beyond them scales fluidly.
                Media queries are co-located with the component they modify.
 
    Tokens      All colors, type sizes, spacing, and radii are defined once
@@ -62,29 +69,30 @@
   --text-mono-lg: 0.76rem;      /* buttons */
   --text-mono-sm: 0.66rem;
 
-  /* Spacing scale (4px base) */
-  --s1: 4px;
-  --s2: 8px;
-  --s3: 12px;
-  --s4: 16px;
-  --s5: 20px;
-  --s6: 24px;
-  --s7: 32px;
-  --s8: 48px;
-  --s9: 64px;
+  /* Spacing scale — rem so every step rides the fluid root font-size */
+  --s1: 0.25rem;
+  --s2: 0.5rem;
+  --s3: 0.7rem;
+  --s4: 0.95rem;
+  --s5: 1.2rem;
+  --s6: 1.4rem;
+  --s7: 1.9rem;
+  --s8: 2.8rem;
+  --s9: 3.8rem;
 
-  /* Grid system — see ARCHITECTURE above */
+  /* Grid system — see ARCHITECTURE above. The rem cap means the content
+     area itself widens as the root scales on larger screens. */
   --grid-cols: 4;
   --gutter: var(--s4);
-  --content-max: 1240px;
+  --content-max: 73rem;
 
-  /* Rules & radii */
+  /* Rules & radii — hairlines stay a true 1px at every size */
   --rule: 1px solid var(--line);
   --radius: 10px;
   --radius-sm: 5px;
 
   /* Chrome */
-  --nav-height: 64px;
+  --nav-height: 3.7rem;
   --tap-min: 44px;              /* accessibility: minimum touch target */
 
   /* Motion */
@@ -110,6 +118,10 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  /* The fluid root: ~17px at phone widths, ~18px at 1024, ~20px at 1920,
+     capped at 21.5px on very large monitors. Everything sized in rem
+     scales with it, so the site is continuously responsive at any width. */
+  font-size: clamp(16.5px, 16.3px + 0.19vw, 21.5px);
 }
 
 body {
@@ -118,16 +130,12 @@ body {
   color: var(--ink);
   font-family: var(--font-body);
   font-weight: 300;             /* thin body per spec — 17px+ keeps it readable */
-  font-size: 17px;
+  font-size: 1rem;
   line-height: 1.7;
   min-height: 100dvh;
   overflow-x: hidden;
   opacity: 0;                   /* page fade-in; JS/noscript/anim-off reveals */
   transition: opacity var(--fade-page);
-}
-
-@media (min-width: 1024px) {
-  body { font-size: 18px; }
 }
 
 body.is-ready { opacity: 1; }
@@ -364,7 +372,7 @@ main {
   justify-content: center;
   gap: var(--s2);
   min-height: var(--tap-min);
-  padding: 11px var(--s6);
+  padding: 0.65rem var(--s6);
   border-radius: var(--radius-sm);
   border: var(--rule);
   background: transparent;
@@ -478,8 +486,8 @@ main {
 
 .slider-dot::after {
   content: "";
-  width: 9px;
-  height: 9px;
+  width: 0.55rem;
+  height: 0.55rem;
   border-radius: 50%;
   background: var(--bg);
   border: 1px solid var(--line);
@@ -503,7 +511,7 @@ main {
   display: flex;
   align-items: center;          /* number + title share a horizontal axis */
   gap: var(--s4);
-  padding: 22px 6px;
+  padding: 1.3rem 0.35rem;
   border-top: var(--rule);
   text-decoration: none;
   transition: background 0.25s ease;
@@ -538,7 +546,7 @@ main {
   position: absolute;
   right: 4%;
   top: 50%;
-  width: min(300px, 26vw);
+  width: min(17.5rem, 26vw);
   transform: translateY(-46%);
   opacity: 0;
   pointer-events: none;
@@ -609,7 +617,7 @@ main {
 
 .carousel-track {
   display: flex;
-  gap: 14px;
+  gap: 0.85rem;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   padding: 2px 2px var(--s4);
@@ -624,7 +632,7 @@ main {
 .carousel-track.is-dragging .carousel-card { cursor: grabbing; }
 
 .carousel-card {
-  flex: 0 0 min(84vw, 520px);
+  flex: 0 0 min(84vw, 30.5rem);
   scroll-snap-align: start;
   border: var(--rule);
   padding: 0;
@@ -649,7 +657,7 @@ main {
   .carousel-card { flex: 0 0 auto; }
   .carousel-card img {
     aspect-ratio: auto;
-    height: min(64vh, 660px);
+    height: min(64vh, 38.5rem);
     width: auto;
     max-width: 78vw;
   }
@@ -745,7 +753,7 @@ main {
 .values li {
   border: var(--rule);
   border-radius: var(--radius-sm);
-  padding: var(--s3) 14px;
+  padding: var(--s3) 0.85rem;
 }
 
 .values .word {
@@ -792,9 +800,9 @@ main {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: var(--s3) 18px;
+  gap: var(--s3) 1.1rem;
   flex-wrap: wrap;
-  padding: 14px 2px;
+  padding: 0.85rem 2px;
   border-bottom: var(--rule);
 }
 
@@ -875,7 +883,7 @@ main {
 }
 
 .portrait-box {
-  max-width: 440px;
+  max-width: 26rem;
   border: var(--rule);
   border-radius: var(--radius);
   overflow: hidden;
@@ -965,7 +973,7 @@ html.anim-off .lightbox { transition: none; }
 .lightbox-close:hover,
 .lightbox-arrow:hover { background: rgba(85, 80, 63, 0.7); }
 
-.lightbox-close { top: 18px; right: 18px; }
+.lightbox-close { top: var(--s4); right: var(--s4); }
 .lightbox-arrow--prev { left: var(--s3); top: 50%; transform: translateY(-50%); }
 .lightbox-arrow--next { right: var(--s3); top: 50%; transform: translateY(-50%); }
 
@@ -984,7 +992,7 @@ body.lightbox-open { overflow: hidden; }
   z-index: 1;
   background: var(--bg);        /* solid fill, matching the header */
   border-top: var(--rule);
-  padding-block: var(--s7) 44px;
+  padding-block: var(--s7) 2.6rem;
   margin-top: 4vh;
 }
 
@@ -992,7 +1000,7 @@ body.lightbox-open { overflow: hidden; }
   display: grid;
   grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
   column-gap: var(--gutter);
-  row-gap: 22px;
+  row-gap: 1.3rem;
   align-items: center;
 }
 
@@ -1019,13 +1027,13 @@ body.lightbox-open { overflow: hidden; }
 .footer-cacti {
   display: flex;
   align-items: flex-end;
-  gap: 14px;
+  gap: 0.85rem;
   color: var(--ink);
 }
 
 .footer-cacti svg {
-  width: 27px;
-  height: 27px;
+  width: 1.6rem;
+  height: 1.6rem;
   display: block;
   transform-origin: 50% 92%;
 }
@@ -1059,8 +1067,8 @@ body.lightbox-open { overflow: hidden; }
   .site-footer .wrap { text-align: center; }
   .site-footer .caption { font-size: 0.82rem; }
   .footer-links { justify-content: center; gap: var(--s1) 28px; }
-  .footer-cacti { gap: 18px; }
-  .footer-cacti svg { width: 30px; height: 30px; }
+  .footer-cacti { gap: 1.1rem; }
+  .footer-cacti svg { width: 1.8rem; height: 1.8rem; }
 }
 
 
