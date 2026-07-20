@@ -512,6 +512,7 @@ main {
   margin-inline: auto;
   margin-bottom: 0;
   line-height: 1.28;
+  text-wrap: pretty;             /* no one-word orphan lines */
 }
 
 @media (min-width: 1024px) {
