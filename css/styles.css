@@ -635,9 +635,11 @@ main {
   grid-column: 1 / -1;
 }
 
+/* An empty grid column sits between copy and images — the description
+   gets air so it reads before the imagery takes over */
 @media (min-width: 768px) {
   .project-info { grid-column: 1 / span 3; }
-  .gallery { grid-column: 4 / -1; }
+  .gallery { grid-column: 5 / -1; }
 
   .project-info {
     position: sticky;
@@ -648,7 +650,7 @@ main {
 
 @media (min-width: 1024px) {
   .project-info { grid-column: 1 / span 4; font-size: 0.95rem; }
-  .gallery { grid-column: 5 / -1; }
+  .gallery { grid-column: 6 / -1; }
 }
 
 .backlink {
