@@ -306,7 +306,10 @@
       var img = document.createElement("img");
       img.src = item.src;
       img.alt = item.alt || item.name || "Featured work";
-      img.loading = i === 0 ? "eager" : "lazy";
+      /* Slideshow frames load eagerly — a rotating stage must never show
+         an empty slide waiting on a lazy load. */
+      img.loading = "eager";
+      img.decoding = "async";
       img.addEventListener("error", function () { el.remove(); });
       el.appendChild(img);
       stage.appendChild(el);

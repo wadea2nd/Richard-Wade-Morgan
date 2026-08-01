@@ -142,16 +142,15 @@ window.RWM_PROJECTS = {
   }
 };
 
-/* Homepage carousel — featured projects (they link through) plus work that
-   doesn't have its own page (slides with "href: null" are display-only).
-   Add, remove, or reorder freely. */
+/* Homepage carousel — real work, in the numbered order provided.
+   Slides with an href click through to their project page; "href: null"
+   slides are display-only. Add, remove, or reorder freely. */
 window.RWM_CAROUSEL = [
-  { src: "assets/img/google-search-1.svg", alt: "Google Search — featured work", name: "Google Search", year: "2024", href: "project.html?p=google-search" },
-  { src: "assets/img/delta-centennial-1.svg", alt: "Delta Air Lines Centennial — featured work", name: "Delta Air Lines Centennial", year: "2024", href: "project.html?p=delta-centennial" },
-  { src: "assets/img/extra-1.svg", alt: "Miscellaneous poster work", name: "Misc — Posters", year: "Various", href: null },
-  { src: "assets/img/delta-pride-1.svg", alt: "Delta Pride 2024 — featured work", name: "Delta Pride 2024", year: "2024", href: "project.html?p=delta-pride" },
-  { src: "assets/img/stord-1.svg", alt: "Stord — featured work", name: "Stord", year: "2023", href: "project.html?p=stord" },
-  { src: "assets/img/extra-2.svg", alt: "Studio experiments", name: "Studio — Experiments", year: "Various", href: null },
-  { src: "assets/img/outsports-1.svg", alt: "Outsports — featured work", name: "Outsports", year: "2021", href: "project.html?p=outsports" },
-  { src: "assets/img/design-archive-1.svg", alt: "Design Archive — featured work", name: "Design Archive", year: "Ongoing", href: "project.html?p=design-archive" }
+  { src: "assets/img/slider-1.png", alt: "Delta Air Lines Centennial logo", name: "Delta Air Lines Centennial", href: "project.html?p=delta-centennial" },
+  { src: "assets/img/slider-2.jpg", alt: "Delta Air Lines Centennial campaign banner", name: "Delta Air Lines Centennial", href: "project.html?p=delta-centennial" },
+  { src: "assets/img/slider-3.jpg", alt: "Delta Pride 2024 campaign artwork", name: "Delta Pride 2024", href: "project.html?p=delta-pride" },
+  { src: "assets/img/slider-4.jpg", alt: "Stord website design", name: "Stord", href: "project.html?p=stord" },
+  { src: "assets/img/slider-5.jpg", alt: "Outsports site design", name: "Outsports", href: "project.html?p=outsports" },
+  { src: "assets/img/slider-6.jpg", alt: "Hooters brand work", name: "Hooters", href: null },
+  { src: "assets/img/slider-7.jpg", alt: "Morrison work", name: "Morrison", href: null }
 ];
