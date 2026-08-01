@@ -645,12 +645,58 @@ main {
     position: sticky;
     top: calc(var(--nav-height) + var(--s5));
     align-self: start;           /* sticky needs the item, not the track, to size it */
+    /* Long copy stays readable: the pinned column scrolls within its
+       own frame instead of locking its overflow out of reach */
+    max-height: calc(100dvh - var(--nav-height) - 2 * var(--s5));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--ink-faint) transparent;
+    padding-right: var(--s3);
   }
 }
 
 @media (min-width: 1024px) {
   .project-info { grid-column: 1 / span 4; font-size: 0.95rem; }
   .gallery { grid-column: 6 / -1; }
+}
+
+/* Mobile: split view. The copy scrolls the page as before, while the
+   gallery rises as a fixed bottom sheet over it — the page fades out
+   under the sheet's edge, and each half scrolls on its own. */
+@media (max-width: 767px) {
+  /* Everything, footer included, can scroll up past the sheet */
+  body:has(.project-layout) {
+    padding-bottom: calc(46dvh + 84px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .project-layout .gallery {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 46dvh;
+    z-index: 90;                 /* under the bottom nav (120) and lightbox (300) */
+    background: var(--bg);
+    border-top: var(--rule);
+    border-radius: var(--radius) var(--radius) 0 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: var(--s3) var(--s5) calc(84px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* The background color washes over the text just above the sheet */
+  .project-layout .gallery::before {
+    content: "";
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 46dvh;
+    height: 2.8rem;
+    background: linear-gradient(to bottom, rgba(234, 228, 214, 0), var(--bg));
+    pointer-events: none;
+  }
 }
 
 .backlink {
