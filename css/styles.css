@@ -671,6 +671,22 @@ main {
 
 .project-summary { margin-top: 1.6rem; }
 
+/* Fine print under the copy: team credits and notes */
+.project-credits {
+  margin-top: var(--s6);
+  padding-top: var(--s3);
+  border-top: var(--rule);
+}
+
+.project-credits p {
+  font-size: 0.68rem;
+  line-height: 1.65;
+  color: var(--ink-faint);
+  margin: 0 0 0.9em;
+}
+
+.project-credits p:last-child { margin-bottom: 0; }
+
 /* Vertical image gallery — hairline-contained cards stacked top to
    bottom. Each expands into the lightbox; images are never cropped. */
 .gallery { position: relative; }

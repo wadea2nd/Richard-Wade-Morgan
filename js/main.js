@@ -475,6 +475,18 @@
     infoHost.appendChild(h1);
     infoHost.appendChild(summary);
 
+    /* Fine print: team credits and notes under the copy */
+    if (project.credits && project.credits.length) {
+      var credits = document.createElement("div");
+      credits.className = "project-credits";
+      project.credits.forEach(function (text) {
+        var p = document.createElement("p");
+        p.textContent = text;
+        credits.appendChild(p);
+      });
+      infoHost.appendChild(credits);
+    }
+
     /* Right column: gallery cards (each opens the lightbox) */
     var images = project.images || [];
     images.forEach(function (imgData, i) {
