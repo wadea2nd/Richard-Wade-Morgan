@@ -57,7 +57,7 @@
   --font-mono: "Space Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
   /* Type scale — deliberately restrained; elegance over volume */
-  --text-hero: clamp(1.15rem, 0.9rem + 1.4vw, 1.85rem);   /* homepage bio  */
+  --text-hero: clamp(1.15rem, 0.82rem + 1.55vw, 2.7rem);  /* homepage bio  */
   --text-feature: clamp(1.15rem, 0.92rem + 1.2vw, 1.65rem); /* about lead  */
   --text-index: clamp(1.1rem, 0.9rem + 1.2vw, 1.6rem);    /* work rows     */
   --text-h1: clamp(0.95rem, 0.75rem + 1vw, 1.35rem);
@@ -79,11 +79,12 @@
   --s8: 2.8rem;
   --s9: 3.8rem;
 
-  /* Grid system — see ARCHITECTURE above. The rem cap means the content
-     area itself widens as the root scales on larger screens. */
+  /* Grid system — see ARCHITECTURE above. No width ceiling: the content
+     area rides the viewport at every size; only reading text (.prose)
+     caps its measure, at 64ch. */
   --grid-cols: 4;
   --gutter: var(--s4);
-  --content-max: 73rem;
+  --content-max: 100%;
 
   /* Rules & radii — hairlines stay a true 1px at every size */
   --rule: 1px solid var(--line);
@@ -118,9 +119,9 @@ html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   /* The fluid root: ~17px at phone widths, ~18px at 1024, ~20px at 1920,
-     capped at 21.5px on very large monitors. Everything sized in rem
+     still growing to 24px on ultrawide monitors. Everything sized in rem
      scales with it, so the site is continuously responsive at any width. */
-  font-size: clamp(16.5px, 16.3px + 0.19vw, 21.5px);
+  font-size: clamp(16.5px, 16.3px + 0.19vw, 24px);
 }
 
 body {
@@ -257,11 +258,8 @@ img {
   width: 100%;
   max-width: var(--content-max);
   margin-inline: auto;
-  padding-inline: var(--s5);
-}
-
-@media (min-width: 768px) {
-  .wrap { padding-inline: var(--s7); }
+  /* Margins grow with the viewport — never a fixed dam on wide screens */
+  padding-inline: clamp(1.2rem, 3.5vw, 5rem);
 }
 
 section { position: relative; }
@@ -505,14 +503,15 @@ main {
   text-align: center;
 }
 
+/* The bio spreads across the grid and balances its own lines — an open,
+   even block at every width instead of a narrow clump */
 .hero h1 {
   grid-column: 1 / -1;
   font-size: var(--text-hero);
-  max-width: 30ch;
   margin-inline: auto;
   margin-bottom: 0;
-  line-height: 1.28;
-  text-wrap: pretty;             /* no one-word orphan lines */
+  line-height: 1.32;
+  text-wrap: balance;
 }
 
 @media (min-width: 1024px) {
