@@ -661,83 +661,77 @@ main {
   .gallery { grid-column: 6 / -1; }
 }
 
-/* Mobile: split view. The copy scrolls the page as before, while the
-   gallery rises as a fixed bottom sheet over it — the page fades out
-   under the sheet's edge, and each half scrolls on its own. */
+/* Mobile: the copy scrolls the page as usual (footer included, styled
+   exactly like every other page), while the gallery floats over it as
+   a seamless sheet — no outline, just a wash of the background color
+   fading the copy out under its edge. Scrolling the images lifts the
+   sheet up under the project title; a small arrow bumps it back down. */
 @media (max-width: 767px) {
-  /* The copy page lives behind everything; it only needs to clear the
-     sheet's top edge to be fully readable */
   body:has(.project-layout) {
-    padding-bottom: calc(46dvh + 2rem);
+    /* The sheet's resting height, shared by the sheet, its fade, and
+       the toggle arrow so all three travel together */
+    --sheet-h: 44dvh;
+    padding-bottom: calc(44dvh + 2rem);
   }
+
+  /* Lifted: the sheet's top edge lands just under the project title */
+  body.gallery-up { --sheet-h: calc(100dvh - var(--nav-height) - 6rem); }
 
   .project-layout .gallery {
     position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
-    height: 46dvh;
-    z-index: 90;                 /* over the copy; under footer (100), nav (120), lightbox (300) */
+    height: var(--sheet-h, 44dvh);
+    z-index: 90;                 /* over the copy; under nav (120), lightbox (300) */
     background: var(--bg);
-    border-top: var(--rule);
-    border-radius: var(--radius) var(--radius) 0 0;
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
-    /* Last image scrolls clear of the pinned footer strip and nav */
-    padding: var(--s3) var(--s5) calc(7rem + env(safe-area-inset-bottom, 0px));
+    /* Last image scrolls clear of the bottom nav pill */
+    padding: var(--s3) var(--s5) calc(6rem + env(safe-area-inset-bottom, 0px));
+    transition: height 0.45s var(--ease-out);
   }
 
-  /* The background color washes over the text just above the sheet */
+  /* The background color washes over the copy above the sheet's edge —
+     a gradient, not a line */
   .project-layout .gallery::before {
     content: "";
     position: fixed;
     left: 0;
     right: 0;
-    bottom: 46dvh;
-    height: 2.8rem;
+    bottom: var(--sheet-h, 44dvh);
+    height: 3.5rem;
     background: linear-gradient(to bottom, rgba(234, 228, 214, 0), var(--bg));
     pointer-events: none;
+    transition: bottom 0.45s var(--ease-out);
   }
 
-  /* The footer detaches onto the image layer: a slim strip pinned to
-     the bottom of the screen (the cacti stay on the other pages) */
-  body:has(.project-layout) .site-footer {
+  /* The arrow rides the sheet's edge: up to lift, down to settle */
+  body:has(.project-layout) .gallery-toggle {
+    display: grid;
+    place-items: center;
     position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 100;
-    margin-top: 0;
-    padding-block: var(--s2) calc(var(--s2) + env(safe-area-inset-bottom, 0px));
+    right: var(--s5);
+    bottom: calc(var(--sheet-h, 44dvh) - 1.35rem);
+    z-index: 95;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: var(--rule);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: bottom 0.45s var(--ease-out), transform 0.3s var(--ease-out);
   }
 
-  body:has(.project-layout) .site-footer .wrap {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--s3);
-    text-align: left;
-  }
-
-  body:has(.project-layout) .site-footer .caption { font-size: 0.55rem; }
-  body:has(.project-layout) .footer-cacti { display: none; }
-  body:has(.project-layout) .footer-links {
-    flex-wrap: nowrap;
-    gap: var(--s3);
-    justify-content: flex-end;
-  }
-  body:has(.project-layout) .footer-links a {
-    font-size: 0.55rem;
-    min-height: 26px;
-    white-space: nowrap;
-  }
-
-  /* The nav pill rides just above the pinned footer strip */
-  body:has(.project-layout) .site-nav {
-    bottom: calc(3.4rem + env(safe-area-inset-bottom, 0px));
-  }
+  body.gallery-up .gallery-toggle { transform: rotate(180deg); }
 }
+
+/* Everywhere else the toggle simply doesn't exist */
+.gallery-toggle { display: none; border: 0; background: none; padding: 0; }
 
 .backlink {
   display: flex;
