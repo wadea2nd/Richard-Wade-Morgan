@@ -646,10 +646,10 @@ main {
     top: calc(var(--nav-height) + var(--s5));
     align-self: start;           /* sticky needs the item, not the track, to size it */
     /* Long copy stays readable: the pinned column scrolls within its
-       own frame instead of locking its overflow out of reach */
+       own frame — and when it reaches its end, the scroll chains out
+       to the page so the footer is always reachable */
     max-height: calc(100dvh - var(--nav-height) - 2 * var(--s5));
     overflow-y: auto;
-    overscroll-behavior: contain;
     scrollbar-width: thin;
     scrollbar-color: var(--ink-faint) transparent;
     padding-right: var(--s3);
