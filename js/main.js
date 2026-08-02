@@ -542,6 +542,31 @@
   }
 
   /* --------------------------------------------------------------------------
+     9b. Copy pinning — the description column pins beside the images
+     only when it fits on screen. Taller copy flows with the page, so
+     scrolling always reaches the pager and footer.
+     -------------------------------------------------------------------------- */
+  function initInfoPinning() {
+    var info = document.getElementById("projectInfo");
+    if (!info || !info.childElementCount) return;
+    var header = document.querySelector(".site-header");
+
+    function sync() {
+      if (window.innerWidth < 768) {
+        info.classList.remove("is-flowing");
+        return;
+      }
+      var headerH = header ? header.offsetHeight : 64;
+      var available = window.innerHeight - headerH - 48;
+      info.classList.toggle("is-flowing", info.offsetHeight > available);
+    }
+
+    sync();
+    window.addEventListener("resize", sync);
+    window.addEventListener("load", sync);   /* re-check once fonts settle */
+  }
+
+  /* --------------------------------------------------------------------------
      10. Lightbox — keyboard accessible image expansion
      -------------------------------------------------------------------------- */
   var lightboxState = { images: [], index: 0, lastFocus: null };
@@ -687,6 +712,7 @@
   safeInit("featureSlider", initFeatureSlider);
   safeInit("workIndex", initWorkIndex);
   safeInit("projectPage", initProjectPage);
+  safeInit("infoPinning", initInfoPinning);
   safeInit("lightbox", initLightbox);
   safeInit("fadeIns", initFadeIns);
   safeInit("imageGuard", initImageGuard);
