@@ -487,6 +487,22 @@
       infoHost.appendChild(credits);
     }
 
+    /* Mobile: truncate after the first paragraph; "Read more" reveals the
+       rest and pushes the images down. CSS scopes this to small screens,
+       so desktop always shows the full copy. */
+    if ((project.summary || []).length > 1 || (project.credits && project.credits.length)) {
+      infoHost.classList.add("is-collapsed");
+      var more = document.createElement("button");
+      more.type = "button";
+      more.className = "read-more";
+      more.textContent = "Read more ↓";
+      more.addEventListener("click", function () {
+        infoHost.classList.remove("is-collapsed");
+        more.remove();
+      });
+      infoHost.appendChild(more);
+    }
+
     /* Right column: gallery cards (each opens the lightbox) */
     var images = project.images || [];
     images.forEach(function (imgData, i) {
@@ -523,54 +539,6 @@
       pager.appendChild(prev);
       pager.appendChild(next);
     }
-  }
-
-  /* --------------------------------------------------------------------------
-     9b. Mobile gallery sheet — scrolling the images lifts the sheet up
-     under the project title for a full view; the arrow toggles it back.
-     Desktop never sees any of this (the toggle is display: none there).
-     -------------------------------------------------------------------------- */
-  function initGallerySheet() {
-    var gallery = document.querySelector(".project-layout .gallery");
-    if (!gallery) return;
-
-    var mq = window.matchMedia("(max-width: 767px)");
-
-    var btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "gallery-toggle";
-    btn.textContent = "↑";
-    document.body.appendChild(btn);
-
-    function setLifted(up) {
-      document.body.classList.toggle("gallery-up", up);
-      btn.setAttribute("aria-label", up ? "Settle the image gallery back down" : "Lift the image gallery");
-      btn.setAttribute("aria-expanded", up ? "true" : "false");
-      if (up) {
-        /* Bring the title into the strip that stays visible above the sheet */
-        window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
-      }
-    }
-    setLifted(false);
-
-    /* After a manual settle, don't fight the user: auto-lift stays off
-       until the images are scrolled back to the top */
-    var autoLiftArmed = true;
-
-    btn.addEventListener("click", function () {
-      var up = !document.body.classList.contains("gallery-up");
-      if (!up) autoLiftArmed = false;
-      setLifted(up);
-    });
-
-    /* Digging into the images is the signal to give them the room */
-    gallery.addEventListener("scroll", function () {
-      if (!mq.matches) return;
-      if (gallery.scrollTop <= 30) { autoLiftArmed = true; return; }
-      if (autoLiftArmed && !document.body.classList.contains("gallery-up")) {
-        setLifted(true);
-      }
-    }, { passive: true });
   }
 
   /* --------------------------------------------------------------------------
@@ -719,7 +687,6 @@
   safeInit("featureSlider", initFeatureSlider);
   safeInit("workIndex", initWorkIndex);
   safeInit("projectPage", initProjectPage);
-  safeInit("gallerySheet", initGallerySheet);
   safeInit("lightbox", initLightbox);
   safeInit("fadeIns", initFadeIns);
   safeInit("imageGuard", initImageGuard);

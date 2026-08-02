@@ -661,77 +661,31 @@ main {
   .gallery { grid-column: 6 / -1; }
 }
 
-/* Mobile: the copy scrolls the page as usual (footer included, styled
-   exactly like every other page), while the gallery floats over it as
-   a seamless sheet — no outline, just a wash of the background color
-   fading the copy out under its edge. Scrolling the images lifts the
-   sheet up under the project title; a small arrow bumps it back down. */
+/* Mobile: copy on top, images below, everything in the page's own flow.
+   The copy truncates after its first paragraph; "Read more" pushes the
+   images down to reveal the rest. Desktop never truncates. */
+.read-more { display: none; }
+
 @media (max-width: 767px) {
-  body:has(.project-layout) {
-    /* The sheet's resting height, shared by the sheet, its fade, and
-       the toggle arrow so all three travel together */
-    --sheet-h: 44dvh;
-    padding-bottom: calc(44dvh + 2rem);
-  }
+  .project-info.is-collapsed .project-summary p:not(:first-child) { display: none; }
+  .project-info.is-collapsed .project-credits { display: none; }
 
-  /* Lifted: the sheet's top edge lands just under the project title */
-  body.gallery-up { --sheet-h: calc(100dvh - var(--nav-height) - 6rem); }
-
-  .project-layout .gallery {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: var(--sheet-h, 44dvh);
-    z-index: 90;                 /* over the copy; under nav (120), lightbox (300) */
-    background: var(--bg);
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-    /* Last image scrolls clear of the bottom nav pill */
-    padding: var(--s3) var(--s5) calc(6rem + env(safe-area-inset-bottom, 0px));
-    transition: height 0.45s var(--ease-out);
-  }
-
-  /* The background color washes over the copy above the sheet's edge —
-     a gradient, not a line */
-  .project-layout .gallery::before {
-    content: "";
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: var(--sheet-h, 44dvh);
-    height: 3.5rem;
-    background: linear-gradient(to bottom, rgba(234, 228, 214, 0), var(--bg));
-    pointer-events: none;
-    transition: bottom 0.45s var(--ease-out);
-  }
-
-  /* The arrow rides the sheet's edge: up to lift, down to settle */
-  body:has(.project-layout) .gallery-toggle {
-    display: grid;
-    place-items: center;
-    position: fixed;
-    right: var(--s5);
-    bottom: calc(var(--sheet-h, 44dvh) - 1.35rem);
-    z-index: 95;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: var(--rule);
-    background: var(--paper);
-    color: var(--ink);
-    font-size: 1rem;
-    line-height: 1;
+  .read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s2);
+    min-height: var(--tap-min);
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
     cursor: pointer;
-    transition: bottom 0.45s var(--ease-out), transform 0.3s var(--ease-out);
   }
-
-  body.gallery-up .gallery-toggle { transform: rotate(180deg); }
 }
-
-/* Everywhere else the toggle simply doesn't exist */
-.gallery-toggle { display: none; border: 0; background: none; padding: 0; }
 
 .backlink {
   display: flex;
