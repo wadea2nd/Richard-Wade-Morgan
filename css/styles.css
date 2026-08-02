@@ -665,9 +665,10 @@ main {
    gallery rises as a fixed bottom sheet over it — the page fades out
    under the sheet's edge, and each half scrolls on its own. */
 @media (max-width: 767px) {
-  /* Everything, footer included, can scroll up past the sheet */
+  /* The copy page lives behind everything; it only needs to clear the
+     sheet's top edge to be fully readable */
   body:has(.project-layout) {
-    padding-bottom: calc(46dvh + 84px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(46dvh + 2rem);
   }
 
   .project-layout .gallery {
@@ -676,14 +677,15 @@ main {
     right: 0;
     bottom: 0;
     height: 46dvh;
-    z-index: 90;                 /* under the bottom nav (120) and lightbox (300) */
+    z-index: 90;                 /* over the copy; under footer (100), nav (120), lightbox (300) */
     background: var(--bg);
     border-top: var(--rule);
     border-radius: var(--radius) var(--radius) 0 0;
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
-    padding: var(--s3) var(--s5) calc(84px + env(safe-area-inset-bottom, 0px));
+    /* Last image scrolls clear of the pinned footer strip and nav */
+    padding: var(--s3) var(--s5) calc(7rem + env(safe-area-inset-bottom, 0px));
   }
 
   /* The background color washes over the text just above the sheet */
@@ -696,6 +698,44 @@ main {
     height: 2.8rem;
     background: linear-gradient(to bottom, rgba(234, 228, 214, 0), var(--bg));
     pointer-events: none;
+  }
+
+  /* The footer detaches onto the image layer: a slim strip pinned to
+     the bottom of the screen (the cacti stay on the other pages) */
+  body:has(.project-layout) .site-footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    margin-top: 0;
+    padding-block: var(--s2) calc(var(--s2) + env(safe-area-inset-bottom, 0px));
+  }
+
+  body:has(.project-layout) .site-footer .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s3);
+    text-align: left;
+  }
+
+  body:has(.project-layout) .site-footer .caption { font-size: 0.55rem; }
+  body:has(.project-layout) .footer-cacti { display: none; }
+  body:has(.project-layout) .footer-links {
+    flex-wrap: nowrap;
+    gap: var(--s3);
+    justify-content: flex-end;
+  }
+  body:has(.project-layout) .footer-links a {
+    font-size: 0.55rem;
+    min-height: 26px;
+    white-space: nowrap;
+  }
+
+  /* The nav pill rides just above the pinned footer strip */
+  body:has(.project-layout) .site-nav {
+    bottom: calc(3.4rem + env(safe-area-inset-bottom, 0px));
   }
 }
 
