@@ -1,53 +1,97 @@
-# Richard Wade Morgan — Portfolio
+# Richard Wade Morgan: portfolio
 
-A static site: plain HTML, CSS, and JavaScript. No build tools, no frameworks,
-no dependencies. Upload the whole folder to any host (Netlify, GitHub Pages,
-Vercel, or classic web hosting) and it works.
+A static site (plain HTML, CSS, and JavaScript modules). No framework, no
+build step, no dependencies: upload the folder to Netlify and it works.
 
-## Editing content (no coding needed)
+This is the **Cargo-style redesign**. The previous design is preserved on the
+`v1-custom-build` branch (and the `v1-custom-build-final` tag).
 
-- **Project text & images** — edit `js/projects.js`. Every project's title,
-  client, role, year, paragraphs, and image list lives there, with comments
-  explaining each field. The Work index, homepage sub-nav, homepage carousel,
-  and project pages all read from this one file.
-- **About page** — edit `about.html`; the copy is plain text between tags.
-- **Images** — replace the placeholder `.svg` files in `assets/img/` with real
-  JPG/PNG files and update the `src` paths in `js/projects.js`. Keep the alt
-  text meaningful — screen readers depend on it.
-- **Links** — the footer Email (mailto), LinkedIn, and Art Studio
-  (Instagram) links are live and real on every page.
+## Pages
+
+| File | What it is |
+| --- | --- |
+| `index.html` | Home: intro statement and the slideshow |
+| `about.html` | About: bio, work, speaking, press, photo |
+| `project.html` | One template for all six projects, filled from `js/data.js` |
+| `design-system.html` | Living style guide (tokens, type, components). Not linked in the nav. |
+
+Project URLs work two ways: `project.html?p=stord` and, on Netlify,
+`/stord` (see the redirects in `netlify.toml`).
+
+## Editing content
+
+- **Projects and slideshow:** `js/data.js`. Every project's copy, credits,
+  images, and alt text live there, with comments explaining each field. The
+  sidebar list is plain HTML in each page, so if you add or rename a project,
+  update the `<ol>` in `index.html`, `about.html`, `project.html`, and
+  `design-system.html` as well.
+- **Home and About copy:** plain text in `index.html` and `about.html`.
+- **Images:** put files in `assets/img/` and point `js/data.js` at them.
+  Always write meaningful `alt` text. Export web images at roughly 1920px
+  wide (JPEG, quality ~80): big enough to look great, small enough to load
+  fast.
 
 ## Design system
 
-- **Grid**: 12 columns on desktop (≥1024px), 8 on tablet (768–1023px), 4 on
-  mobile (<768px). Every multi-column layout places its children on this grid
-  with explicit column spans — see the architecture comment at the top of
-  `css/styles.css`.
-- **Fluid sizing**: the root font-size scales smoothly with viewport width
-  (~17px on phones to ~21px on large monitors), and all spacing, the content
-  container, and component sizes are in rem — so the site scales continuously
-  at any screen size, including very large and unusual ones. Hairline rules
-  stay a crisp 1px everywhere.
-- **Tokens**: all colors, type sizes, spacing steps, radii, and motion
-  timings are defined once in `:root` and referenced everywhere. To retune
-  the site, change the token, not the components.
-- Palette: putty cream background `#eae4d6`, near-black warm ink `#26221a`,
-  thin dark rules `#3a3428` — no pure white, no pure black, no drop shadows.
-  One muted accent color (dusty red / gold / sage / slate / plum) is picked
-  at random per visit.
-- Type: **Space Grotesk** (light–medium) for headlines · **Inter** (thin) for
-  body · **Space Mono** for labels and buttons — loaded from Google Fonts.
-- Nav: sticky top header everywhere; on phones the nav docks to the bottom
-  center for thumbs.
-- Small print: SVG favicon (`assets/favicon.svg`), `theme-color` meta, and a
-  `humans.txt` at the root.
+Everything visual comes from **`css/tokens.css`**: color (light and dark),
+type, space, layout, radii, motion timing, and layering. No other stylesheet
+contains a raw color, font size, spacing value, or duration.
 
-## Built-in safeguards
+| File | Responsibility |
+| --- | --- |
+| `css/tokens.css` | The tokens. Change a value here to retune the whole site. |
+| `css/base.css` | Reset and the core text styles: **h1**, **h2**, and **body** |
+| `css/layout.css` | The two-column shell and the mobile single column |
+| `css/components.css` | Masthead, nav, slider, figures, dialogs, buttons, floating emoji |
+| `css/motion.css` | Every animation, plus the reduced-motion rules |
+| `css/design-system.css` | Styles for the style-guide page only |
 
-- Content is inserted with `textContent` (never HTML), so nothing typed into
-  `projects.js` can inject code.
-- Every feature initializes independently — one failure can't blank the site.
-- Fade-ins reveal instantly in environments that can't run animations
-  (background tabs, embedded previews), and everything is visible even if
-  JavaScript is disabled.
-- Reduced-motion preferences are respected throughout.
+**Type:** Faculty Glyphic (titles, intro statements, navigation), Hanken
+Grotesk variable (body and h2 labels), Space Mono (captions and credits). All
+sizes are fluid `clamp()` values between a 375px phone and a 1920px desktop.
+
+**Themes:** light and dark. The choice is saved in the browser, the first
+visit follows the operating system, and the switch animates as a circular
+reveal where the browser supports View Transitions. `js/theme-init.js` runs
+before the first paint so dark-mode visitors never see a flash of light.
+
+## JavaScript
+
+`js/main.js` is the only entry point. It wires up the modules each page needs
+and isolates failures, so one broken feature never takes the page down.
+
+`theme.js` · `nav.js` (mobile menu) · `motion.js` (bump-in text, reveals) ·
+`slider.js` · `floaties.js` (the draggable emoji) · `contact.js` ·
+`lightbox.js` · `project.js` · `guard.js` (image-drag deterrent) ·
+`data.js` (content) · `design-system.js`
+
+Content from `data.js` is inserted with `textContent`, never as HTML.
+
+## Accessibility
+
+Semantic landmarks, one `h1` per page, a skip link, visible focus rings,
+keyboard access everywhere, 4.5:1 contrast in both themes, a pausable
+slideshow, native `<dialog>` for the contact form and lightbox, an inert page
+behind the open mobile menu, and full support for `prefers-reduced-motion`.
+The floating emoji are decoration and hidden from assistive technology.
+
+## Contact form
+
+"Contact" opens a message form. It posts to **Netlify Forms** (the hidden
+form in `index.html` is how Netlify finds it). In the Netlify dashboard,
+under *Forms*, you can see messages and turn on email notifications. If a
+send fails, the dialog offers a `mailto:` link instead, so nothing is lost.
+
+## Security
+
+`netlify.toml` sends a strict Content-Security-Policy (scripts and styles
+from this site only, fonts from Google Fonts), plus the usual hardening
+headers. The site therefore uses no inline scripts or inline `style`
+attributes: keep it that way when editing.
+
+## Still placeholder
+
+- Google Search project copy (cleaned up from your outline) and images
+- Slideshow and project images are the current set; swap in the new Drive images
+- `assets/img/about-photo.jpg` was recovered from a screen recording at about
+  1000px wide; replace it with the original scan

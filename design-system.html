@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex">
+  <title>Design system | Richard Wade Morgan</title>
+  <meta name="description" content="The tokens, type, and components behind richardwademorgan.com.">
+  <meta name="theme-color" content="#e7e6e0">
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Faculty+Glyphic&family=Hanken+Grotesk:wght@100..900&family=Space+Mono&display=swap">
+
+  <script src="js/theme-init.js"></script>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/motion.css">
+  <link rel="stylesheet" href="css/design-system.css">
+  <script type="module" src="js/main.js"></script>
+</head>
+<body data-page="design-system">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="shell">
+    <div class="sidebar">
+      <header class="masthead">
+        <a class="brand" href="index.html" aria-label="Richard Wade Morgan, home">Richard Wade Morgan</a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu">
+          <span class="menu-toggle__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="menu-toggle__x" aria-hidden="true"></span>
+        </button>
+      </header>
+
+      <div class="drawer" id="drawer">
+        <nav class="nav" aria-label="Primary">
+          <ol class="nav__list nav__projects">
+            <li data-nav-item><a class="nav__link" href="project.html?p=google-search" data-slug="google-search">Google Search</a></li>
+            <li data-nav-item><a class="nav__link" href="project.html?p=delta-centennial" data-slug="delta-centennial">Delta Air Lines Centennial</a></li>
+            <li data-nav-item><a class="nav__link" href="project.html?p=delta-pride" data-slug="delta-pride">Delta Pride 2024</a></li>
+            <li data-nav-item><a class="nav__link" href="project.html?p=stord" data-slug="stord">Stord</a></li>
+            <li data-nav-item><a class="nav__link" href="project.html?p=outsports" data-slug="outsports">Outsports</a></li>
+            <li data-nav-item><a class="nav__link" href="project.html?p=design-archive" data-slug="design-archive">Design Archive</a></li>
+          </ol>
+          <ul class="nav__list nav__pages">
+            <li data-nav-item><a class="nav__link" href="about.html">About</a></li>
+            <li data-nav-item><a class="nav__link" href="mailto:wadewadedonttellme@gmail.com" data-contact>Contact</a></li>
+            <li data-nav-item><a class="nav__link" href="https://www.instagram.com/prismaticmenagerie/" target="_blank" rel="noopener noreferrer">Art Studio <span class="nav__arrow" aria-hidden="true">→</span><span class="visually-hidden">(opens in a new tab)</span></a></li>
+          </ul>
+        </nav>
+
+        <footer class="colophon">
+          <p>©<span data-year>2026</span> Richard Wade Morgan</p>
+          <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false">
+            <span class="theme-toggle__icon" aria-hidden="true"></span>
+            <span>Dark mode</span>
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <main id="main" class="content" tabindex="-1">
+      <h1 data-bump>Design system</h1>
+
+      <div class="ds flow">
+        <p class="prose" data-reveal>Everything on this site is built from the tokens in <code>css/tokens.css</code>. This page reads them live from the stylesheet, so it always shows what the site actually uses. Switch the theme in the sidebar to see both palettes.</p>
+
+        <section class="ds__section" aria-labelledby="ds-color" data-reveal>
+          <h2 id="ds-color">Color</h2>
+          <p class="mono muted">Semantic tokens. Components use these, never raw hex values.</p>
+          <ul class="ds__swatches">
+            <li><span class="swatch swatch--bg"></span><span class="mono">--color-bg</span><span class="mono muted" data-token="--color-bg"></span></li>
+            <li><span class="swatch swatch--surface"></span><span class="mono">--color-surface</span><span class="mono muted" data-token="--color-surface"></span></li>
+            <li><span class="swatch swatch--text"></span><span class="mono">--color-text</span><span class="mono muted" data-token="--color-text"></span></li>
+            <li><span class="swatch swatch--muted"></span><span class="mono">--color-text-muted</span><span class="mono muted" data-token="--color-text-muted"></span></li>
+            <li><span class="swatch swatch--accent"></span><span class="mono">--color-accent</span><span class="mono muted" data-token="--color-accent"></span></li>
+            <li><span class="swatch swatch--media"></span><span class="mono">--color-media-bg</span><span class="mono muted" data-token="--color-media-bg"></span></li>
+          </ul>
+        </section>
+
+        <section class="ds__section" aria-labelledby="ds-type" data-reveal>
+          <h2 id="ds-type">Type</h2>
+          <p class="mono muted">Faculty Glyphic for titles and navigation. Hanken Grotesk (variable) for body copy. Space Mono for captions. Sizes are fluid between a 375px phone and a 1920px desktop.</p>
+
+          <div class="ds__specimen">
+            <p class="mono muted">h1 · Faculty Glyphic · <span data-size="h1"></span></p>
+            <p class="ds__h1">Serious work, quirky delivery.</p>
+          </div>
+          <div class="ds__specimen">
+            <p class="mono muted">h2 · Hanken Grotesk 600 · <span data-size="h2"></span></p>
+            <p class="ds__h2">I believe in:</p>
+          </div>
+          <div class="ds__specimen">
+            <p class="mono muted">body · Hanken Grotesk 400 · <span data-size="body"></span></p>
+            <p class="prose">Currently, I’m directing traffic at the intersection of communication, brand, and product design to deploy identities, solutions, and tools.</p>
+          </div>
+          <div class="ds__specimen">
+            <p class="mono muted">navigation · Faculty Glyphic · <span data-size="nav"></span></p>
+            <p class="ds__nav">1. Delta Air Lines Centennial</p>
+          </div>
+          <div class="ds__specimen">
+            <p class="mono muted">mono · Space Mono · <span data-size="mono"></span></p>
+            <p class="mono">Team Credits: Maya Dukes (Director), Alex Blackwell (Sr AD)</p>
+          </div>
+        </section>
+
+        <section class="ds__section" aria-labelledby="ds-space" data-reveal>
+          <h2 id="ds-space">Space</h2>
+          <p class="mono muted">One scale for every gap. Larger steps are fluid.</p>
+          <ul class="ds__space">
+            <li><span class="mono">--space-2xs</span><span class="bar bar--2xs"></span></li>
+            <li><span class="mono">--space-xs</span><span class="bar bar--xs"></span></li>
+            <li><span class="mono">--space-s</span><span class="bar bar--s"></span></li>
+            <li><span class="mono">--space-m</span><span class="bar bar--m"></span></li>
+            <li><span class="mono">--space-l</span><span class="bar bar--l"></span></li>
+            <li><span class="mono">--space-xl</span><span class="bar bar--xl"></span></li>
+            <li><span class="mono">--space-2xl</span><span class="bar bar--2xl"></span></li>
+            <li><span class="mono">--space-3xl</span><span class="bar bar--3xl"></span></li>
+          </ul>
+        </section>
+
+        <section class="ds__section" aria-labelledby="ds-motion" data-reveal>
+          <h2 id="ds-motion">Motion</h2>
+          <p class="mono muted">Text bumps in word by word with a small overshoot (<code>--ease-spring</code>). Everything stops for visitors who prefer reduced motion.</p>
+          <p class="ds__bump" id="bump-demo" data-bump>Words rise into place, one after another, with a little bounce at the end.</p>
+          <p><button type="button" class="btn" data-replay-bump="#bump-demo">Replay</button></p>
+          <ul class="ds__tokens mono">
+            <li><span>--dur-fast</span><span class="muted" data-token="--dur-fast"></span></li>
+            <li><span>--dur-base</span><span class="muted" data-token="--dur-base"></span></li>
+            <li><span>--dur-slow</span><span class="muted" data-token="--dur-slow"></span></li>
+            <li><span>--ease-out</span><span class="muted" data-token="--ease-out"></span></li>
+            <li><span>--ease-spring</span><span class="muted" data-token="--ease-spring"></span></li>
+          </ul>
+        </section>
+
+        <section class="ds__section" aria-labelledby="ds-components" data-reveal>
+          <h2 id="ds-components">Components</h2>
+          <div class="ds__row">
+            <button type="button" class="btn">Cancel</button>
+            <button type="button" class="btn btn--solid">Send</button>
+            <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false">
+              <span class="theme-toggle__icon" aria-hidden="true"></span>
+              <span>Dark mode</span>
+            </button>
+          </div>
+          <div class="ds__row">
+            <a class="nav__link ds__nav" href="#ds-components">Default link</a>
+            <a class="nav__link ds__nav" href="#ds-components" aria-current="page">Current page</a>
+            <a class="inline-link" href="#ds-components"><span aria-hidden="true">→</span> Inline link</a>
+          </div>
+          <label class="field ds__field">
+            <span class="visually-hidden">Example field</span>
+            <input type="text" placeholder="Form field with a visible focus ring…">
+          </label>
+        </section>
+
+        <section class="ds__section" aria-labelledby="ds-a11y" data-reveal>
+          <h2 id="ds-a11y">Accessibility</h2>
+          <ul class="plain-list prose">
+            <li>Semantic landmarks, one h1 per page, and a skip link.</li>
+            <li>Text and accent colors meet 4.5:1 contrast in both themes.</li>
+            <li>Visible focus rings; keyboard access to the menu, slider, lightbox, and form.</li>
+            <li>The mobile menu makes the page inert while open; dialogs trap focus.</li>
+            <li>The slideshow can be paused; reduced-motion preferences are respected everywhere.</li>
+            <li>The floating emoji are decoration only and hidden from screen readers.</li>
+          </ul>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,140 @@
+/* ==========================================================================
+   BASE
+   --------------------------------------------------------------------------
+   Reset, document defaults, and the three core text styles:
+     h1    Faculty Glyphic, fluid 26 → 42px   (intro statements, titles)
+     h2    Hanken Grotesk 600, body size       (section labels)
+     body  Hanken Grotesk 400, fluid 16 → 18px (everything else)
+   ========================================================================== */
+
+/* Reset ------------------------------------------------------------------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-block: var(--space-xl);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body,
+h1, h2, p, ul, ol, dl, dd, figure, blockquote { margin: 0; }
+
+ul, ol { padding: 0; }
+
+img, svg, video, canvas { display: block; max-width: 100%; }
+img, video { height: auto; }
+
+button, input, textarea, select { font: inherit; color: inherit; }
+
+/* Document ---------------------------------------------------------------- */
+body {
+  min-height: 100dvh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--lh-body);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Smooth light ⇄ dark: colors ease for a moment around a theme change
+   (theme.js adds the class, then removes it). */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition:
+    background-color var(--dur-theme) var(--ease-standard),
+    color var(--dur-theme) var(--ease-standard),
+    border-color var(--dur-theme) var(--ease-standard),
+    fill var(--dur-theme) var(--ease-standard) !important;
+}
+
+/* Text styles ------------------------------------------------------------- */
+h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  font-weight: var(--weight-regular);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--track-display);
+  font-kerning: normal;
+  text-wrap: pretty;
+}
+
+h2 {
+  font-family: var(--font-body);
+  font-size: var(--fs-h2);
+  font-weight: var(--weight-label);
+  line-height: var(--lh-body);
+}
+
+p { text-wrap: pretty; }
+
+strong, b { font-weight: var(--weight-label); }
+
+a {
+  color: inherit;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.18em;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  line-height: 1.5;
+}
+
+.muted { color: var(--color-text-muted); }
+
+/* Vertical rhythm: any container with .flow spaces its children evenly. */
+.flow > * + * { margin-block-start: var(--flow); }
+
+/* Selection, focus -------------------------------------------------------- */
+::selection {
+  background: var(--color-accent);
+  color: var(--paper-0);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Utilities --------------------------------------------------------------- */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: var(--space-xs);
+  left: var(--space-xs);
+  z-index: var(--z-skip);
+  padding: var(--space-xs) var(--space-m);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: var(--fs-mono);
+  font-family: var(--font-mono);
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus { transform: none; }

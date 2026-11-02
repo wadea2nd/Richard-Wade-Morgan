@@ -1,0 +1,188 @@
+/* ==========================================================================
+   TOKENS
+   --------------------------------------------------------------------------
+   The single source of truth for the design system. Nothing else in the
+   stylesheets contains a raw color, font size, spacing value, duration, or
+   z-index: they all reference a token from this file.
+
+   Structure
+     1. Primitive palette      raw values, never used directly in components
+     2. Semantic color         what a color MEANS (surface, text, accent…)
+     3. Dark theme             the same semantic tokens, re-pointed
+     4. Typography             families, fluid size steps, leading, tracking
+     5. Space                  a fluid spacing scale
+     6. Layout                 grid proportions and page gutters
+     7. Shape, motion, layers  radii, easings, durations, z-index
+
+   To retune the site, change a token here. To add a theme, add a block like
+   the dark one in section 3.
+   ========================================================================== */
+
+
+/* 1. PRIMITIVE PALETTE ----------------------------------------------------- */
+:root {
+  --paper-0:   #ffffff;
+  --paper-100: #e7e6e0;   /* page background, sampled from the Cargo build */
+  --paper-200: #dddcd5;
+  --paper-300: #cfcdc6;
+
+  --ink-900: #1a1916;     /* primary text */
+  --ink-600: #55544f;     /* secondary text, 6:1 on paper-100 */
+
+  --night-950: #0d0d0c;
+  --night-900: #121211;   /* dark page background */
+  --night-800: #1c1c1a;   /* dark raised surface */
+  --night-700: #2b2b28;
+
+  --bone-100: #ecebe5;    /* dark primary text */
+  --bone-400: #a9a8a1;    /* dark secondary text */
+
+  /* Accents. Each is tuned to clear 4.5:1 on the background it sits on. */
+  --red-600: #cc1414;     /* on paper-100: 4.6:1 */
+  --red-400: #ff6459;     /* on night-900: 6.4:1 */
+}
+
+
+/* 2. SEMANTIC COLOR (light is the default) --------------------------------- */
+:root {
+  color-scheme: light;
+
+  --color-bg:          var(--paper-100);
+  --color-surface:     var(--paper-0);        /* menus, dialogs */
+  --color-text:        var(--ink-900);
+  --color-text-muted:  var(--ink-600);
+  --color-accent:      var(--red-600);        /* hover, current page, focus */
+  --color-line:        rgb(26 25 22 / 0.2);   /* hairlines */
+  --color-fill:        rgb(26 25 22 / 0.08);  /* quiet button fill */
+  --color-media-bg:    var(--paper-200);      /* behind images while they load */
+  --color-scrim:       rgb(18 18 16 / 0.55);  /* dialog backdrop */
+  --color-lightbox:    rgb(12 12 11 / 0.94);
+  --color-on-lightbox: #f3f2ee;
+  --color-focus:       var(--color-accent);
+
+  --shadow-dialog: 0 1.25rem 3.5rem rgb(0 0 0 / 0.28);
+}
+
+
+/* 3. DARK THEME ------------------------------------------------------------
+   Applied by [data-theme="dark"], which theme-init.js sets before first
+   paint (from the saved choice, else the OS preference). The media-query
+   copy below only serves visitors with JavaScript turned off. Keep the two
+   blocks identical. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-bg:          var(--night-900);
+  --color-surface:     var(--night-800);
+  --color-text:        var(--bone-100);
+  --color-text-muted:  var(--bone-400);
+  --color-accent:      var(--red-400);
+  --color-line:        rgb(236 235 229 / 0.22);
+  --color-fill:        rgb(236 235 229 / 0.1);
+  --color-media-bg:    var(--night-700);
+  --color-scrim:       rgb(0 0 0 / 0.66);
+  --color-lightbox:    rgb(6 6 5 / 0.96);
+  --color-on-lightbox: #f3f2ee;
+
+  --shadow-dialog: 0 1.25rem 3.5rem rgb(0 0 0 / 0.6);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+
+    --color-bg:          var(--night-900);
+    --color-surface:     var(--night-800);
+    --color-text:        var(--bone-100);
+    --color-text-muted:  var(--bone-400);
+    --color-accent:      var(--red-400);
+    --color-line:        rgb(236 235 229 / 0.22);
+    --color-fill:        rgb(236 235 229 / 0.1);
+    --color-media-bg:    var(--night-700);
+    --color-scrim:       rgb(0 0 0 / 0.66);
+    --color-lightbox:    rgb(6 6 5 / 0.96);
+
+    --shadow-dialog: 0 1.25rem 3.5rem rgb(0 0 0 / 0.6);
+  }
+}
+
+
+/* 4. TYPOGRAPHY ------------------------------------------------------------
+   Faculty Glyphic: titles, the intro statements, and navigation.
+   Hanken Grotesk (variable, 100–900): body copy and h2 labels.
+   Space Mono: captions, credits, small print.
+
+   Every size is fluid. The clamp() ranges interpolate between a 375px phone
+   and a 1920px desktop, so type scales smoothly with the window instead of
+   jumping at breakpoints. */
+:root {
+  --font-display: "Faculty Glyphic", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-body:    "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:    "Space Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --fs-mono: clamp(0.75rem, 0.73rem + 0.1vw, 0.8125rem);  /* 12 → 13px   */
+  --fs-body: clamp(1rem, 0.97rem + 0.13vw, 1.125rem);     /* 16 → 18px   */
+  --fs-h2:   var(--fs-body);                              /* label style */
+  --fs-nav:  clamp(1.25rem, 1.2rem + 0.1vw, 1.5rem);      /* 20 → 24px   */
+  --fs-h1:   clamp(1.625rem, 1.52rem + 0.44vw, 2.6rem);   /* 26 → 42px   */
+
+  --lh-tight: 1.2;
+  --lh-snug:  1.25;
+  --lh-body:  1.55;
+
+  --track-display: -0.01em;
+
+  --weight-regular: 400;
+  --weight-label:   600;
+}
+
+
+/* 5. SPACE ----------------------------------------------------------------- */
+:root {
+  --space-2xs: 0.25rem;
+  --space-xs:  0.5rem;
+  --space-s:   0.75rem;
+  --space-m:   1rem;
+  --space-l:   1.5rem;
+  --space-xl:  clamp(2rem, 1.6rem + 1vw, 3rem);
+  --space-2xl: clamp(3rem, 2.2rem + 2vw, 5rem);
+  --space-3xl: clamp(4rem, 2.8rem + 4vw, 8rem);
+
+  --flow: 1.5em;          /* default vertical rhythm between text blocks */
+}
+
+
+/* 6. LAYOUT ---------------------------------------------------------------- */
+:root {
+  --sidebar-width: 42.3%;                                   /* left column  */
+  --pad-x: clamp(1.5rem, 1.31rem + 0.8vw, 3.5rem);          /* page gutter  */
+  --pad-y: clamp(1.5rem, 1.05rem + 0.9vw, 2.5rem);
+  --measure: 72ch;                                          /* reading width */
+  --bp-split: 52rem;       /* documented here; CSS can't read it in @media */
+}
+
+
+/* 7. SHAPE, MOTION, LAYERS ------------------------------------------------- */
+:root {
+  --radius-s: 0.375rem;
+  --radius-m: 0.75rem;
+  --radius-pill: 999px;
+
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:      cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);   /* slight overshoot */
+
+  --dur-fast:  150ms;
+  --dur-base:  280ms;
+  --dur-slow:  600ms;
+  --dur-slide: 900ms;
+  --dur-theme: 450ms;
+
+  --stagger: 28ms;        /* delay between successive words / list items */
+
+  --z-content:  1;
+  --z-floaty:   80;   /* above the sidebar and the mobile menu */
+  --z-masthead: 60;
+  --z-menu:     50;
+  --z-skip:     100;
+}

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Placeholder image">
+  <rect width="1600" height="900" fill="#d8d7d1"/>
+  <rect x="40" y="40" width="1520" height="820" fill="none" stroke="#9a998f" stroke-width="2"/>
+  <path d="M40 40L1560 860" stroke="#b3b2a8" stroke-width="2"/>
+  <text x="72" y="826" font-family="ui-monospace, Menlo, monospace" font-size="26" fill="#6d6c63">Placeholder image</text>
+</svg>

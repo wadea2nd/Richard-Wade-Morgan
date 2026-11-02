@@ -1,0 +1,64 @@
+/* ==========================================================================
+   DESIGN SYSTEM PAGE
+   Styles for design-system.html only. Every value references a token.
+   ========================================================================== */
+
+.ds { --flow: var(--space-2xl); }
+
+.ds code {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+}
+
+.ds__section > * + * { margin-block-start: var(--space-m); }
+
+.ds__swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: var(--space-m);
+  list-style: none;
+}
+
+.ds__swatches li {
+  display: grid;
+  gap: var(--space-2xs);
+}
+
+.swatch {
+  display: block;
+  block-size: 3.5rem;
+  border: 1px solid var(--color-line);
+}
+
+.swatch--bg      { background: var(--color-bg); }
+.swatch--surface { background: var(--color-surface); }
+.swatch--text    { background: var(--color-text); }
+.swatch--muted   { background: var(--color-text-muted); }
+.swatch--accent  { background: var(--color-accent); }
+.swatch--media   { background: var(--color-media-bg); }
+
+.ds__specimen { padding-block: var(--space-s); border-top: 1px solid var(--color-line); }
+.ds__h1  { font-family: var(--font-display); font-size: var(--fs-h1); line-height: var(--lh-tight); }
+.ds__h2  { font-weight: var(--weight-label); font-size: var(--fs-h2); }
+.ds__nav { font-family: var(--font-display); font-size: var(--fs-nav); line-height: var(--lh-snug); }
+
+.ds__space { list-style: none; display: grid; gap: var(--space-xs); }
+.ds__space li { display: grid; grid-template-columns: 8rem 1fr; align-items: center; gap: var(--space-m); }
+.bar { display: block; block-size: 0.75rem; background: var(--color-text); }
+.bar--2xs { inline-size: var(--space-2xs); }
+.bar--xs  { inline-size: var(--space-xs); }
+.bar--s   { inline-size: var(--space-s); }
+.bar--m   { inline-size: var(--space-m); }
+.bar--l   { inline-size: var(--space-l); }
+.bar--xl  { inline-size: var(--space-xl); }
+.bar--2xl { inline-size: var(--space-2xl); }
+.bar--3xl { inline-size: var(--space-3xl); }
+
+.ds__bump { font-family: var(--font-display); font-size: var(--fs-h1); line-height: var(--lh-tight); }
+
+.ds__tokens { list-style: none; display: grid; gap: var(--space-2xs); }
+.ds__tokens li { display: grid; grid-template-columns: 10rem 1fr; gap: var(--space-m); }
+
+.ds__row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-l); }
+.ds__nav.nav__link { font-family: var(--font-display); font-size: var(--fs-nav); }
+.ds__field { max-inline-size: 28rem; border: 1px solid var(--color-line); }
