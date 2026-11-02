@@ -12,6 +12,7 @@ export function initDesignSystem() {
   };
 
   const sizes = {
+    intro: () => getComputedStyle(document.querySelector(".ds__intro")).fontSize,
     h1: () => getComputedStyle(document.querySelector(".ds__h1")).fontSize,
     h2: () => getComputedStyle(document.querySelector(".ds__h2")).fontSize,
     body: () => getComputedStyle(document.body).fontSize,

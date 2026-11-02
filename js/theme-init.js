@@ -1,7 +1,7 @@
 /* Runs synchronously in <head>, before first paint.
    - Picks the theme (saved choice, else the OS preference) so a dark-mode
      visitor never sees a flash of light.
-   - Marks the page as scripted ("js") so entrance animations can hide
+   - Marks the page as scripted ("js") so the reveal animation can hide
      content safely, and arms a failsafe: if the main scripts have not run
      after 3 seconds, "motion-failed" reveals everything. */
 (function () {
@@ -21,10 +21,6 @@
 
   root.setAttribute("data-theme", theme);
   root.classList.add("js");
-
-  try {
-    if (!sessionStorage.getItem("rwm-intro")) root.classList.add("nav-intro");
-  } catch (e) { /* ignore */ }
 
   setTimeout(function () {
     if (!root.classList.contains("motion-ready")) root.classList.add("motion-failed");

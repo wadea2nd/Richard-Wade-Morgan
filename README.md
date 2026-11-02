@@ -46,21 +46,32 @@ contains a raw color, font size, spacing value, or duration.
 | `css/motion.css` | Every animation, plus the reduced-motion rules |
 | `css/design-system.css` | Styles for the style-guide page only |
 
-**Type:** Faculty Glyphic (titles, intro statements, navigation), Hanken
-Grotesk variable (body and h2 labels), Space Mono (captions and credits). All
-sizes are fluid `clamp()` values between a 375px phone and a 1920px desktop.
+**Type:** Faculty Glyphic is used only for the site name and the intro
+statement (the large `h1` on the home and About pages, class `intro`). Hanken
+Grotesk variable handles everything else: navigation, project titles, body
+copy, and h2 labels. Space Mono is for captions and credits. All sizes are
+fluid `clamp()` values between a 375px phone and a 1920px desktop.
 
-**Themes:** light and dark. The choice is saved in the browser, the first
-visit follows the operating system, and the switch animates as a circular
-reveal where the browser supports View Transitions. `js/theme-init.js` runs
-before the first paint so dark-mode visitors never see a flash of light.
+**Themes:** light and dark, toggled by the half-moon at the top of the
+sidebar. The choice is saved in the browser, the first visit follows the
+operating system, and the page crossfades between the two. `js/theme-init.js`
+runs before the first paint so dark-mode visitors never see a flash of light.
+
+**Motion:** deliberately quiet. Content fades up a few pixels as it arrives;
+nothing bounces. Everything stops for visitors who prefer reduced motion.
+
+**Floating emoji:** four emoji drift across the window, floating in at one
+edge and out another, and can be dragged and thrown. "Swat gnats" (next to
+the half-moon) drops them to the bottom of the screen, where they stay until
+each is dragged off the left, right, or top edge; "Release gnats" brings
+them back.
 
 ## JavaScript
 
 `js/main.js` is the only entry point. It wires up the modules each page needs
 and isolates failures, so one broken feature never takes the page down.
 
-`theme.js` · `nav.js` (mobile menu) · `motion.js` (bump-in text, reveals) ·
+`theme.js` · `nav.js` (mobile menu) · `motion.js` (reveals, page fade) ·
 `slider.js` · `floaties.js` (the draggable emoji) · `contact.js` ·
 `lightbox.js` · `project.js` · `guard.js` (image-drag deterrent) ·
 `data.js` (content) · `design-system.js`
@@ -93,5 +104,3 @@ attributes: keep it that way when editing.
 
 - Google Search project copy (cleaned up from your outline) and images
 - Slideshow and project images are the current set; swap in the new Drive images
-- `assets/img/about-photo.jpg` was recovered from a screen recording at about
-  1000px wide; replace it with the original scan

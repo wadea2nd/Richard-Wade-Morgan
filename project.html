@@ -34,6 +34,12 @@
     <div class="sidebar">
       <header class="masthead">
         <a class="brand" href="index.html" aria-label="Richard Wade Morgan, home">Richard Wade Morgan</a>
+        <div class="tools">
+          <button type="button" class="swat" data-swat>Swat gnats</button>
+          <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Dark mode">
+            <span class="theme-toggle__icon" aria-hidden="true"></span>
+          </button>
+        </div>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu">
           <span class="menu-toggle__dots" aria-hidden="true"><i></i><i></i><i></i></span>
           <span class="menu-toggle__x" aria-hidden="true"></span>
@@ -59,17 +65,14 @@
 
         <footer class="colophon">
           <p>©<span data-year>2026</span> Richard Wade Morgan</p>
-          <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false">
-            <span class="theme-toggle__icon" aria-hidden="true"></span>
-            <span>Dark mode</span>
-          </button>
+          <button type="button" class="swat swat--menu" data-swat>Swat gnats</button>
         </footer>
       </div>
     </div>
 
     <main id="main" class="content" tabindex="-1">
       <!-- Built by js/project.js from js/data.js -->
-      <h1 id="project-title" data-bump>Project</h1>
+      <h1 id="project-title" data-reveal>Project</h1>
       <div id="project-body"></div>
       <noscript><p>This page needs JavaScript to show the project. You can <a href="mailto:wadewadedonttellme@gmail.com">email me</a> for a PDF.</p></noscript>
     </main>

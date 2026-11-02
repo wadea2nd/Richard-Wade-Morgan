@@ -1,8 +1,7 @@
 /* Light / dark toggle.
    - The saved choice (localStorage) wins; otherwise the OS preference.
-   - With the View Transitions API (Chromium, Safari 18+) the new theme
-     expands as a circle from the toggle button. Elsewhere, and for visitors
-     who prefer reduced motion, colors simply ease or switch instantly. */
+   - The whole page crossfades between the two (View Transitions API where
+     supported; otherwise every color eases over the same duration). */
 
 const KEY = "rwm-theme";
 const root = document.documentElement;
@@ -26,31 +25,19 @@ function apply(next) {
   syncChrome();
 }
 
-function toggle(event) {
+function toggle() {
   const next = current() === "dark" ? "light" : "dark";
 
-  if (!document.startViewTransition || prefersReducedMotion()) {
-    if (prefersReducedMotion()) { apply(next); return; }
-    root.classList.add("theme-transition");
-    apply(next);
-    window.setTimeout(() => root.classList.remove("theme-transition"), 600);
+  if (prefersReducedMotion()) { apply(next); return; }
+
+  if (document.startViewTransition) {
+    document.startViewTransition(() => apply(next));
     return;
   }
 
-  const rect = event.currentTarget.getBoundingClientRect();
-  const x = rect.left + rect.width / 2;
-  const y = rect.top + rect.height / 2;
-  const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
-
-  const transition = document.startViewTransition(() => apply(next));
-  transition.ready
-    .then(() => {
-      root.animate(
-        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
-        { duration: 750, easing: "cubic-bezier(0.65, 0, 0.2, 1)", pseudoElement: "::view-transition-new(root)" }
-      );
-    })
-    .catch(() => { /* transition skipped: the theme has still been applied */ });
+  root.classList.add("theme-transition");
+  apply(next);
+  window.setTimeout(() => root.classList.remove("theme-transition"), 800);
 }
 
 export function initTheme() {

@@ -29,6 +29,12 @@
     <div class="sidebar">
       <header class="masthead">
         <a class="brand" href="index.html" aria-label="Richard Wade Morgan, home">Richard Wade Morgan</a>
+        <div class="tools">
+          <button type="button" class="swat" data-swat>Swat gnats</button>
+          <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Dark mode">
+            <span class="theme-toggle__icon" aria-hidden="true"></span>
+          </button>
+        </div>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu">
           <span class="menu-toggle__dots" aria-hidden="true"><i></i><i></i><i></i></span>
           <span class="menu-toggle__x" aria-hidden="true"></span>
@@ -54,16 +60,13 @@
 
         <footer class="colophon">
           <p>©<span data-year>2026</span> Richard Wade Morgan</p>
-          <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false">
-            <span class="theme-toggle__icon" aria-hidden="true"></span>
-            <span>Dark mode</span>
-          </button>
+          <button type="button" class="swat swat--menu" data-swat>Swat gnats</button>
         </footer>
       </div>
     </div>
 
     <main id="main" class="content" tabindex="-1">
-      <h1 data-bump>Design system</h1>
+      <h1 data-reveal>Design system</h1>
 
       <div class="ds flow">
         <p class="prose" data-reveal>Everything on this site is built from the tokens in <code>css/tokens.css</code>. This page reads them live from the stylesheet, so it always shows what the site actually uses. Switch the theme in the sidebar to see both palettes.</p>
@@ -83,11 +86,15 @@
 
         <section class="ds__section" aria-labelledby="ds-type" data-reveal>
           <h2 id="ds-type">Type</h2>
-          <p class="mono muted">Faculty Glyphic for titles and navigation. Hanken Grotesk (variable) for body copy. Space Mono for captions. Sizes are fluid between a 375px phone and a 1920px desktop.</p>
+          <p class="mono muted">Faculty Glyphic only for the site name and the home and About intro statements. Hanken Grotesk (variable) for everything else. Space Mono for captions. Sizes are fluid between a 375px phone and a 1920px desktop.</p>
 
           <div class="ds__specimen">
-            <p class="mono muted">h1 · Faculty Glyphic · <span data-size="h1"></span></p>
-            <p class="ds__h1">Serious work, quirky delivery.</p>
+            <p class="mono muted">intro statement · Faculty Glyphic · <span data-size="intro"></span></p>
+            <p class="ds__intro">Howdy! I’m a friendly, farm-raised creative director.</p>
+          </div>
+          <div class="ds__specimen">
+            <p class="mono muted">h1 · Hanken Grotesk 340 · <span data-size="h1"></span></p>
+            <p class="ds__h1">3 → Delta Pride 2024</p>
           </div>
           <div class="ds__specimen">
             <p class="mono muted">h2 · Hanken Grotesk 600 · <span data-size="h2"></span></p>
@@ -98,7 +105,7 @@
             <p class="prose">Currently, I’m directing traffic at the intersection of communication, brand, and product design to deploy identities, solutions, and tools.</p>
           </div>
           <div class="ds__specimen">
-            <p class="mono muted">navigation · Faculty Glyphic · <span data-size="nav"></span></p>
+            <p class="mono muted">navigation · Hanken Grotesk · <span data-size="nav"></span></p>
             <p class="ds__nav">1. Delta Air Lines Centennial</p>
           </div>
           <div class="ds__specimen">
@@ -124,15 +131,15 @@
 
         <section class="ds__section" aria-labelledby="ds-motion" data-reveal>
           <h2 id="ds-motion">Motion</h2>
-          <p class="mono muted">Text bumps in word by word with a small overshoot (<code>--ease-spring</code>). Everything stops for visitors who prefer reduced motion.</p>
-          <p class="ds__bump" id="bump-demo" data-bump>Words rise into place, one after another, with a little bounce at the end.</p>
-          <p><button type="button" class="btn" data-replay-bump="#bump-demo">Replay</button></p>
+          <p class="mono muted">Deliberately quiet: content fades up a few pixels as it arrives, and nothing bounces. The light and dark themes crossfade. Everything stops for visitors who prefer reduced motion.</p>
+          <p class="ds__bump" id="reveal-demo" data-reveal>Words ease up into place as the page loads.</p>
+          <p><button type="button" class="btn" data-replay="#reveal-demo">Replay</button></p>
           <ul class="ds__tokens mono">
             <li><span>--dur-fast</span><span class="muted" data-token="--dur-fast"></span></li>
             <li><span>--dur-base</span><span class="muted" data-token="--dur-base"></span></li>
             <li><span>--dur-slow</span><span class="muted" data-token="--dur-slow"></span></li>
+            <li><span>--dur-theme</span><span class="muted" data-token="--dur-theme"></span></li>
             <li><span>--ease-out</span><span class="muted" data-token="--ease-out"></span></li>
-            <li><span>--ease-spring</span><span class="muted" data-token="--ease-spring"></span></li>
           </ul>
         </section>
 
@@ -141,10 +148,10 @@
           <div class="ds__row">
             <button type="button" class="btn">Cancel</button>
             <button type="button" class="btn btn--solid">Send</button>
-            <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false">
+            <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Dark mode">
               <span class="theme-toggle__icon" aria-hidden="true"></span>
-              <span>Dark mode</span>
             </button>
+            <button type="button" class="swat" data-swat>Swat gnats</button>
           </div>
           <div class="ds__row">
             <a class="nav__link ds__nav" href="#ds-components">Default link</a>

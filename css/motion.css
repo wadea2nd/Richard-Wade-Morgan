@@ -1,89 +1,36 @@
 /* ==========================================================================
    MOTION
    --------------------------------------------------------------------------
-   All animation lives here. Timing comes from the tokens (--dur-*, --ease-*,
-   --stagger).
+   Deliberately quiet. Content eases up a few pixels as it fades in, nothing
+   bounces, and the light ⇄ dark switch is a slow crossfade.
 
-   Progressive enhancement: content is only hidden for an entrance when
+   Progressive enhancement: content is only hidden for its entrance when
    <html> carries the "js" class (set in theme-init.js). If the scripts fail
    to run, the "motion-failed" class (added after 3s) shows everything.
    Visitors who prefer reduced motion get no movement at all.
    ========================================================================== */
 
 
-/* Bump-in text -------------------------------------------------------------
-   motion.js splits [data-bump] elements into word spans (.w) and stamps each
-   with its own --d delay. Words rise up with a small overshoot. */
-html.js:not(.motion-failed) [data-bump]:not(.is-split) { opacity: 0; }
-
-[data-bump].is-split .w {
-  display: inline-block;
-  opacity: 0;
-  transform-origin: 0 100%;
-}
-
-[data-bump].is-in .w {
-  animation: bump-in 0.85s var(--ease-out) both;
-  animation-delay: var(--d, 0ms);
-}
-
-@keyframes bump-in {
-  0%   { opacity: 0; transform: translateY(0.62em) rotate(3.5deg) scale(0.96); }
-  55%  { opacity: 1; transform: translateY(-0.09em) rotate(-0.8deg) scale(1.015); }
-  100% { opacity: 1; transform: none; }
-}
-
-
-/* Reveal blocks ------------------------------------------------------------
-   Paragraphs, lists, and figures ease up as they enter the viewport. */
+/* Reveal ------------------------------------------------------------------
+   Headlines, paragraphs, lists, and figures fade up as they enter view. */
 html.js:not(.motion-failed) [data-reveal]:not(.is-in) {
   opacity: 0;
-  transform: translateY(1rem);
+  transform: translateY(1.1rem);
 }
 
 [data-reveal] {
   transition:
-    opacity var(--dur-slow) var(--ease-out),
-    transform var(--dur-slow) var(--ease-spring);
+    opacity 0.8s var(--ease-standard),
+    transform 0.8s var(--ease-out);
   transition-delay: var(--d, 0ms);
 }
 
 [data-reveal].is-in { opacity: 1; transform: none; }
 
 
-/* Sidebar intro (first visit of a session only) ---------------------------- */
-html.nav-intro:not(.motion-failed) .brand,
-html.nav-intro:not(.motion-failed) [data-nav-item],
-html.nav-intro:not(.motion-failed) .colophon { opacity: 0; }
-
-html.nav-intro-play .brand,
-html.nav-intro-play [data-nav-item],
-html.nav-intro-play .colophon {
-  animation: nav-in 0.75s var(--ease-spring) backwards;
-  animation-delay: var(--d, 0ms);
-}
-
-@keyframes nav-in {
-  from { opacity: 0; transform: translateX(-0.7em); }
-  to   { opacity: 1; transform: none; }
-}
-
-
-/* Floating emoji ----------------------------------------------------------- */
-.floaty.is-ready .floaty__glyph {
-  animation: pop-in 0.9s var(--ease-spring) backwards;
-  animation-delay: var(--d, 0ms);
-}
-
-@keyframes pop-in {
-  from { transform: scale(0) rotate(-35deg); }
-  to   { transform: none; }
-}
-
-
 /* Dialogs ------------------------------------------------------------------ */
 @keyframes dialog-in {
-  from { opacity: 0; transform: translateY(0.75rem) scale(0.97); }
+  from { opacity: 0; transform: translateY(0.75rem); }
   to   { opacity: 1; transform: none; }
 }
 
@@ -109,16 +56,13 @@ html.is-leaving .content {
 }
 
 
-/* Theme change (View Transitions API) --------------------------------------
-   theme.js animates a circular reveal from the toggle button. */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
+/* Theme change ---------------------------------------------------------------
+   Where the browser supports View Transitions, the whole page crossfades
+   between light and dark. Elsewhere, colors ease (see base.css). */
+::view-transition-group(root) {
+  animation-duration: var(--dur-theme);
+  animation-timing-function: var(--ease-standard);
 }
-
-::view-transition-old(root) { z-index: 1; }
-::view-transition-new(root) { z-index: 2; }
 
 
 /* Reduced motion: no movement, no waiting ---------------------------------- */
@@ -133,11 +77,7 @@ html.is-leaving .content {
     transition-delay: 0s !important;
   }
 
-  html.js [data-bump],
-  html.js [data-reveal],
-  html.nav-intro .brand,
-  html.nav-intro [data-nav-item],
-  html.nav-intro .colophon {
+  html.js [data-reveal] {
     opacity: 1 !important;
     transform: none !important;
   }

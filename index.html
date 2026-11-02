@@ -48,6 +48,12 @@
     <div class="sidebar">
       <header class="masthead">
         <a class="brand" href="index.html" aria-label="Richard Wade Morgan, home">Richard Wade Morgan</a>
+        <div class="tools">
+          <button type="button" class="swat" data-swat>Swat gnats</button>
+          <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Dark mode">
+            <span class="theme-toggle__icon" aria-hidden="true"></span>
+          </button>
+        </div>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu">
           <span class="menu-toggle__dots" aria-hidden="true"><i></i><i></i><i></i></span>
           <span class="menu-toggle__x" aria-hidden="true"></span>
@@ -73,16 +79,13 @@
 
         <footer class="colophon">
           <p>©<span data-year>2026</span> Richard Wade Morgan</p>
-          <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false">
-            <span class="theme-toggle__icon" aria-hidden="true"></span>
-            <span>Dark mode</span>
-          </button>
+          <button type="button" class="swat swat--menu" data-swat>Swat gnats</button>
         </footer>
       </div>
     </div>
 
     <main id="main" class="content" tabindex="-1">
-      <h1 data-bump>Howdy! I’m a friendly, farm-raised creative director based in the United States (ATL). I work for a bunch of folks growing new ventures, elevating heritage brands, and encouraging prosperity for their community. <span class="hand" data-no-split aria-hidden="true">&#x261E;&#xFE0E;</span></h1>
+      <h1 class="intro" data-reveal>Howdy! I’m a friendly, farm-raised creative director based in the United States (ATL). I work for a bunch of folks growing new ventures, elevating heritage brands, and encouraging prosperity for their community. <span class="hand" aria-hidden="true">&#x261E;&#xFE0E;</span></h1>
 
       <section class="slider" id="slider" aria-roledescription="carousel" aria-label="Selected work">
         <div class="slider__viewport" aria-live="off">

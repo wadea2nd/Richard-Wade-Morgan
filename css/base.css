@@ -2,9 +2,12 @@
    BASE
    --------------------------------------------------------------------------
    Reset, document defaults, and the three core text styles:
-     h1    Faculty Glyphic, fluid 26 → 42px   (intro statements, titles)
-     h2    Hanken Grotesk 600, body size       (section labels)
-     body  Hanken Grotesk 400, fluid 16 → 18px (everything else)
+     h1    Hanken Grotesk 340, fluid 24 → 36px (page and project titles)
+           .intro: Faculty Glyphic, fluid 26 → 42px (the home and About
+           intro statements, the only place that font is used besides
+           the site name)
+     h2    Hanken Grotesk 600, body size        (section labels)
+     body  Hanken Grotesk 400, fluid 16 → 18px  (everything else)
    ========================================================================== */
 
 /* Reset ------------------------------------------------------------------- */
@@ -61,13 +64,19 @@ html.theme-transition *::after {
 
 /* Text styles ------------------------------------------------------------- */
 h1 {
-  font-family: var(--font-display);
-  font-size: var(--fs-h1);
-  font-weight: var(--weight-regular);
+  font-family: var(--font-body);
+  font-size: var(--fs-title);
+  font-weight: var(--weight-title);
   line-height: var(--lh-tight);
   letter-spacing: var(--track-display);
   font-kerning: normal;
   text-wrap: pretty;
+}
+
+.intro {
+  font-family: var(--font-intro);
+  font-size: var(--fs-h1);
+  font-weight: var(--weight-regular);
 }
 
 h2 {
