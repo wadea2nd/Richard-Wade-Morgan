@@ -49,6 +49,14 @@
   block-size: 3rem;
 }
 
+/* The intro statement keeps the line length it had before the column was
+   widened (57.7% of the window minus the gutter), so its rag stays tidy and
+   clear of the controls at the top right. */
+.content > .intro {
+  max-width: min(100%, calc(57.7vw - var(--pad-x)));
+  text-wrap: pretty;
+}
+
 /* Narrow: single column ---------------------------------------------------- */
 @media (max-width: 51.999rem) {
   .shell { display: block; }
@@ -68,6 +76,8 @@
   .is-scrolled .sidebar { border-block-end-color: var(--color-line); }
 
   .content::before { display: none; }
+
+  .content > .intro { max-width: none; }
 
   html { scroll-padding-block-start: 5.5rem; }   /* clear the pinned masthead */
 
