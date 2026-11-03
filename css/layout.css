@@ -3,13 +3,14 @@
    --------------------------------------------------------------------------
    Two regions, as in the Cargo build:
 
-     .sidebar   fixed left column: name, numbered projects, pages, colophon
+     .sidebar   fixed left column: name, the Work / About / Contact menu, colophon
      .content   the scrolling right column
 
    Wide screens (≥ 52rem): a two-column grid, sidebar sticky.
    Narrow screens:         one column; the sidebar collapses to a masthead
-                           (name + "•••") and the nav becomes a full-screen
-                           menu (see components.css → .drawer).
+                           (name, controls, "•••"), which stays pinned while
+                           scrolling; the nav becomes a full-screen menu
+                           (see components.css → .drawer).
    ========================================================================== */
 
 .shell {
@@ -38,16 +39,37 @@
   z-index: var(--z-content);
 }
 
+/* The page controls float at the top right of the window (components.css →
+   .tools). This invisible float makes only the first line of text step
+   around them, so nothing ever runs underneath. */
+.content::before {
+  content: "";
+  float: right;
+  inline-size: 6.5rem;
+  block-size: 3rem;
+}
+
 /* Narrow: single column ---------------------------------------------------- */
 @media (max-width: 51.999rem) {
   .shell { display: block; }
 
+  /* The masthead stays pinned to the top while the page scrolls. */
   .sidebar {
-    position: relative;
+    position: sticky;
+    top: 0;
     height: auto;
     overflow: visible;
-    padding-block-end: 0;
+    padding-block-end: var(--space-s);
+    background: var(--color-bg);
+    border-block-end: 1px solid transparent;
+    transition: border-color var(--dur-base) var(--ease-standard);
   }
+
+  .is-scrolled .sidebar { border-block-end-color: var(--color-line); }
+
+  .content::before { display: none; }
+
+  html { scroll-padding-block-start: 5.5rem; }   /* clear the pinned masthead */
 
   .content {
     padding: calc(var(--space-2xl) + var(--space-l)) var(--pad-x) var(--space-3xl);

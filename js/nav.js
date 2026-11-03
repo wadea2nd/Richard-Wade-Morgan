@@ -1,5 +1,4 @@
-/* Navigation: the mobile menu and the footer year.
-   On wide screens the nav is always visible, so none of this applies there. */
+/* Navigation: the mobile menu, the "Work" accordion, and the footer year. */
 
 export function initNav() {
   const button = document.querySelector(".menu-toggle");
@@ -33,16 +32,52 @@ export function initNav() {
   setOpen(false);
 }
 
+/* "Work" accordion. A mouse hovering over the button opens it (after a short
+   pause, so sweeping past doesn't); clicking or tapping toggles it. It never
+   closes on its own: closing is always a click. Touch has no hover, so it
+   simply toggles. */
+let workToggle = null;
+let workPanel = null;
+
+function setWork(open) {
+  if (!workToggle || !workPanel) return;
+  workToggle.setAttribute("aria-expanded", String(open));
+  workPanel.classList.toggle("is-open", open);
+}
+
+export function initWork() {
+  workToggle = document.querySelector("[data-nav-toggle]");
+  workPanel = workToggle && document.getElementById(workToggle.getAttribute("aria-controls"));
+  if (!workToggle || !workPanel) return;
+
+  let hoverTimer = null;
+
+  workToggle.addEventListener("pointerenter", (event) => {
+    if (event.pointerType !== "mouse") return;
+    window.clearTimeout(hoverTimer);
+    hoverTimer = window.setTimeout(() => setWork(true), 140);
+  });
+  workToggle.addEventListener("pointerleave", () => window.clearTimeout(hoverTimer));
+
+  workToggle.addEventListener("click", () => {
+    window.clearTimeout(hoverTimer);
+    setWork(workToggle.getAttribute("aria-expanded") !== "true");
+  });
+}
+
 export function initYear() {
   document.querySelectorAll("[data-year]").forEach((el) => {
     el.textContent = String(new Date().getFullYear());
   });
 }
 
-/* Marks the nav link for the current project as the current page. */
+/* Marks the nav link for the current project as the current page, and opens
+   the Work list so it is visible. */
 export function markCurrent(slug) {
+  let found = false;
   document.querySelectorAll(".nav__link[data-slug]").forEach((link) => {
-    if (link.dataset.slug === slug) link.setAttribute("aria-current", "page");
+    if (link.dataset.slug === slug) { link.setAttribute("aria-current", "page"); found = true; }
     else link.removeAttribute("aria-current");
   });
+  if (found) setWork(true);
 }

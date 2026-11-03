@@ -6,9 +6,10 @@
    content stays readable. */
 
 import { initTheme } from "./theme.js";
-import { initNav, initYear } from "./nav.js";
+import { initNav, initWork, initYear } from "./nav.js";
 import { initContact } from "./contact.js";
 import { initMotion, initPageLeave, initReplay } from "./motion.js";
+import { initChrome } from "./chrome.js";
 import { initFloaties } from "./floaties.js";
 import { initGuard } from "./guard.js";
 
@@ -33,6 +34,7 @@ async function boot() {
 
   safe("theme", initTheme);
   safe("nav", initNav);
+  safe("work", initWork);
   safe("year", initYear);
   safe("contact", initContact);
   safe("guard", initGuard);
@@ -51,6 +53,7 @@ async function boot() {
   safe("pageLeave", initPageLeave);
   safe("replay", initReplay);
   safe("motion", initMotion);
+  safe("chrome", initChrome);
   safe("floaties", initFloaties);
 }
 

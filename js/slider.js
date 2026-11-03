@@ -1,7 +1,8 @@
 /* Homepage slideshow.
-   Follows the WAI-ARIA carousel pattern:
-   - autoplay can be paused (the Pause button), and stops on hover, on focus,
-     when the tab is hidden, and when offscreen;
+   Follows the WAI-ARIA carousel pattern, without a Pause button:
+   - autoplay pauses on hover, on focus, when the tab is hidden, and when
+     offscreen, and stops for good as soon as the visitor steps through the
+     slides themselves (arrows, keys, or swipe);
    - visitors who prefer reduced motion start paused;
    - prev/next buttons, ← → keys, and swipe all work;
    - the live region only announces slides while autoplay is off. */
@@ -19,7 +20,6 @@ const CHEVRON = {
 export function initSlider(root) {
   const viewport = root.querySelector(".slider__viewport");
   const status = root.querySelector("[data-slider-status]");
-  const pauseBtn = root.querySelector(".slider__pause");
   if (!viewport || !SLIDES.length) return;
 
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -91,22 +91,15 @@ export function initSlider(root) {
     if (playing()) timer = window.setInterval(() => show(index + 1), INTERVAL);
   }
 
-  function setPaused(paused) {
-    userPaused = paused;
-    if (pauseBtn) {
-      pauseBtn.textContent = paused ? "Play" : "Pause";
-      pauseBtn.setAttribute("aria-pressed", String(paused));
-    }
+  /* The visitor has taken the controls: leave the slide where they put it. */
+  function step(next) {
+    userPaused = true;
+    show(next, { announce: true });
     schedule();
   }
 
-  prevBtn.addEventListener("click", () => { show(index - 1, { announce: true }); schedule(); });
-  nextBtn.addEventListener("click", () => { show(index + 1, { announce: true }); schedule(); });
-
-  if (pauseBtn) {
-    pauseBtn.hidden = false;
-    pauseBtn.addEventListener("click", () => setPaused(!userPaused));
-  }
+  prevBtn.addEventListener("click", () => step(index - 1));
+  nextBtn.addEventListener("click", () => step(index + 1));
 
   root.addEventListener("mouseenter", () => { hovering = true; schedule(); });
   root.addEventListener("mouseleave", () => { hovering = false; schedule(); });
@@ -115,8 +108,8 @@ export function initSlider(root) {
   document.addEventListener("visibilitychange", schedule);
 
   root.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowLeft") { show(index - 1, { announce: true }); event.preventDefault(); }
-    if (event.key === "ArrowRight") { show(index + 1, { announce: true }); event.preventDefault(); }
+    if (event.key === "ArrowLeft") { step(index - 1); event.preventDefault(); }
+    if (event.key === "ArrowRight") { step(index + 1); event.preventDefault(); }
   });
 
   /* Swipe */
@@ -127,8 +120,7 @@ export function initSlider(root) {
     const dx = event.clientX - startX;
     startX = null;
     if (Math.abs(dx) > 48) {
-      show(index + (dx < 0 ? 1 : -1), { announce: true });
-      schedule();
+      step(index + (dx < 0 ? 1 : -1));
       viewport.dataset.swiped = "1";
       window.setTimeout(() => delete viewport.dataset.swiped, 60);
     }
@@ -145,10 +137,6 @@ export function initSlider(root) {
     schedule();
   }, { threshold: 0.25 }).observe(root);
 
-  if (pauseBtn) {
-    pauseBtn.textContent = userPaused ? "Play" : "Pause";
-    pauseBtn.setAttribute("aria-pressed", String(userPaused));
-  }
   show(0);
   schedule();
 }

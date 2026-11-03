@@ -249,10 +249,20 @@ export function initFloaties() {
   /* Swat / release ----------------------------------------------------------- */
   const buttons = [...document.querySelectorAll("[data-swat]")];
 
-  function syncButtons() {
+  /* The buttons are icon-only, so the label lives in aria-label and title. */
+  const status = document.createElement("p");
+  status.className = "visually-hidden";
+  status.setAttribute("role", "status");
+  document.body.append(status);
+
+  function syncButtons(announce = false) {
+    const label = mode === "swatted" ? "Release gnats" : "Swat gnats";
     buttons.forEach((button) => {
-      button.textContent = mode === "swatted" ? "Release gnats" : "Swat gnats";
+      button.setAttribute("aria-label", label);
+      button.setAttribute("title", label);
+      button.dataset.state = mode;
     });
+    if (announce) status.textContent = mode === "swatted" ? "Gnats swatted." : "Gnats released.";
   }
 
   function swat() {
@@ -279,7 +289,7 @@ export function initFloaties() {
         item.vy = Math.min(item.vy, 0) + rand(-340, -80);   /* a little hop first */
       }
     });
-    syncButtons();
+    syncButtons(true);
   }
 
   function releaseAll() {
@@ -296,7 +306,7 @@ export function initFloaties() {
         item.vy = -rand(220, 340);                /* lift off the floor */
       }
     });
-    syncButtons();
+    syncButtons(true);
   }
 
   buttons.forEach((button) => button.addEventListener("click", () => (mode === "swatted" ? releaseAll() : swat())));

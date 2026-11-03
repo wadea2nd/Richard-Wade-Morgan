@@ -29,9 +29,19 @@
     <div class="sidebar">
       <header class="masthead">
         <a class="brand" href="index.html" aria-label="Richard Wade Morgan, home">Richard Wade Morgan</a>
-        <div class="tools">
-          <button type="button" class="swat" data-swat>Swat gnats</button>
-          <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Dark mode">
+        <div class="tools" role="group" aria-label="Page controls">
+          <button type="button" class="tool-btn swat" data-swat aria-label="Swat gnats" title="Swat gnats">
+            <svg class="swat__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <g class="swat__swatter">
+                <rect x="6.8" y="1.4" width="10.4" height="10.2" rx="2.6"/>
+                <path d="M6.8 4.8h10.4M6.8 8.2h10.4M10.27 1.4v10.2M13.73 1.4v10.2"/>
+                <path d="M12 11.6v8.4"/>
+                <circle cx="12" cy="21.5" r="1.05"/>
+              </g>
+              <circle class="swat__gnat" cx="19.6" cy="18.4" r="1.25"/>
+            </svg>
+          </button>
+          <button type="button" class="tool-btn theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Dark mode" title="Dark mode">
             <span class="theme-toggle__icon" aria-hidden="true"></span>
           </button>
         </div>
@@ -43,24 +53,28 @@
 
       <div class="drawer" id="drawer">
         <nav class="nav" aria-label="Primary">
-          <ol class="nav__list nav__projects">
-            <li data-nav-item><a class="nav__link" href="project.html?p=google-search" data-slug="google-search">Google Search</a></li>
-            <li data-nav-item><a class="nav__link" href="project.html?p=delta-centennial" data-slug="delta-centennial">Delta Air Lines Centennial</a></li>
-            <li data-nav-item><a class="nav__link" href="project.html?p=delta-pride" data-slug="delta-pride">Delta Pride 2024</a></li>
-            <li data-nav-item><a class="nav__link" href="project.html?p=stord" data-slug="stord">Stord</a></li>
-            <li data-nav-item><a class="nav__link" href="project.html?p=outsports" data-slug="outsports">Outsports</a></li>
-            <li data-nav-item><a class="nav__link" href="project.html?p=design-archive" data-slug="design-archive">Design Archive</a></li>
-          </ol>
-          <ul class="nav__list nav__pages">
-            <li data-nav-item><a class="nav__link" href="about.html">About</a></li>
-            <li data-nav-item><a class="nav__link" href="mailto:wadewadedonttellme@gmail.com" data-contact>Contact</a></li>
-            <li data-nav-item><a class="nav__link" href="https://www.instagram.com/prismaticmenagerie/" target="_blank" rel="noopener noreferrer">Art Studio <span class="nav__arrow" aria-hidden="true">→</span><span class="visually-hidden">(opens in a new tab)</span></a></li>
+          <ul class="nav__list">
+            <li class="nav__group">
+              <button type="button" class="nav__link nav__toggle" data-nav-toggle aria-expanded="false" aria-controls="work-menu">Work <span class="nav__chevron" aria-hidden="true"></span></button>
+              <div class="nav__panel" id="work-menu">
+                <ol class="nav__projects">
+                  <li><a class="nav__link" href="project.html?p=google-search" data-slug="google-search">Google Search</a></li>
+                  <li><a class="nav__link" href="project.html?p=delta-centennial" data-slug="delta-centennial">Delta Air Lines Centennial</a></li>
+                  <li><a class="nav__link" href="project.html?p=delta-pride" data-slug="delta-pride">Delta Pride 2024</a></li>
+                  <li><a class="nav__link" href="project.html?p=stord" data-slug="stord">Stord</a></li>
+                  <li><a class="nav__link" href="project.html?p=outsports" data-slug="outsports">Outsports</a></li>
+                  <li><a class="nav__link" href="project.html?p=design-archive" data-slug="design-archive">Design Archive</a></li>
+                </ol>
+              </div>
+            </li>
+            <li><a class="nav__link" href="about.html">About</a></li>
+            <li><a class="nav__link" href="mailto:wadewadedonttellme@gmail.com" data-contact>Contact</a></li>
+            <li><a class="nav__link" href="https://www.instagram.com/prismaticmenagerie/" target="_blank" rel="noopener noreferrer">Art Studio <span class="nav__arrow" aria-hidden="true">→</span><span class="visually-hidden">(opens in a new tab)</span></a></li>
           </ul>
         </nav>
 
         <footer class="colophon">
           <p>©<span data-year>2026</span> Richard Wade Morgan</p>
-          <button type="button" class="swat swat--menu" data-swat>Swat gnats</button>
         </footer>
       </div>
     </div>
@@ -69,7 +83,7 @@
       <h1 data-reveal>Design system</h1>
 
       <div class="ds flow">
-        <p class="prose" data-reveal>Everything on this site is built from the tokens in <code>css/tokens.css</code>. This page reads them live from the stylesheet, so it always shows what the site actually uses. Switch the theme in the sidebar to see both palettes.</p>
+        <p class="prose" data-reveal>Everything on this site is built from the tokens in <code>css/tokens.css</code>. This page reads them live from the stylesheet, so it always shows what the site actually uses. Switch the theme with the half-moon at the top right to see both palettes.</p>
 
         <section class="ds__section" aria-labelledby="ds-color" data-reveal>
           <h2 id="ds-color">Color</h2>
@@ -148,10 +162,20 @@
           <div class="ds__row">
             <button type="button" class="btn">Cancel</button>
             <button type="button" class="btn btn--solid">Send</button>
-            <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Dark mode">
-              <span class="theme-toggle__icon" aria-hidden="true"></span>
-            </button>
-            <button type="button" class="swat" data-swat>Swat gnats</button>
+            <button type="button" class="tool-btn theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Dark mode" title="Dark mode">
+            <span class="theme-toggle__icon" aria-hidden="true"></span>
+          </button>
+            <button type="button" class="tool-btn swat" data-swat aria-label="Swat gnats" title="Swat gnats">
+            <svg class="swat__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <g class="swat__swatter">
+                <rect x="6.8" y="1.4" width="10.4" height="10.2" rx="2.6"/>
+                <path d="M6.8 4.8h10.4M6.8 8.2h10.4M10.27 1.4v10.2M13.73 1.4v10.2"/>
+                <path d="M12 11.6v8.4"/>
+                <circle cx="12" cy="21.5" r="1.05"/>
+              </g>
+              <circle class="swat__gnat" cx="19.6" cy="18.4" r="1.25"/>
+            </svg>
+          </button>
           </div>
           <div class="ds__row">
             <a class="nav__link ds__nav" href="#ds-components">Default link</a>
@@ -171,7 +195,7 @@
             <li>Text and accent colors meet 4.5:1 contrast in both themes.</li>
             <li>Visible focus rings; keyboard access to the menu, slider, lightbox, and form.</li>
             <li>The mobile menu makes the page inert while open; dialogs trap focus.</li>
-            <li>The slideshow can be paused; reduced-motion preferences are respected everywhere.</li>
+            <li>The slideshow pauses on hover and focus and stops once a visitor steps through it; reduced-motion preferences are respected everywhere.</li>
             <li>The floating emoji are decoration only and hidden from screen readers.</li>
           </ul>
         </section>

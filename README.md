@@ -22,8 +22,8 @@ Project URLs work two ways: `project.html?p=stord` and, on Netlify,
 
 - **Projects and slideshow:** `js/data.js`. Every project's copy, credits,
   images, and alt text live there, with comments explaining each field. The
-  sidebar list is plain HTML in each page, so if you add or rename a project,
-  update the `<ol>` in `index.html`, `about.html`, `project.html`, and
+  "Work" menu is plain HTML in each page, so if you add or rename a project,
+  update the `<ol class="nav__projects">` in `index.html`, `about.html`, `project.html`, and
   `design-system.html` as well.
 - **Home and About copy:** plain text in `index.html` and `about.html`.
 - **Images:** put files in `assets/img/` and point `js/data.js` at them.
@@ -52,8 +52,8 @@ Grotesk variable handles everything else: navigation, project titles, body
 copy, and h2 labels. Space Mono is for captions and credits. All sizes are
 fluid `clamp()` values between a 375px phone and a 1920px desktop.
 
-**Themes:** light and dark, toggled by the half-moon at the top of the
-sidebar. The choice is saved in the browser, the first visit follows the
+**Themes:** light and dark, toggled by the half-moon at the top right of
+the window (in the pinned header on phones). In dark mode both header icons are light orange. The choice is saved in the browser, the first visit follows the
 operating system, and the page crossfades between the two. `js/theme-init.js`
 runs before the first paint so dark-mode visitors never see a flash of light.
 
@@ -61,8 +61,8 @@ runs before the first paint so dark-mode visitors never see a flash of light.
 nothing bounces. Everything stops for visitors who prefer reduced motion.
 
 **Floating emoji:** four emoji drift across the window, floating in at one
-edge and out another, and can be dragged and thrown. "Swat gnats" (next to
-the half-moon) drops them to the bottom of the screen, where they stay until
+edge and out another, and can be dragged and thrown. The fly-swatter icon
+(next to the half-moon) drops them to the bottom of the screen, where they stay until
 each is dragged off the left, right, or top edge; "Release gnats" brings
 them back.
 
@@ -71,7 +71,7 @@ them back.
 `js/main.js` is the only entry point. It wires up the modules each page needs
 and isolates failures, so one broken feature never takes the page down.
 
-`theme.js` · `nav.js` (mobile menu) · `motion.js` (reveals, page fade) ·
+`theme.js` · `nav.js` (mobile menu, "Work" accordion) · `chrome.js` (back-to-top button) · `motion.js` (reveals, page fade) ·
 `slider.js` · `floaties.js` (the draggable emoji) · `contact.js` ·
 `lightbox.js` · `project.js` · `guard.js` (image-drag deterrent) ·
 `data.js` (content) · `design-system.js`

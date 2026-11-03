@@ -3,7 +3,7 @@
    --------------------------------------------------------------------------
    1. Masthead, brand, menu button      7. Figures and gallery
    2. Drawer and navigation             8. Credits and project pager
-   3. Colophon and theme toggle         9. Buttons and form fields
+   3. Tools, colophon, back to top      9. Buttons and form fields
    4. Inline links and icons           10. Dialogs (contact, lightbox)
    5. Lists                            11. Floating emoji
    6. Slider
@@ -102,14 +102,6 @@
   letter-spacing: var(--track-display);
 }
 
-/* The numbers are native <ol> markers, so they stay semantic. */
-.nav__projects {
-  list-style: decimal;
-  padding-inline-start: 3.1em;
-}
-
-.nav__pages { margin-block-start: var(--space-l); }
-
 .nav__link {
   display: inline-block;
   color: inherit;
@@ -135,6 +127,63 @@
 }
 
 .nav__link:hover .nav__arrow { transform: translateX(0.2em); }
+
+/* "Work" accordion. Hovering opens it (mouse only); clicking or tapping
+   toggles it, so it only closes when the visitor says so. */
+.nav__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.nav__chevron {
+  inline-size: 0.42em;
+  block-size: 0.42em;
+  border-inline-end: 1.5px solid currentColor;
+  border-block-end: 1.5px solid currentColor;
+  transform: translateY(-0.1em) rotate(45deg);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.nav__toggle[aria-expanded="true"] .nav__chevron { transform: translateY(0.1em) rotate(225deg); }
+
+/* The panel grows from 0 to its natural height; while closed it is
+   invisible, so its links also leave the tab order. */
+.nav__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition:
+    grid-template-rows var(--dur-base) var(--ease-out),
+    visibility 0s linear var(--dur-base);
+}
+
+.nav__panel.is-open {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+/* Without JavaScript the toggle can't work, so the list simply stays open. */
+html:not(.js) .nav__panel { grid-template-rows: 1fr; visibility: visible; }
+
+/* The numbers are native <ol> markers, so they stay semantic. */
+.nav__projects {
+  min-block-size: 0;
+  overflow: hidden;
+  list-style: decimal;
+  padding-inline-start: 2.3em;
+}
+
+.nav__projects > li { padding-block: 0.06em; }
+.nav__projects > li:last-child { padding-block-end: 0.55em; }
 
 /* Narrow screens: the drawer is a full-screen menu. */
 @media (max-width: 51.999rem) {
@@ -167,40 +216,48 @@
 
   .nav { margin-block-start: var(--space-m); }
 
-  .nav__link { padding-block: 0.15rem; }
+  /* Slightly larger type in the full-screen menu, with roomier tap targets. */
+  .nav__list { font-size: var(--fs-nav-mobile); }
+  .nav__link { padding-block: 0.3rem; }
+  .nav__projects { padding-inline-start: 2.1em; }
 }
 
 
 /* 3. TOOLS, COLOPHON ------------------------------------------------------ */
 
-/* The half-moon theme toggle and "Swat gnats" sit at the top of the sidebar,
-   to the right of the name. */
+/* The swatter and half-moon sit together at the top right of the window on
+   wide screens (backed so they stay legible over images) and in the pinned
+   masthead, between the name and "•••", on narrow ones. */
 .tools {
-  --tool: 2.25rem;                       /* button size */
+  --tool: 2.5rem;                        /* button size */
+  position: fixed;
+  inset-block-start: calc(var(--pad-y) + (var(--fs-nav) * var(--lh-snug) - var(--tool) - 0.5rem) / 2);
+  inset-inline-end: calc(var(--pad-x) - 0.25rem);
   display: flex;
   align-items: center;
-  gap: var(--space-s);
-  margin-inline-start: auto;
-  /* Center the controls on the name's first line. */
-  margin-block-start: calc((var(--fs-nav) * var(--lh-snug) - var(--tool)) / 2);
+  gap: 0.125rem;
+  padding: 0.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-chrome);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
-.theme-toggle {
+.tool-btn {
   display: grid;
   place-items: center;
   inline-size: var(--tool);
   block-size: var(--tool);
-  margin-inline-end: -0.5rem;            /* optically aligns with the page margin */
   padding: 0;
   border: 0;
+  border-radius: 50%;
   background: none;
-  color: var(--color-text);
+  color: var(--color-tool);
   cursor: pointer;
-  transition: color var(--dur-fast);
+  transition: background-color var(--dur-fast) var(--ease-standard);
 }
 
-.theme-toggle:hover,
-.theme-toggle:focus-visible { color: var(--color-accent); }
+.tool-btn:hover { background: var(--color-fill); }
 
 /* A half-filled circle (half moon). It turns over when the theme changes. */
 .theme-toggle__icon {
@@ -214,32 +271,44 @@
 
 .theme-toggle[aria-pressed="true"] .theme-toggle__icon { transform: rotate(180deg); }
 
-.swat {
-  padding: 0.35rem 0;
-  border: 0;
-  background: none;
-  color: var(--color-text-muted);
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono);
-  line-height: 1.4;
-  cursor: pointer;
-  transition: color var(--dur-fast);
+/* Windows high-contrast mode drops background fills, which would erase the
+   half-moon, so it is redrawn with system colors there. */
+@media (forced-colors: active) {
+  .theme-toggle__icon {
+    forced-color-adjust: none;
+    border-color: ButtonText;
+    background: linear-gradient(90deg, ButtonText 50%, transparent 50%);
+  }
 }
 
-.swat:hover,
-.swat:focus-visible { color: var(--color-accent); }
-
-/* Two copies of the swat button: beside the moon on wide screens, and in the
-   colophon (menu) everywhere narrower, where the masthead has no room. */
-.swat--menu { display: inline-block; padding-inline: 0; }
-
-@media (max-width: 71.999rem) {
-  .tools .swat { display: none; }
+/* The fly swatter: line work. It tips over and the gnat disappears once the
+   gnats have been swatted. */
+.swat__icon {
+  inline-size: 1.45rem;
+  block-size: 1.45rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  overflow: visible;
 }
 
-@media (min-width: 72rem) {
-  .swat--menu { display: none; }
+.swat__swatter {
+  transform-origin: 12px 12px;
+  transform: rotate(36deg);
+  transition: transform var(--dur-base) var(--ease-out);
 }
+
+.swat__gnat {
+  fill: currentColor;
+  stroke: none;
+  transition: opacity var(--dur-base) var(--ease-standard);
+}
+
+.swat:hover .swat__swatter { transform: rotate(26deg); }
+.swat[data-state="swatted"] .swat__swatter { transform: rotate(6deg); }
+.swat[data-state="swatted"] .swat__gnat { opacity: 0; }
 
 .colophon {
   display: flex;
@@ -253,9 +322,74 @@
 }
 
 @media (max-width: 51.999rem) {
-  .tools { --tool: 2.75rem; }
-  .swat { min-block-size: 2.75rem; }
+  .tools {
+    --tool: 2.5rem;
+    position: static;
+    margin-inline-start: auto;
+    /* Center the controls on the name's first line. */
+    margin-block-start: calc((var(--fs-nav) * var(--lh-snug) - var(--tool)) / 2);
+    padding: 0;
+    background: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
+
+
+/* Back to top: appears bottom right after scrolling, on every screen size. */
+.to-top {
+  position: fixed;
+  inset-block-end: calc(var(--pad-y) + env(safe-area-inset-bottom, 0px));
+  inset-inline-end: var(--pad-x);
+  z-index: var(--z-float-ui);
+  display: grid;
+  place-items: center;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  padding: 0;
+  border: 1px solid var(--color-line);
+  border-radius: 50%;
+  background: var(--color-chrome);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: var(--color-text);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.5rem);
+  transition:
+    opacity var(--dur-base) var(--ease-standard),
+    transform var(--dur-base) var(--ease-out),
+    color var(--dur-fast),
+    border-color var(--dur-fast),
+    visibility 0s linear var(--dur-base);
+}
+
+.to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 0s;
+}
+
+.to-top:hover,
+.to-top:focus-visible {
+  color: var(--color-accent);
+  border-color: currentColor;
+}
+
+.to-top svg {
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Hidden while the full-screen menu is open. */
+.menu-open .to-top { opacity: 0; visibility: hidden; }
 
 
 /* 4. INLINE LINKS AND ICONS ------------------------------------------------ */
@@ -377,28 +511,11 @@
 }
 
 .slider__meta {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-m);
   margin-block-start: var(--space-xs);
   font-family: var(--font-mono);
   font-size: var(--fs-mono);
   line-height: 1.5;
 }
-
-.slider__pause {
-  padding: 0.25rem 0;
-  border: 0;
-  background: none;
-  color: var(--color-text-muted);
-  font: inherit;
-  cursor: pointer;
-  transition: color var(--dur-fast);
-}
-
-.slider__pause:hover,
-.slider__pause:focus-visible { color: var(--color-accent); }
 
 
 /* 7. FIGURES AND GALLERY --------------------------------------------------- */
