@@ -44,7 +44,6 @@ export function initProject() {
   }
 
   const project = PROJECTS[index];
-  const number = index + 1;
 
   document.title = `${project.title} | ${SITE.name}`;
   const lead = project.summary.find((part) => typeof part === "string") || "";
@@ -54,13 +53,7 @@ export function initProject() {
   setMeta('meta[property="og:description"]', description);
   markCurrent(project.slug);
 
-  /* Heading: "2 → Delta Air Lines Centennial" (the number is decoration). */
-  titleEl.textContent = "";
-  const num = el("span", "", `${number} `);
-  num.setAttribute("aria-hidden", "true");
-  const arrow = el("span", "hand", "→ ");
-  arrow.setAttribute("aria-hidden", "true");
-  titleEl.append(num, arrow, document.createTextNode(project.title));
+  titleEl.textContent = project.title;
 
   /* Copy */
   const prose = el("div", "prose flow");
@@ -128,8 +121,7 @@ export function initProject() {
     a.href = `project.html?p=${encodeURIComponent(project.slug)}`;
     a.rel = direction;
     const dir = el("span", "pager__dir", direction === "prev" ? "Previous" : "Next");
-    const n = PROJECTS.indexOf(project) + 1;
-    a.append(dir, document.createTextNode(`${n} → ${project.title}`));
+    a.append(dir, document.createTextNode(project.title));
     return a;
   };
   pager.append(link(prev, "prev", "pager__prev"), link(next, "next", "pager__next"));

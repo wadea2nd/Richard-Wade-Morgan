@@ -188,10 +188,10 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
 /* The menu item matches the other links. */
 .nav__toggle { padding-block: 0; }
 
-/* The numbers are native <ol> markers, so they stay semantic. */
+/* The projects sit indented under "Work". */
 .nav__projects {
-  list-style: decimal;
-  padding-inline-start: 2.3em;
+  list-style: none;
+  padding-inline-start: 1.15em;
 }
 
 .nav__projects > li { padding-block: 0.06em; }
@@ -232,7 +232,7 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
   .nav__list { font-size: var(--fs-nav-mobile); }
   .nav__link { padding-block: 0.3rem; }
   .nav__toggle { padding-block: 0.3rem; }
-  .nav__projects { padding-inline-start: 2.1em; }
+  .nav__projects { padding-inline-start: 1.1em; }
 }
 
 
@@ -442,7 +442,18 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
 
 .list-block h2 { line-height: 1.5; }
 
-/* About page: Work / Speaking / Press sit close together as folded tabs. */
+/* About page: Work / Speaking / Press sit close together as folded tabs,
+   in the highlight color. */
+.list-block .acc__toggle { color: var(--color-accent); }
+
+.list-block .acc__toggle:hover,
+.list-block .acc__toggle:focus-visible {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
 .flow > .acc + .acc { margin-block-start: var(--space-xs); }
 .acc .plain-list { padding-block-start: 0.35em; }
 

@@ -23,7 +23,7 @@ Project URLs work two ways: `project.html?p=stord` and, on Netlify,
 - **Projects and slideshow:** `js/data.js`. Every project's copy, credits,
   images, and alt text live there, with comments explaining each field. The
   "Work" menu is plain HTML in each page, so if you add or rename a project,
-  update the `<ol class="nav__projects">` in `index.html`, `about.html`, `project.html`, and
+  update the `<ul class="nav__projects">` in `index.html`, `about.html`, `project.html`, and
   `design-system.html` as well.
 - **Home and About copy:** plain text in `index.html` and `about.html`.
 - **Images:** put files in `assets/img/` and point `js/data.js` at them.
