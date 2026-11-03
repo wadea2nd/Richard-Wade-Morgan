@@ -59,9 +59,9 @@
       <div class="drawer" id="drawer">
         <nav class="nav" aria-label="Primary">
           <ul class="nav__list">
-            <li class="nav__group">
-              <button type="button" class="nav__link nav__toggle" data-nav-toggle aria-expanded="false" aria-controls="work-menu">Work <span class="nav__chevron" aria-hidden="true"></span></button>
-              <div class="nav__panel" id="work-menu">
+            <li class="nav__group" data-accordion>
+              <button type="button" class="nav__link nav__toggle acc__toggle" data-accordion-toggle aria-expanded="false" aria-controls="work-menu">Work <span class="acc__chevron" aria-hidden="true"></span></button>
+              <div class="acc__panel" id="work-menu">
                 <ol class="nav__projects">
                   <li><a class="nav__link" href="project.html?p=google-search" data-slug="google-search">Google Search</a></li>
                   <li><a class="nav__link" href="project.html?p=delta-centennial" data-slug="delta-centennial">Delta Air Lines Centennial</a></li>
@@ -102,9 +102,11 @@
           <a class="inline-link" href="https://www.linkedin.com/in/richard-wade-morgan/" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">→</span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg><span class="visually-hidden">LinkedIn (opens in a new tab)</span></a>
         </p>
 
-        <section class="list-block" data-reveal>
-          <h2>Work:</h2>
-          <ul class="plain-list">
+        <section class="list-block acc" data-accordion data-reveal>
+          <h2><button type="button" class="acc__toggle" data-accordion-toggle aria-expanded="false" aria-controls="about-work">Work: <span class="acc__chevron" aria-hidden="true"></span></button></h2>
+          <div class="acc__panel" id="about-work">
+            <div>
+              <ul class="plain-list">
             <li>Google Search (via Prpl) – UX Comms Designer – 2024–present</li>
             <li>Delta Air Lines – Art Director – 2023–2024</li>
             <li>Stord – Senior Brand Designer – 2022–2023</li>
@@ -112,11 +114,15 @@
             <li>Independent – Designer – 2015–2017</li>
             <li>CNN – On-Air Designer – 2012–2015</li>
           </ul>
+            </div>
+          </div>
         </section>
 
-        <section class="list-block" data-reveal>
-          <h2>Speaking:</h2>
-          <ul class="plain-list">
+        <section class="list-block acc" data-accordion data-reveal>
+          <h2><button type="button" class="acc__toggle" data-accordion-toggle aria-expanded="false" aria-controls="about-speaking">Speaking: <span class="acc__chevron" aria-hidden="true"></span></button></h2>
+          <div class="acc__panel" id="about-speaking">
+            <div>
+              <ul class="plain-list">
             <li>Kennesaw State University</li>
             <li>College of St Benedict’s/St John’s University</li>
             <li>City College of New York</li>
@@ -126,11 +132,15 @@
             <li>Georgia State University</li>
             <li>Georgia Tech</li>
           </ul>
+            </div>
+          </div>
         </section>
 
-        <section class="list-block" data-reveal>
-          <h2>Press:</h2>
-          <ul class="plain-list">
+        <section class="list-block acc" data-accordion data-reveal>
+          <h2><button type="button" class="acc__toggle" data-accordion-toggle aria-expanded="false" aria-controls="about-press">Press: <span class="acc__chevron" aria-hidden="true"></span></button></h2>
+          <div class="acc__panel" id="about-press">
+            <div>
+              <ul class="plain-list">
             <li>Underconsideration – Brand New</li>
             <li>The AJC</li>
             <li>The New York Times</li>
@@ -138,6 +148,8 @@
             <li>Fortune</li>
             <li>TechCrunch</li>
           </ul>
+            </div>
+          </div>
         </section>
 
         <p data-reveal>Originally from South Georgia, I’m the first person in my family to pursue the arts + entrepreneurship full-time. I am also proud to practice as a queer creative here. This background fuels my pursuit of understanding others as they truly are, and how to best communicate someone to their own audience. Raise Hell, Praise Dale, Go Dawgs.

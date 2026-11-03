@@ -128,22 +128,28 @@
 
 .nav__link:hover .nav__arrow { transform: translateX(0.2em); }
 
-/* "Work" accordion. Hovering opens it (mouse only); clicking or tapping
-   toggles it, so it only closes when the visitor says so. */
-.nav__toggle {
+/* Accordions (js/accordion.js): the "Work" menu item and the About page
+   sections. A mouse hovering opens one and rolling off folds it back up;
+   clicking or tapping toggles it. */
+.acc__toggle {
   display: inline-flex;
   align-items: center;
   gap: 0.45em;
-  padding: 0;
+  padding: 0.2rem 0;
   border: 0;
   background: none;
+  color: inherit;
   font: inherit;
   letter-spacing: inherit;
   text-align: start;
   cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-standard);
 }
 
-.nav__chevron {
+.acc__toggle:hover,
+.acc__toggle:focus-visible { color: var(--color-accent); }
+
+.acc__chevron {
   inline-size: 0.42em;
   block-size: 0.42em;
   border-inline-end: 1.5px solid currentColor;
@@ -152,11 +158,11 @@
   transition: transform var(--dur-base) var(--ease-out);
 }
 
-.nav__toggle[aria-expanded="true"] .nav__chevron { transform: translateY(0.1em) rotate(225deg); }
+.acc__toggle[aria-expanded="true"] .acc__chevron { transform: translateY(0.1em) rotate(225deg); }
 
 /* The panel grows from 0 to its natural height; while closed it is
    invisible, so its links also leave the tab order. */
-.nav__panel {
+.acc__panel {
   display: grid;
   grid-template-rows: 0fr;
   visibility: hidden;
@@ -165,19 +171,25 @@
     visibility 0s linear var(--dur-base);
 }
 
-.nav__panel.is-open {
+.acc__panel > * {
+  min-block-size: 0;
+  overflow: hidden;
+}
+
+.acc__panel.is-open {
   grid-template-rows: 1fr;
   visibility: visible;
   transition-delay: 0s;
 }
 
-/* Without JavaScript the toggle can't work, so the list simply stays open. */
-html:not(.js) .nav__panel { grid-template-rows: 1fr; visibility: visible; }
+/* Without JavaScript the toggle can't work, so everything stays open. */
+html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
+
+/* The menu item matches the other links. */
+.nav__toggle { padding-block: 0; }
 
 /* The numbers are native <ol> markers, so they stay semantic. */
 .nav__projects {
-  min-block-size: 0;
-  overflow: hidden;
   list-style: decimal;
   padding-inline-start: 2.3em;
 }
@@ -219,6 +231,7 @@ html:not(.js) .nav__panel { grid-template-rows: 1fr; visibility: visible; }
   /* Slightly larger type in the full-screen menu, with roomier tap targets. */
   .nav__list { font-size: var(--fs-nav-mobile); }
   .nav__link { padding-block: 0.3rem; }
+  .nav__toggle { padding-block: 0.3rem; }
   .nav__projects { padding-inline-start: 2.1em; }
 }
 
@@ -428,6 +441,10 @@ html:not(.js) .nav__panel { grid-template-rows: 1fr; visibility: visible; }
 }
 
 .list-block h2 { line-height: 1.5; }
+
+/* About page: Work / Speaking / Press sit close together as folded tabs. */
+.flow > .acc + .acc { margin-block-start: var(--space-xs); }
+.acc .plain-list { padding-block-start: 0.35em; }
 
 
 /* 6. SLIDER ---------------------------------------------------------------- */
@@ -679,6 +696,16 @@ html:not(.js) .nav__panel { grid-template-rows: 1fr; visibility: visible; }
 }
 
 .form-status[data-state="error"] { color: var(--color-accent); }
+
+.link-btn {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
 
 .honeypot {
   position: absolute;

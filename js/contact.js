@@ -97,17 +97,42 @@ async function onSubmit(event) {
     sendBtn.textContent = "Sent";
     window.setTimeout(() => { if (dialog.open) dialog.close(); }, 2200);
   } catch (error) {
-    const subject = encodeURIComponent("Hello from your website");
-    const text = encodeURIComponent(messageInput.value);
-    status.innerHTML = "";
-    status.dataset.state = "error";
-    status.append("That didn’t send. ");
-    const link = document.createElement("a");
-    link.href = `mailto:${SITE.email}?subject=${subject}&body=${text}`;
-    link.textContent = "Email me directly instead.";
-    status.append(link);
-    sendBtn.disabled = false;
+    showFailure(error);
   }
+}
+
+/* A failed send never loses the message: say what happened (the code helps
+   when diagnosing it), then offer an email link and a copy-address button for
+   visitors whose computer has no mail app set up. */
+function showFailure(error) {
+  const reason = error && /^HTTP (\d+)/.test(error.message) ? `error ${error.message.slice(5)}` : "no connection";
+  const subject = encodeURIComponent("Hello from your website");
+  const text = encodeURIComponent(messageInput.value);
+
+  status.textContent = "";
+  status.dataset.state = "error";
+  status.append(`That didn’t send (${reason}). `);
+
+  const mail = document.createElement("a");
+  mail.href = `mailto:${SITE.email}?subject=${subject}&body=${text}`;
+  mail.textContent = "Email me directly";
+  status.append(mail, " or ");
+
+  const copy = document.createElement("button");
+  copy.type = "button";
+  copy.className = "link-btn";
+  copy.textContent = "copy my address";
+  copy.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(SITE.email);
+      copy.textContent = `copied: ${SITE.email}`;
+    } catch (e) {
+      copy.textContent = SITE.email;            /* clipboard blocked: show it to copy by hand */
+    }
+  });
+  status.append(copy, ".");
+
+  sendBtn.disabled = false;
 }
 
 function open() {

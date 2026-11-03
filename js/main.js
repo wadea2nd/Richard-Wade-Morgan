@@ -6,7 +6,8 @@
    content stays readable. */
 
 import { initTheme } from "./theme.js";
-import { initNav, initWork, initYear } from "./nav.js";
+import { initNav, initYear } from "./nav.js";
+import { initAccordions } from "./accordion.js";
 import { initContact } from "./contact.js";
 import { initMotion, initPageLeave, initReplay } from "./motion.js";
 import { initChrome } from "./chrome.js";
@@ -34,7 +35,7 @@ async function boot() {
 
   safe("theme", initTheme);
   safe("nav", initNav);
-  safe("work", initWork);
+  safe("accordions", initAccordions);
   safe("year", initYear);
   safe("contact", initContact);
   safe("guard", initGuard);

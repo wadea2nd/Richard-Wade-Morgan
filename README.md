@@ -71,7 +71,7 @@ them back.
 `js/main.js` is the only entry point. It wires up the modules each page needs
 and isolates failures, so one broken feature never takes the page down.
 
-`theme.js` · `nav.js` (mobile menu, "Work" accordion) · `chrome.js` (back-to-top button) · `motion.js` (reveals, page fade) ·
+`theme.js` · `nav.js` (mobile menu) · `accordion.js` (the "Work" menu item and the About page tabs) · `chrome.js` (back-to-top button) · `motion.js` (reveals, page fade) ·
 `slider.js` · `floaties.js` (the draggable emoji) · `contact.js` ·
 `lightbox.js` · `project.js` · `guard.js` (image-drag deterrent) ·
 `data.js` (content) · `design-system.js`
@@ -89,9 +89,18 @@ The floating emoji are decoration and hidden from assistive technology.
 ## Contact form
 
 "Contact" opens a message form. It posts to **Netlify Forms** (the hidden
-form in `index.html` is how Netlify finds it). In the Netlify dashboard,
-under *Forms*, you can see messages and turn on email notifications. If a
-send fails, the dialog offers a `mailto:` link instead, so nothing is lost.
+form in `index.html` is how Netlify finds it). Netlify only accepts the
+messages once these are set up in its dashboard:
+
+1. *Site configuration → Forms*: turn on **form detection**, then redeploy the
+   site so Netlify re-reads the pages. A form that Netlify hasn't detected
+   answers every send with an error 404.
+2. *Forms → Form notifications → Add notification → Email*: choose the
+   address that should receive messages. Without this, messages are stored
+   in the dashboard but nothing arrives in your inbox.
+
+If a send fails, the dialog says why (for example "error 404") and offers a
+`mailto:` link and a "copy my address" button, so nothing is lost.
 
 ## Security
 
