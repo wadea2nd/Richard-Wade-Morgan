@@ -45,7 +45,7 @@ export function initProject() {
 
   const project = PROJECTS[index];
 
-  document.title = `${project.title} | ${SITE.name}`;
+  document.title = `${project.title} | ${SITE.name}, Creative Director`;
   const lead = project.summary.find((part) => typeof part === "string") || "";
   const description = lead.length > 155 ? `${lead.slice(0, 152).trimEnd()}…` : lead;
   setMeta('meta[name="description"]', description);

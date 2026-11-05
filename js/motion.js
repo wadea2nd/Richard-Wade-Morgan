@@ -4,6 +4,30 @@
 const root = document.documentElement;
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+/* Pictures fade in as they finish loading. Call this early (so load events
+   from images built later are caught) and again once the page is built (so
+   images that were already cached are marked too). */
+let imageFadeArmed = false;
+export function initImageFade() {
+  const settle = (img) => img.classList.add("is-loaded");
+
+  if (!imageFadeArmed) {
+    imageFadeArmed = true;
+    /* load and error don't bubble, so listen in the capture phase. */
+    document.addEventListener("load", (event) => { if (event.target.tagName === "IMG") settle(event.target); }, true);
+    document.addEventListener("error", (event) => { if (event.target.tagName === "IMG") settle(event.target); }, true);
+  }
+  document.querySelectorAll("img").forEach((img) => { if (img.complete) settle(img); });
+}
+
+/* Resolves when the web fonts are ready, or after a short wait, whichever
+   comes first, so a slow connection never holds the page back. */
+export function whenFontsReady(timeout = 1400) {
+  const wait = new Promise((resolve) => window.setTimeout(resolve, timeout));
+  const fonts = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+  return Promise.race([fonts, wait]);
+}
+
 /* Called after the page's content exists (project pages build theirs first). */
 export function initMotion() {
   root.classList.add("motion-ready");

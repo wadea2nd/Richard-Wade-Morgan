@@ -4,28 +4,78 @@
    Deliberately quiet. Content eases up a few pixels as it fades in, nothing
    bounces, and the light ⇄ dark switch is a slow crossfade.
 
-   Progressive enhancement: content is only hidden for its entrance when
-   <html> carries the "js" class (set in theme-init.js). If the scripts fail
-   to run, the "motion-failed" class (added after 3s) shows everything.
+   The page appears in three passes, all started only once the fonts are
+   ready, so text never flashes in a fallback face and then jumps:
+     1. the name, controls, menu, and credit line rise in one after another
+     2. the headline, copy, and figures fade up as they enter view
+     3. images fade in as they finish loading
+
+   Progressive enhancement: things are only held back when <html> carries the
+   "js" class (set in theme-init.js). If the scripts fail to run, the
+   "motion-failed" and "is-ready" classes (added after 3s) show everything.
    Visitors who prefer reduced motion get no movement at all.
    ========================================================================== */
+
+
+/* Entrance of the page chrome ---------------------------------------------- */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(0.7rem); }
+  to   { opacity: 1; transform: none; }
+}
+
+html.js:not(.is-ready):not(.chrome-seen) :is(.brand, .tools, .menu-toggle, .nav__list > li, .colophon) {
+  opacity: 0;
+}
+
+html.is-ready:not(.chrome-seen) :is(.brand, .tools, .menu-toggle, .nav__list > li, .colophon) {
+  animation: rise var(--dur-enter) var(--ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 80ms);
+}
+
+.tools { --i: 1; }
+.menu-toggle { --i: 1; }
+.nav__list > li:nth-child(1) { --i: 2; }
+.nav__list > li:nth-child(2) { --i: 3; }
+.nav__list > li:nth-child(3) { --i: 4; }
+.nav__list > li:nth-child(4) { --i: 5; }
+.colophon { --i: 6; }
 
 
 /* Reveal ------------------------------------------------------------------
    Headlines, paragraphs, lists, and figures fade up as they enter view. */
 html.js:not(.motion-failed) [data-reveal]:not(.is-in) {
   opacity: 0;
-  transform: translateY(1.1rem);
+  transform: translateY(1rem);
 }
 
 [data-reveal] {
   transition:
-    opacity 0.8s var(--ease-standard),
-    transform 0.8s var(--ease-out);
+    opacity 1s var(--ease-standard),
+    transform 1s var(--ease-out);
   transition-delay: var(--d, 0ms);
 }
 
+[data-reveal].is-in { will-change: auto; }
+
 [data-reveal].is-in { opacity: 1; transform: none; }
+
+
+/* Images --------------------------------------------------------------------
+   Pictures sit on their quiet placeholder color and fade in as they load
+   (js/motion.js adds "is-loaded"). */
+html.js:not(.motion-failed) :is(.slider__slide img, .figure__trigger img, .photo img):not(.is-loaded) {
+  opacity: 0;
+}
+
+.slider__slide img {
+  transition: transform 7s var(--ease-out), opacity 1s var(--ease-standard);
+}
+
+.figure__trigger img {
+  transition: transform var(--dur-slow) var(--ease-out), opacity 1s var(--ease-standard);
+}
+
+.photo img { transition: opacity 1s var(--ease-standard); }
 
 
 /* Dialogs ------------------------------------------------------------------ */

@@ -62,7 +62,7 @@
   --color-focus:       var(--color-accent);
 
   --color-tool:        var(--ink-900);         /* icon buttons */
-  --color-chrome:      rgb(231 230 224 / 0.88); /* backing for floating controls */
+  --color-chrome:      rgb(231 230 224 / 0.94); /* backing for floating controls */
 
   --shadow-dialog: 0 1.25rem 3.5rem rgb(0 0 0 / 0.28);
 }
@@ -70,9 +70,8 @@
 
 /* 3. DARK THEME ------------------------------------------------------------
    Applied by [data-theme="dark"], which theme-init.js sets before first
-   paint (from the saved choice, else the OS preference). The media-query
-   copy below only serves visitors with JavaScript turned off. Keep the two
-   blocks identical. */
+   paint, only when the visitor has chosen dark themselves. The site always
+   opens in light mode otherwise. */
 :root[data-theme="dark"] {
   color-scheme: dark;
 
@@ -89,31 +88,9 @@
   --color-on-lightbox: #f3f2ee;
 
   --color-tool:        var(--orange-300);
-  --color-chrome:      rgb(18 18 17 / 0.88);
+  --color-chrome:      rgb(18 18 17 / 0.94);
 
   --shadow-dialog: 0 1.25rem 3.5rem rgb(0 0 0 / 0.6);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    color-scheme: dark;
-
-    --color-bg:          var(--night-900);
-    --color-surface:     var(--night-800);
-    --color-text:        var(--bone-100);
-    --color-text-muted:  var(--bone-400);
-    --color-accent:      var(--orange-300);
-    --color-line:        rgb(236 235 229 / 0.22);
-    --color-fill:        rgb(236 235 229 / 0.1);
-    --color-media-bg:    var(--night-700);
-    --color-scrim:       rgb(0 0 0 / 0.66);
-    --color-lightbox:    rgb(6 6 5 / 0.96);
-
-    --color-tool:        var(--orange-300);
-    --color-chrome:      rgb(18 18 17 / 0.88);
-
-    --shadow-dialog: 0 1.25rem 3.5rem rgb(0 0 0 / 0.6);
-  }
 }
 
 
@@ -191,6 +168,7 @@
   --dur-slow:  600ms;
   --dur-slide: 900ms;
   --dur-theme: 700ms;     /* light ⇄ dark crossfade */
+  --dur-enter: 1000ms;    /* entrance of the page chrome and content */
 
   --z-content:  1;
   --z-floaty:   80;   /* above the sidebar and the mobile menu */

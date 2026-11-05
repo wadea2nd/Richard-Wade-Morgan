@@ -93,6 +93,7 @@
    Every page opens with an h1 (the intro statement or the project title). */
 .content > h1 { margin-block-end: var(--space-xl); }
 [data-page="home"] .content > h1 { margin-block-end: var(--space-l); }
+[data-page="about"] .content > h1 { margin-block-end: var(--space-m); }   /* the line beneath tucks right under */
 
 /* Project pages stack copy, credits, gallery, and pager with a wider gap
    than the paragraphs inside the copy. */

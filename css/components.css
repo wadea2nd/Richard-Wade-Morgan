@@ -129,8 +129,7 @@
 .nav__link:hover .nav__arrow { transform: translateX(0.2em); }
 
 /* Accordions (js/accordion.js): the "Work" menu item and the About page
-   sections. A mouse hovering opens one and rolling off folds it back up;
-   clicking or tapping toggles it. */
+   tabs. Click or tap to open, click again to close; they stay as left. */
 .acc__toggle {
   display: inline-flex;
   align-items: center;
@@ -252,8 +251,6 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
   padding: 0.25rem;
   border-radius: var(--radius-pill);
   background: var(--color-chrome);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
 }
 
 .tool-btn {
@@ -319,6 +316,29 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
   transition: opacity var(--dur-base) var(--ease-standard);
 }
 
+/* Light mode shows the swatter; dark mode swaps in a lightbulb that draws the
+   gnats toward it. */
+.swat__icon--bulb { display: none; }
+:root[data-theme="dark"] .swat__icon--swatter { display: none; }
+:root[data-theme="dark"] .swat__icon--bulb { display: block; }
+
+.bulb__glass {
+  fill: currentColor;
+  fill-opacity: 0;
+  transition: fill-opacity var(--dur-slow) var(--ease-standard);
+}
+
+.bulb__rays {
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-standard);
+}
+
+.swat__icon--bulb { transition: filter var(--dur-slow) var(--ease-standard); }
+
+.swat[data-state="attracted"] .bulb__glass { fill-opacity: 0.28; }
+.swat[data-state="attracted"] .bulb__rays { opacity: 1; }
+.swat[data-state="attracted"] .swat__icon--bulb { filter: drop-shadow(0 0 5px var(--color-tool)); }
+
 .swat:hover .swat__swatter { transform: rotate(26deg); }
 .swat[data-state="swatted"] .swat__swatter { transform: rotate(6deg); }
 .swat[data-state="swatted"] .swat__gnat { opacity: 0; }
@@ -343,8 +363,6 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
     margin-block-start: calc((var(--fs-nav) * var(--lh-snug) - var(--tool)) / 2);
     padding: 0;
     background: none;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
   }
 }
 
@@ -363,8 +381,6 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
   border: 1px solid var(--color-line);
   border-radius: 50%;
   background: var(--color-chrome);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
   color: var(--color-text);
   cursor: pointer;
   opacity: 0;
@@ -454,7 +470,7 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
   text-underline-offset: 0.2em;
 }
 
-.flow > .acc + .acc { margin-block-start: var(--space-xs); }
+.acc-group > .acc + .acc { margin-block-start: var(--space-xs); }
 .acc .plain-list { padding-block-start: 0.35em; }
 
 

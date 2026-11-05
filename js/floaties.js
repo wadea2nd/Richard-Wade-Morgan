@@ -4,9 +4,14 @@
                 edge, crosses the screen, and floats out another edge, then
                 returns after a pause. They can be grabbed and thrown.
 
-   Swat mode    The "Swat gnats" button drops them to the bottom of the
-                screen, where they pile up and stay until each is dragged off
-                the left, right, or top edge. "Release gnats" brings them back.
+   Swat mode    Light mode. The fly-swatter button drops them to the bottom
+                of the screen, where they pile up and stay until each is
+                dragged off the left, right, or top edge. "Release gnats"
+                brings them back.
+
+   Attract mode Dark mode. The lightbulb button lights up and the emoji
+                swarm around it like moths. "Release gnats" sends them off.
+                Switching themes always sets them free.
 
    They are decoration only (aria-hidden), so nothing depends on them. Their
    state carries across pages within a visit. With reduced motion they never
@@ -19,14 +24,20 @@ const BASE_SPEED = 52;        /* px/s of a lazy drift */
 const MAX_THROW = 1500;       /* px/s cap on a throw */
 const GRAVITY = 2400;         /* px/s² while swatted */
 const EDGE_ZONE = 14;         /* px from an edge that counts as "off the screen" */
+const MAX_SWARM_SPEED = 760;  /* px/s cap while flying to the light */
 
 const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const rand = (min, max) => min + Math.random() * (max - min);
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+const isDark = () => document.documentElement.dataset.theme === "dark";
 
 export function initFloaties() {
   const still = reduced();
   const saved = restore();
-  let mode = saved && saved.mode === "swatted" ? "swatted" : "float";
+  /* A swatted state only makes sense in light mode, an attracted one in dark. */
+  let mode = "float";
+  if (saved && saved.mode === "swatted" && !isDark()) mode = "swatted";
+  if (saved && saved.mode === "attracted" && isDark()) mode = "attracted";
 
   const items = EMOJI.map((char, i) => {
     const el = document.createElement("span");
@@ -37,7 +48,10 @@ export function initFloaties() {
     glyph.textContent = char;
     el.append(glyph);
     document.body.append(el);
-    return { el, i, x: 0, y: 0, vx: 0, vy: 0, rot: 0, size: 40, wait: 0, gone: false, dragging: false };
+    return {
+      el, i, x: 0, y: 0, vx: 0, vy: 0, rot: 0, size: 40, wait: 0, gone: false, dragging: false,
+      orbit: rand(80, 118), phase: rand(0, Math.PI * 2), omega: rand(1.2, 2.2) * (i % 2 ? 1 : -1), wob: rand(0, 6)
+    };
   });
 
   const bounds = () => ({ w: window.innerWidth, h: window.innerHeight });
@@ -146,6 +160,60 @@ export function initFloaties() {
     if (item.x > w - item.size && !item.dragging) { item.x = w - item.size; item.vx = -Math.abs(item.vx) * 0.4; }
   }
 
+  /* The light: the centre of the (visible) bulb button. */
+  function lightCenter() {
+    for (const button of document.querySelectorAll("[data-swat]")) {
+      const r = button.getBoundingClientRect();
+      if (r.width) return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    }
+    return { x: bounds().w - 60, y: 40 };
+  }
+
+  /* Where an emoji wants to be: a loose orbit around the light, kept in view
+     and always outside a clear ring around the button, so the bulb stays
+     clickable even when it sits in a corner. */
+  const CLEAR = 74;                                         /* px from the bulb's centre */
+
+  function orbitGoal(item, light, t) {
+    const { w, h } = bounds();
+    const half = item.size / 2;
+    const r = item.orbit * (1 + 0.12 * Math.sin(t * 0.7 + item.wob));
+    let ox = Math.cos(item.phase) * r;
+    let oy = Math.sin(item.phase) * r * 0.8;
+    const len = Math.hypot(ox, oy);
+    if (len < CLEAR + 4) { ox = (ox / len) * (CLEAR + 4); oy = (oy / len) * (CLEAR + 4); }
+
+    let cx = clamp(light.x + ox, half + 4, w - half - 4);
+    let cy = clamp(light.y + oy, half + 4, h - half - 4);
+
+    if (Math.hypot(cx - light.x, cy - light.y) < CLEAR) {   /* squeezed against an edge */
+      const toCentre = Math.atan2(h / 2 - light.y, w / 2 - light.x);
+      const a = toCentre + (item.i - 1.5) * 0.55 + Math.sin(t * 0.9 + item.wob) * 0.25;
+      const d = CLEAR + 4 + item.i * 12;
+      cx = clamp(light.x + Math.cos(a) * d, half + 4, w - half - 4);
+      cy = clamp(light.y + Math.sin(a) * d, half + 4, h - half - 4);
+    }
+    return { x: cx - half, y: cy - half };
+  }
+
+  let clock = 0;
+
+  function stepAttracted(item, dt, light) {
+    item.phase += item.omega * dt;
+    const goal = orbitGoal(item, light, clock);
+    item.vx += ((goal.x - item.x) * 16 - item.vx * 7.5) * dt;
+    item.vy += ((goal.y - item.y) * 16 - item.vy * 7.5) * dt;
+
+    /* Never rest on the button itself. */
+    const dx = item.x + item.size / 2 - light.x, dy = item.y + item.size / 2 - light.y;
+    const d = Math.hypot(dx, dy) || 1;
+    if (d < CLEAR - 4) { item.vx += (dx / d) * 2200 * dt; item.vy += (dy / d) * 2200 * dt; }
+    const speed = Math.hypot(item.vx, item.vy);
+    if (speed > MAX_SWARM_SPEED) { item.vx *= MAX_SWARM_SPEED / speed; item.vy *= MAX_SWARM_SPEED / speed; }
+    item.x += item.vx * dt;
+    item.y += item.vy * dt;
+  }
+
   function collide() {
     for (let a = 0; a < items.length; a += 1) {
       for (let b = a + 1; b < items.length; b += 1) {
@@ -174,9 +242,12 @@ export function initFloaties() {
     const dt = Math.min(0.05, (now - last) / 1000);
     last = now;
 
+    clock += dt;
+    const light = mode === "attracted" ? lightCenter() : null;
     items.forEach((item) => {
       if (item.dragging || item.gone) return;
       if (mode === "swatted") stepSwatted(item, dt);
+      else if (mode === "attracted") stepAttracted(item, dt, light);
       else stepFloat(item, dt);
     });
     collide();
@@ -256,13 +327,33 @@ export function initFloaties() {
   document.body.append(status);
 
   function syncButtons(announce = false) {
-    const label = mode === "swatted" ? "Release gnats" : "Swat gnats";
+    const label = mode !== "float" ? "Release gnats" : isDark() ? "Attract gnats" : "Swat gnats";
     buttons.forEach((button) => {
       button.setAttribute("aria-label", label);
       button.setAttribute("title", label);
       button.dataset.state = mode;
     });
-    if (announce) status.textContent = mode === "swatted" ? "Gnats swatted." : "Gnats released.";
+    if (announce) {
+      status.textContent = mode === "swatted" ? "Gnats swatted."
+        : mode === "attracted" ? "Gnats drawn to the light." : "Gnats released.";
+    }
+  }
+
+  function attract() {
+    mode = "attracted";
+    const light = lightCenter();
+    items.forEach((item) => {
+      if (item.gone) return;
+      item.wait = 0;
+      if (still) {
+        const goal = orbitGoal(item, light, 0);
+        item.x = goal.x; item.y = goal.y; item.vx = 0; item.vy = 0;
+        draw(item);
+      } else if (isOut(item)) {
+        spawn(item, 0);                           /* fly in from the edge */
+      }
+    });
+    syncButtons(true);
   }
 
   function swat() {
@@ -293,9 +384,19 @@ export function initFloaties() {
   }
 
   function releaseAll() {
+    const wasAttracted = mode === "attracted";
+    const light = wasAttracted ? lightCenter() : null;
     mode = "float";
     items.forEach((item) => {
-      if (item.gone) {
+      if (wasAttracted) {
+        if (!still) {                             /* scatter away from the light */
+          const dx = item.x + item.size / 2 - light.x, dy = item.y + item.size / 2 - light.y;
+          const len = Math.hypot(dx, dy) || 1;
+          const speed = rand(170, 280);
+          item.vx = (dx / len) * speed;
+          item.vy = (dy / len) * speed;
+        }
+      } else if (item.gone) {
         item.gone = false;
         item.el.hidden = false;
         item.el.classList.remove("is-gone");
@@ -309,7 +410,17 @@ export function initFloaties() {
     syncButtons(true);
   }
 
-  buttons.forEach((button) => button.addEventListener("click", () => (mode === "swatted" ? releaseAll() : swat())));
+  buttons.forEach((button) => button.addEventListener("click", () => {
+    if (mode !== "float") releaseAll();
+    else if (isDark()) attract();
+    else swat();
+  }));
+
+  /* Changing theme always sets the gnats free and swaps the button's meaning. */
+  document.addEventListener("themechange", () => {
+    if (mode !== "float") releaseAll();
+    else syncButtons();
+  });
 
   /* Keep things sensible when the window changes size. */
   window.addEventListener("resize", () => {
@@ -318,6 +429,10 @@ export function initFloaties() {
       if (mode === "swatted" && !item.gone) {
         item.x = Math.min(item.x, w - item.size);
         item.y = floorOf(item);
+      }
+      if (mode === "attracted" && still && !item.gone) {
+        const goal = orbitGoal(item, lightCenter(), 0);
+        item.x = goal.x; item.y = goal.y;
       }
       draw(item);
     });

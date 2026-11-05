@@ -39,6 +39,7 @@ contains a raw color, font size, spacing value, or duration.
 
 | File | Responsibility |
 | --- | --- |
+| `css/fonts.css` | Self-hosted font files (in `assets/fonts/`), so text never waits on another server |
 | `css/tokens.css` | The tokens. Change a value here to retune the whole site. |
 | `css/base.css` | Reset and the core text styles: **h1**, **h2**, and **body** |
 | `css/layout.css` | The two-column shell and the mobile single column |
@@ -53,25 +54,32 @@ copy, and h2 labels. Space Mono is for captions and credits. All sizes are
 fluid `clamp()` values between a 375px phone and a 1920px desktop.
 
 **Themes:** light and dark, toggled by the half-moon at the top right of
-the window (in the pinned header on phones). In dark mode both header icons are light orange. The choice is saved in the browser, the first visit follows the
-operating system, and the page crossfades between the two. `js/theme-init.js`
-runs before the first paint so dark-mode visitors never see a flash of light.
+the window (in the pinned header on phones). In dark mode both header icons are light orange. The site always opens in
+light mode; the choice is saved in the browser, and the page crossfades
+between the two. `js/theme-init.js` runs before the first paint so a returning
+dark-mode visitor never sees a flash of light.
 
-**Motion:** deliberately quiet. Content fades up a few pixels as it arrives;
-nothing bounces. Everything stops for visitors who prefer reduced motion.
+**Motion:** deliberately quiet. Nothing appears until the fonts are ready, then
+the name, controls, and menu rise in one after another, the headline and copy
+fade up as they scroll into view, and images fade in as they finish loading.
+The name, controls, and menu only make that entrance on the first page of a
+visit. Nothing bounces. Everything stops for visitors who prefer reduced
+motion.
 
 **Floating emoji:** four emoji drift across the window, floating in at one
-edge and out another, and can be dragged and thrown. The fly-swatter icon
-(next to the half-moon) drops them to the bottom of the screen, where they stay until
-each is dragged off the left, right, or top edge; "Release gnats" brings
-them back.
+edge and out another, and can be dragged and thrown. In light mode
+the fly-swatter icon (next to the half-moon) drops them to the bottom of the
+screen, where they stay until each is dragged off the left, right, or top
+edge. In dark mode the icon becomes a lightbulb: it lights up and the emoji
+swarm around it like moths. Either way, "Release gnats" sets them free, and
+switching themes always does too.
 
 ## JavaScript
 
 `js/main.js` is the only entry point. It wires up the modules each page needs
 and isolates failures, so one broken feature never takes the page down.
 
-`theme.js` · `nav.js` (mobile menu) · `accordion.js` (the "Work" menu item and the About page tabs) · `chrome.js` (back-to-top button) · `motion.js` (reveals, page fade) ·
+`theme.js` · `nav.js` (mobile menu) · `accordion.js` (the "Work" menu item and the About page tabs) · `chrome.js` (back-to-top button) · `motion.js` (font-ready gate, reveals, image fade, page fade) ·
 `slider.js` · `floaties.js` (the draggable emoji) · `contact.js` ·
 `lightbox.js` · `project.js` · `guard.js` (image-drag deterrent) ·
 `data.js` (content) · `design-system.js`
@@ -105,7 +113,7 @@ If a send fails, the dialog says why (for example "error 404") and offers a
 ## Security
 
 `netlify.toml` sends a strict Content-Security-Policy (scripts and styles
-from this site only, fonts from Google Fonts), plus the usual hardening
+from this site only, fonts self-hosted), plus the usual hardening
 headers. The site therefore uses no inline scripts or inline `style`
 attributes: keep it that way when editing.
 

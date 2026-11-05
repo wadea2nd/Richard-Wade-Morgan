@@ -9,7 +9,7 @@ import { initTheme } from "./theme.js";
 import { initNav, initYear } from "./nav.js";
 import { initAccordions } from "./accordion.js";
 import { initContact } from "./contact.js";
-import { initMotion, initPageLeave, initReplay } from "./motion.js";
+import { initMotion, initPageLeave, initReplay, initImageFade, whenFontsReady } from "./motion.js";
 import { initChrome } from "./chrome.js";
 import { initFloaties } from "./floaties.js";
 import { initGuard } from "./guard.js";
@@ -32,6 +32,9 @@ async function safeAsync(name, load) {
 
 async function boot() {
   const page = document.body.dataset.page;
+  const fontsReady = whenFontsReady();
+
+  safe("imageFade", initImageFade);
 
   safe("theme", initTheme);
   safe("nav", initNav);
@@ -53,6 +56,12 @@ async function boot() {
 
   safe("pageLeave", initPageLeave);
   safe("replay", initReplay);
+  safe("imageFade", initImageFade);
+
+  /* Nothing appears until the fonts are ready, then it all arrives together. */
+  await fontsReady;
+  document.documentElement.classList.add("is-ready");
+  try { sessionStorage.setItem("rwm-entered", "1"); } catch (e) { /* ignore */ }
   safe("motion", initMotion);
   safe("chrome", initChrome);
   safe("floaties", initFloaties);

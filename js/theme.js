@@ -1,5 +1,5 @@
 /* Light / dark toggle.
-   - The saved choice (localStorage) wins; otherwise the OS preference.
+   - The saved choice (localStorage) wins; otherwise the site opens in light.
    - The whole page crossfades between the two (View Transitions API where
      supported; otherwise every color eases over the same duration). */
 
@@ -23,6 +23,7 @@ function apply(next) {
   root.dataset.theme = next;
   try { localStorage.setItem(KEY, next); } catch (e) { /* storage blocked */ }
   syncChrome();
+  document.dispatchEvent(new CustomEvent("themechange", { detail: { theme: next } }));
 }
 
 function toggle() {
@@ -31,7 +32,11 @@ function toggle() {
   if (prefersReducedMotion()) { apply(next); return; }
 
   if (document.startViewTransition) {
-    document.startViewTransition(() => apply(next));
+    /* The crossfade can be skipped (for example if the tab is hidden); the
+       theme still changes, so those rejections are safe to ignore. */
+    const transition = document.startViewTransition(() => apply(next));
+    transition.ready.catch(() => {});
+    transition.finished.catch(() => {});
     return;
   }
 
@@ -43,12 +48,4 @@ function toggle() {
 export function initTheme() {
   syncChrome();
   document.querySelectorAll("[data-theme-toggle]").forEach((btn) => btn.addEventListener("click", toggle));
-
-  /* Follow the OS if the visitor hasn't made a choice of their own. */
-  const mq = window.matchMedia("(prefers-color-scheme: dark)");
-  mq.addEventListener("change", (e) => {
-    let saved = null;
-    try { saved = localStorage.getItem(KEY); } catch (err) { /* ignore */ }
-    if (!saved) { root.dataset.theme = e.matches ? "dark" : "light"; syncChrome(); }
-  });
 }
