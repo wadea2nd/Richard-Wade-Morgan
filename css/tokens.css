@@ -168,6 +168,7 @@
   --dur-slow:  600ms;
   --dur-slide: 900ms;
   --dur-theme: 700ms;     /* light ⇄ dark crossfade */
+  --dur-menu-out: 600ms;  /* phone menu fading away as a new page loads */
   --dur-enter: 1000ms;    /* entrance of the page chrome and content */
 
   --z-content:  1;

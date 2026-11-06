@@ -74,13 +74,14 @@ export function initPageLeave() {
     /* On a phone the full-screen menu fades away first, then the page changes;
        on desktop the sidebar simply stays while the content eases out. */
     const menuWasOpen = closeMenu();
+    if (menuWasOpen) root.classList.add("is-leaving-menu");
     root.classList.add("is-leaving");
-    window.setTimeout(() => { window.location.href = link.href; }, menuWasOpen ? 340 : 240);
+    window.setTimeout(() => { window.location.href = link.href; }, menuWasOpen ? 640 : 240);
   });
 
   /* Coming back with the browser's back button restores the page as it was. */
   window.addEventListener("pageshow", (event) => {
-    if (event.persisted) root.classList.remove("is-leaving");
+    if (event.persisted) root.classList.remove("is-leaving", "is-leaving-menu");
   });
 }
 

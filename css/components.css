@@ -269,6 +269,15 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
 
   .nav { margin-block-start: var(--space-m); }
 
+  /* Following a link from the open menu: a slow, even fade with no sliding, so
+     the menu melts away while the next page comes in. */
+  html.is-leaving .drawer {
+    transform: none;
+    transition:
+      opacity var(--dur-menu-out) var(--ease-standard),
+      visibility 0s linear var(--dur-menu-out);
+  }
+
   /* Slightly larger type in the full-screen menu, with roomier tap targets. */
   .nav__list { font-size: var(--fs-nav-mobile); }
   .nav__link { padding-block: 0.3rem; }
