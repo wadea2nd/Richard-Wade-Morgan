@@ -663,12 +663,19 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
   display: block;
   position: relative;
   width: 100%;
-  aspect-ratio: var(--ar, 16 / 9);
   padding: 0;
   overflow: hidden;
   border: 0;
   background: var(--color-media-bg);
   cursor: zoom-in;
+}
+
+/* The picture's own shape is reserved with padding, which every browser
+   handles the same way, so a picture can never be squeezed or stretched. */
+.figure__trigger::before {
+  content: "";
+  display: block;
+  padding-top: calc(100% / var(--ar, 1.7778));
 }
 
 .figure__trigger img {
@@ -694,6 +701,14 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
 }
 
 .story-caption { margin-block-end: 0; }
+
+.story-note {
+  max-width: var(--measure);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
 
 .story-label {
   font-family: var(--font-mono);
@@ -748,7 +763,9 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
 }
 
 .mosaic > .figure { display: flex; flex-direction: column; min-height: 0; }
-.mosaic > .figure .figure__trigger { flex: 1; aspect-ratio: auto; min-height: 0; }
+.mosaic > .figure .figure__trigger { flex: 1; min-height: 0; }
+.mosaic > .figure .figure__trigger::before,
+.collage > .figure .figure__trigger::before { display: none; }
 
 .mosaic--feature-left {
   grid-template-columns: 2fr 1fr;
@@ -778,7 +795,6 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
 .collage > .figure { display: flex; flex-direction: column; min-height: 0; position: relative; }
 .collage > .figure .figure__trigger {
   flex: 1;
-  aspect-ratio: auto;
   min-height: 0;
   box-shadow: 0 0 0 clamp(0.3rem, 0.2rem + 0.4vw, 0.6rem) var(--color-bg);
 }
@@ -825,7 +841,7 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
   scroll-snap-align: start;
 }
 
-.carousel__slide .figure__trigger { aspect-ratio: var(--carousel-ratio, 16 / 9); }
+.carousel__slide .figure__trigger::before { padding-top: calc(100% / var(--carousel-ar, 1.7778)); }
 .carousel__slide img { object-fit: contain; }
 .carousel--cover .carousel__slide img { object-fit: cover; }
 
@@ -886,7 +902,9 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
   .mosaic,
   .collage { display: flex; flex-direction: column; aspect-ratio: auto; gap: var(--media-gap); }
   .mosaic > .figure .figure__trigger,
-  .collage > .figure .figure__trigger { flex: none; aspect-ratio: var(--ar, 16 / 9); box-shadow: none; }
+  .collage > .figure .figure__trigger { flex: none; box-shadow: none; }
+  .mosaic > .figure .figure__trigger::before,
+  .collage > .figure .figure__trigger::before { display: block; }
 
   .split,
   .split--left { grid-template-columns: minmax(0, 1fr); gap: var(--space-m); }

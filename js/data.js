@@ -14,7 +14,8 @@
 
        { text: "A paragraph." }
        { list: ["A", "short", "list"] }
-       { label: "A small heading above a group of pictures" }
+       { label: "A small divider line above a group of pictures" }
+       { note: "A line of copy that sits below a group of pictures" }
 
        { type: "full",     image: "id", caption: "…" }          one picture, full width
        { type: "row",      images: [...] }                       pictures side by side, matched in height
@@ -25,8 +26,10 @@
        { type: "carousel", label: "…", images: [...] }          swipeable slides
        { type: "split",    text: "…", image: "id", side: "right" }    a paragraph beside a tall picture
 
-     Inside "images", each entry is a picture id from images.js, or
-     { id: "…", caption: "…" } to add a caption. Add  tone: "stage"  to a row
+     Inside "images", each entry is a picture id from images.js. Pictures
+     rarely need captions: prefer a { label } divider between groups, and a
+     { note } below a group for anything longer. (A caption can still be added
+     with { id: "…", caption: "…" }; carousels show them under the slide.) Add  tone: "stage"  to a row
      for a black band, or  frame: true  for a soft browser-style frame.
 
    SLIDES    the homepage slideshow, in order. `project` links a slide to a
@@ -68,29 +71,34 @@ export const PROJECTS = [
       }],
     story: [
       { text: "In 2024, I was invited to help ideate, design, and deploy the first stage of Delta Air Lines’ Centennial identity." },
-      { type: "full", image: "dc-opening", caption: "The Centennial mark." },
+      { type: "full", image: "dc-opening" },
       { text: "We were challenged to develop a special, year-long brand identity to build excitement not only among customers, but among the people who make Delta possible internally. We envisioned the work taking over the annual employee appreciation campaign for 2024, with the identity expanding outward to customers and partners after the company’s 2025 anniversary." },
       { text: "We established a strategic angle of “Illuminating” and shifted the brand motto to “We’ll Never Stop Climbing.” From there, archival research at the Delta Flight Museum helped us produce special identity variations for the Centennial. The asset library spanned logos, patterns, textures, and more, which I applied to merch, trading cards, onboard beverage cans, and countless other touchpoints throughout the year." },
+      { label: "Pitch deck" },
       { type: "carousel", label: "From the Centennial pitch deck", ratio: "16 / 9", fit: "contain", images: [{ id: "dc-deck-1", caption: "Illuminating: radiant, thoughtful, and perspective-shifting." }, { id: "dc-deck-2", caption: "The color palette." }, { id: "dc-deck-3", caption: "Metallic inspiration." }, { id: "dc-deck-4", caption: "The emblem." }, { id: "dc-deck-5", caption: "The metallic supergraphic." }, { id: "dc-deck-6", caption: "The creative wrapper." }, { id: "dc-deck-7", caption: "The tone moodboard." }] },
-      { type: "grid", columns: 4, images: ["dc-pattern-1", "dc-pattern-2", "dc-pattern-3", "dc-pattern-4", "dc-pattern-5", "dc-pattern-6", "dc-pattern-7", "dc-pattern-8"], caption: "The pattern library." },
+      { label: "Patterns" },
+      { type: "grid", columns: 4, images: ["dc-pattern-1", "dc-pattern-2", "dc-pattern-3", "dc-pattern-4", "dc-pattern-5", "dc-pattern-6", "dc-pattern-7", "dc-pattern-8"] },
       { label: "Merch" },
       { type: "row", images: ["dc-merch-crewneck-gray", "dc-merch-crewneck-navy", "dc-merch-tee-front", "dc-merch-tee-back"], tone: "stage" },
       { type: "row", images: ["dc-merch-sock-trio", "dc-merch-sock-pair"], tone: "stage" },
-      { type: "collage", images: ["dc-merch-shirt-tennis", "dc-merch-socks-cafe", "dc-merch-sweater-athlete"], caption: "Centennial apparel out in the world." },
-      { type: "row", images: [{ id: "dc-merch-snacks", caption: "Cabin snacks." }, { id: "dc-merch-cards", caption: "Aircraft trading cards." }] },
-      { type: "row", images: [{ id: "dc-merch-can", caption: "The SweetWater Brewing × Delta 100 can." }, { id: "dc-merch-shop", caption: "The Delta Shop." }], frame: true },
-      { type: "split", text: "For the employee appreciation campaign, I crafted an environmental design system for buildings, buses, signs, and lamp posts to flood Delta campuses with celebratory ephemera. Photographer Chris Patey and production house Partners&Co were selected to produce our photography and b-roll for video work. Together, we produced deeply moving imagery to herald where the brand was headed.", image: "dc-campus-poster", caption: "“We have something they don’t: you.”", side: "right" },
-      { type: "full", image: "dc-deck-mocks", caption: "The campaign mocks." },
-      { type: "full", image: "dc-campus-banner-wide", caption: "The environmental system, on site." },
+      { type: "collage", images: ["dc-merch-shirt-tennis", "dc-merch-socks-cafe", "dc-merch-sweater-athlete"] },
+      { type: "row", images: ["dc-merch-snacks", "dc-merch-cards"] },
+      { type: "row", images: ["dc-merch-can", "dc-merch-shop"], frame: true },
+      { type: "split", text: "For the employee appreciation campaign, I crafted an environmental design system for buildings, buses, signs, and lamp posts to flood Delta campuses with celebratory ephemera. Photographer Chris Patey and production house Partners&Co were selected to produce our photography and b-roll for video work. Together, we produced deeply moving imagery to herald where the brand was headed.", image: "dc-campus-poster", side: "right" },
+      { label: "Campus" },
+      { type: "full", image: "dc-deck-mocks" },
+      { type: "full", image: "dc-campus-banner-wide" },
       { type: "row", images: ["dc-bus-519", "dc-bus-551"] },
       { type: "row", images: ["dc-campus-banner-closeup", "dc-campus-banner-brick", "dc-campus-gate"] },
-      { type: "full", image: "dc-portrait-group-2", caption: "Centennial portraits, photographed by Chris Patey." },
+      { label: "Portraits" },
+      { type: "full", image: "dc-portrait-group-2" },
       { type: "row", images: ["dc-portrait-jetway", "dc-portrait-tug"] },
       { type: "row", images: ["dc-portrait-tower", "dc-portrait-group-1", "dc-portrait-pilot"] },
       { type: "row", images: ["dc-portrait-attendant-1", "dc-portrait-attendant-2", "dc-portrait-reservations"] },
       { text: "On January 1, 2025, assets launched onboard, online, and onsite. After the Centennial Gala in March, the full suite of assets, merchandise, and experiences launched worldwide. Iteration continued throughout 2025 with multiple design executions and brand partnerships to show the world how we celebrated 100 years of one of the most iconic airlines in aviation history." },
-      { type: "full", image: "dc-sphere", caption: "The Centennial mark lights the Sphere in Las Vegas." },
-      { type: "full", image: "dc-news-hub", caption: "The Centennial on the Delta News Hub.", frame: true },
+      { label: "Launch" },
+      { type: "full", image: "dc-sphere" },
+      { type: "full", image: "dc-news-hub", frame: true },
     ]
   },
   {
@@ -103,16 +111,20 @@ export const PROJECTS = [
       }],
     story: [
       { text: "During my time at Delta, I was tasked with ideating the Global Pride campaign for 2024. It culminated in activations at seven locations worldwide, ending with a float in the famous Amsterdam Pride canal parade. The project also allowed our SkyTeam partner, KLM, to debut a presence at their home Pride celebration. Our creative strategy landed on a blend of themes from Delta, KLM, and AMS Pride to put forth a unique expression of the global vision." },
-      { type: "full", image: "dp-float-0", caption: "The float on the Amsterdam canal." },
+      { type: "full", image: "dp-float-0" },
       { text: "Steering clear of the obvious, we found inspiration not only in the iridescence of the atmosphere, but in our shimmering aircraft trading cards. The focus shifted to translucent, iridescent, and reflective materials, making a joyful presence that blended the Delta and KLM brands in a seamless visual execution where both were equally present." },
+      { label: "Presentation" },
       { type: "carousel", label: "From the creative presentation", ratio: "16 / 9", fit: "contain", images: [{ id: "dp-deck-1", caption: "Creative direction: Uniting." }, { id: "dp-deck-2", caption: "Bright, illuminating, and polychromatic." }, { id: "dp-deck-3", caption: "Mood: iridescent trading cards." }, { id: "dp-deck-4", caption: "Float design notes." }, { id: "dp-deck-5", caption: "The float, illustrated." }, { id: "dp-deck-6", caption: "Together We Shine." }] },
       { text: "Constructed by the local firm Prideboten, the float sailed for three hours and passed under 21 bridges, its inflatable tail deflating and re-emerging with onboard ping and smoke machines. Full details were captured in a Delta News Hub article." },
+      { label: "Amsterdam" },
       { type: "row", images: ["dp-float-1", "dp-float-2"] },
-      { type: "row", images: ["dp-canal-bridge", { id: "dp-ad-richard", caption: "Working on the largest Pride activation of my career was a great reminder of how much of an impact my work as a designer can have on the community I belong to, and the wealth of what simply being yourself can manifest as." }] },
-      { type: "split", text: "This creative direction was applied to numerous offshoot floats across the US for local city Pride parades, with colorful fuselage windows “flying” down joyful streets.", image: "dp-digital-ad", caption: "Seattle PrideFest digital ad.", side: "right", size: "narrow" },
-      { type: "row", images: [{ id: "dp-miami", caption: "Miami Pride." }, { id: "dp-nyc", caption: "New York Pride." }] },
-      { type: "full", image: "dp-brighton", caption: "Brighton Pride, with Virgin Atlantic." },
-      { type: "row", images: [{ id: "dp-booth", caption: "The activation booth." }, { id: "dp-truck", caption: "Vehicle livery." }] },
+      { type: "row", images: ["dp-canal-bridge", "dp-ad-richard"] },
+      { note: "Working on the largest Pride activation of my career was a great reminder of how much of an impact my work as a designer can have on the community I belong to, and the wealth of what simply being yourself can manifest as." },
+      { text: "This creative direction was applied to numerous offshoot floats across the US for local city Pride parades, with colorful fuselage windows “flying” down joyful streets." },
+      { label: "Other global activations" },
+      { type: "row", images: ["dp-miami", "dp-nyc"] },
+      { type: "full", image: "dp-brighton" },
+      { type: "row", images: ["dp-booth", "dp-truck"] },
     ]
   },
   {
@@ -125,17 +137,23 @@ export const PROJECTS = [
       }],
     story: [
       { text: "From 2021 to 2023, I helped graduate a brand from its first visual iteration to a serious global competitor in the logistics space. Studio Freight was the guiding force in helping us achieve this goal." },
-      { type: "row", images: [{ id: "st-old-logo", caption: "Before: the previous wordmark." }, { id: "st-old-instagram", caption: "Before: the previous social feed." }] },
+      { label: "Before" },
+      { type: "carousel", label: "The Stord brand before", ratio: "16 / 9", fit: "contain", images: [{ id: "st-old-logo", caption: "The previous wordmark." }, { id: "st-old-instagram", caption: "The previous social feed." }] },
       { text: "After initial stakeholder fact-finding, it was clear the brand needed to be disruptive, boundary-pushing, and founded on a design system that could span every form of media and space." },
-      { type: "row", images: [{ id: "st-early-logos", caption: "Early logo explorations." }, { id: "st-early-system", caption: "Early design system explorations." }] },
+      { label: "Early explorations" },
+      { type: "row", images: ["st-early-logos", "st-early-system"] },
       { text: "A design audit determined the “box” mark was susceptible to collapse, much like corrugated cardboard itself. Stord needed to be strong, indomitable, and clear. The roundedness of the S and circular, pointed shapes emerged as front runners. The final mark displays the strength of the trust you can place in Stord to make your supply chain a competitive advantage. We then brought in 3D artist Tom Hoying to render elements showing what logistics could look like in our new ethos." },
-      { type: "row", images: [{ id: "st-old-logo-boxes", caption: "The box mark, built from cardboard." }, { id: "st-old-logo-drawing", caption: "The box mark, drawn and finished." }] },
-      { type: "row", images: [{ id: "st-final-logo", caption: "The final logo system." }, { id: "st-final-system-1", caption: "The final design system." }] },
+      { label: "The box mark" },
+      { type: "row", images: ["st-old-logo-boxes", "st-old-logo-drawing"] },
+      { label: "The new system" },
+      { type: "row", images: ["st-final-logo", "st-final-system-1"] },
       { type: "full", image: "st-final-system-2" },
-      { type: "mosaic", variant: "feature-left", images: ["st-3d-4", "st-3d-1", "st-3d-3"], caption: "3D elements by Tom Hoying." },
+      { label: "3D elements" },
+      { type: "full", image: "st-3d-4" },
+      { type: "row", images: ["st-3d-1", "st-3d-3"] },
       { type: "row", images: ["st-3d-2", "st-3d-5"] },
       { text: "Evolving the website was a fun delve into how far things could be pushed. Built on the idea of “gaming code,” users could scroll through each part of the supply chain in the city and see how Stord delivers its services better than the competition, part interactive experience and part usable tool." },
-      { type: "full", image: "st-site", caption: "The Stord website." },
+      { type: "full", image: "st-site" },
       { text: "The overhaul won immediate buy-in from the two founders, the exec team, and a few customers who had just come onboard with Stord’s services. It made waves across the supply chain industry and contributed to many new customers signing on." },
       { label: "Display ads" },
       { type: "row", images: ["st-ad-tall-1", "st-ad-tall-2", "st-ad-tall-3", "st-ad-tall-0"] },
@@ -144,9 +162,12 @@ export const PROJECTS = [
       { type: "row", images: ["st-post-2", "st-post-4", "st-post-5"] },
       { label: "Ebooks" },
       { type: "row", images: ["st-ebook-1", "st-ebook-2", "st-ebook-3"] },
-      { label: "Day to day" },
+      { label: "Welcome box and swag" },
       { type: "grid", columns: 4, images: ["st-box-closed", "st-box-open", "st-box-card", "st-box-cards", "st-box-tumbler", "st-box-speaker", "st-box-stickers", "st-pride-shirts"] },
-      { type: "row", images: ["st-sticker-sheet", "st-logo-sheet"] },
+      { type: "full", image: "st-sticker-sheet" },
+      { label: "Sub-brands" },
+      { type: "row", images: ["st-finance-art", "st-logo-sheet"] },
+      { label: "Pride at Stord" },
       { type: "row", images: ["st-pride-announcement", "st-pride-patches", "st-laptop-stickers"] },
       { label: "Live events" },
       { type: "row", images: ["st-event-booth", "st-event-monitor", "st-event-banners", "st-event-stage"] },
@@ -162,19 +183,25 @@ export const PROJECTS = [
       { label: "", text: "A warm remembrance: Phil Delbourgo passed one year after this project launched. He was helpful, friendly, and one of the most incredible design professionals of his time. It was an honor to work with him on this identity." }],
     story: [
       { text: "In 2022, I was awarded a Pride Month project for Vox Media. What began as a simple email turned into a great conversation about queer identity, sports, and branding. The creative director and founders selected me to refresh the brand of Outsports.com." },
-      { type: "full", image: "os-history", caption: "The Outsports brand before the refresh." },
+      { type: "full", image: "os-history" },
       { text: "The goal was to modernize the logo and craft a simple system the internal team at Vox could run with. A few prior rebrand attempts had not landed, so this was a chance to dive deeper into putting meaning to mark." },
       { text: "A brand audit revealed the old identity was not the community leader it could have been, nor as inspirational as the stories it housed. Diving into the symbolism of the queer community and modern design trends shaped how I would execute this identity." },
-      { type: "row", images: [{ id: "os-sketches-low", caption: "Early sketches." }, { id: "os-sketches-high", caption: "Concept sketches." }] },
+      { label: "Sketches" },
+      { type: "row", images: ["os-sketches-low", "os-sketches-high"] },
       { text: "After a few rounds, an upward arrow form was selected. It felt new, progressive, and outside the system most SB Nation brands sat within, and it could stand as a unique mark heralding positive contact with the brand." },
+      { label: "The arrow" },
       { type: "row", images: ["os-arrows-scatter", "os-arrows-outline"] },
       { type: "full", image: "os-logo" },
+      { label: "Logo system" },
       { type: "row", images: ["os-lockups-type", "os-lockups-color"] },
       { type: "row", images: ["os-logo-blue", "os-logo-sky", "os-palette"] },
-      { type: "mosaic", variant: "feature-left", images: ["os-news-graphic", "os-courage", "os-fearless"] },
+      { label: "Voice" },
+      { type: "full", image: "os-news-graphic" },
+      { type: "row", images: ["os-courage", "os-fearless"] },
       { type: "full", image: "os-logo-color" },
       { text: "The rebrand received great acclaim, with positive reactions from the founders, the publisher of SB Nation, internal partners, Vox Media’s Chief Creative Officer, and plenty of fans online. The brand will be used for years to come and brings a previously sidelined name out into the open." },
-      { type: "row", images: [{ id: "os-site", caption: "Outsports.com, redesigned." }, { id: "os-instagram", caption: "Outsports on Instagram." }], frame: true },
+      { label: "In use" },
+      { type: "row", images: ["os-site", "os-instagram"], frame: true },
     ]
   },
   {
@@ -183,17 +210,30 @@ export const PROJECTS = [
     credits: [],
     story: [
       { text: "An assortment of design work and projects from 2014 to 2024." },
+      { label: "Morrison" },
       { type: "row", images: ["da-morrison", "da-bobs-sticker"] },
-      { type: "masonry", columns: 3, images: ["da-poster-transformation", "da-poster-death-stuff", "da-poster-julien-baker", "da-poster-hiss", "da-poster-mothers", "da-poster-tenement"] },
-      { type: "row", images: ["da-hunks", "da-tacitus", "da-housing", "da-rhino"] },
+      { label: "Posters" },
+      { type: "row", images: ["da-poster-transformation", "da-poster-death-stuff", "da-poster-julien-baker"] },
+      { type: "row", images: ["da-poster-hiss", "da-poster-mothers", "da-poster-tenement"] },
+      { label: "Marks" },
+      { type: "grid", columns: 4, images: ["da-hunks", "da-tacitus", "da-housing", "da-rhino"] },
+      { label: "Brand systems" },
       { type: "row", images: ["da-hooters-guides", "da-hooters-system"] },
       { type: "full", image: "da-hoa" },
+      { label: "Zine" },
       { type: "row", images: ["da-zine-cover", "da-zine-spread-1", "da-zine-spread-2"] },
-      { type: "mosaic", variant: "feature-left", images: ["da-coffee", "da-headspace-cloud", "da-headspace-record"] },
-      { type: "row", images: ["da-lulu", "da-acs", "da-trustpac", "da-engagepac"] },
+      { label: "Animation" },
+      { type: "full", image: "da-coffee" },
+      { type: "row", images: ["da-headspace-cloud", "da-headspace-record"] },
+      { label: "Cause and campaign posters" },
+      { type: "row", images: ["da-lulu", "da-acs"] },
+      { type: "row", images: ["da-trustpac", "da-engagepac"] },
+      { label: "Menus" },
       { type: "row", images: ["da-vinnys-cover", "da-vinnys-menu"] },
       { type: "row", images: ["da-vinnys-social", "da-vinnys-feast", "da-vinnys-pattern"] },
+      { label: "Delta and Team USA" },
       { type: "row", images: ["da-team-usa-card", "da-team-usa-pin"] },
+      { label: "Odds and ends" },
       { type: "row", images: ["da-holiday-card", "da-fernbank", "da-double-click"] },
     ]
   },

@@ -122,8 +122,6 @@ export const IMAGES = {
     alt: "A rendering of the Delta activation booth: a cloud-topped “Together we shine” arch with a window-shaped photo wall." },
   "dp-brighton": { src: "assets/img/work/delta-pride/brighton.webp", width: 2200, height: 1467,
     alt: "Marchers carry a “Together we shine” banner for Virgin Atlantic and Delta through Brighton." },
-  "dp-digital-ad": { src: "assets/img/work/delta-pride/digital-ad.webp", width: 342, height: 1152,
-    alt: "A tall digital ad for Seattle PrideFest reading “Together we shine,” showing a person holding the Progress flag." },
   "dp-miami": { src: "assets/img/work/delta-pride/miami.webp", width: 2200, height: 1467,
     alt: "The Delta Pride float in Miami with palm trees, rainbow windows, and a balloon arch." },
   "dp-nyc": { src: "assets/img/work/delta-pride/nyc.webp", width: 2200, height: 1467,

@@ -139,7 +139,8 @@ export function renderStory(story) {
       const slides = figures(block.images);
       if (!slides.length) return null;
       const outer = el("div", "story-media carousel");
-      outer.style.setProperty("--carousel-ratio", block.ratio || "16 / 9");
+      const [rw, rh] = String(block.ratio || "16 / 9").split("/").map((n) => parseFloat(n));
+      outer.style.setProperty("--carousel-ar", (rw / (rh || 1)).toFixed(4));
       if (block.fit === "cover") outer.classList.add("carousel--cover");
       initCarousel(outer, slides, block.label || "Gallery");
       return outer;
@@ -160,6 +161,8 @@ export function renderStory(story) {
       block.list.forEach((line) => node.append(el("li", "", line)));
     } else if (!block.type && block.label !== undefined) {
       node = reveal(el("p", "story-label", block.label));
+    } else if (!block.type && block.note !== undefined) {
+      node = reveal(el("p", "story-note", block.note));
     } else {
       console.warn("[site] Unknown story block:", block);
     }
