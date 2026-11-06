@@ -34,8 +34,9 @@ export function initChrome() {
 
   button.addEventListener("click", () => {
     window.scrollTo({ top: 0 });          /* smooth unless reduced motion is on (base.css) */
-    /* The button is about to fade out, so hand focus to the top of the page. */
-    const home = document.querySelector(".brand");
-    if (home) home.focus({ preventScroll: true });
+    /* The button is about to fade out, so park keyboard focus at the top of the
+       page content (which draws no outline) instead of leaving it behind. */
+    const main = document.getElementById("main");
+    if (main) main.focus({ preventScroll: true });
   });
 }
