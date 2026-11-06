@@ -1,7 +1,7 @@
 /* ==========================================================================
    COMPONENTS
    --------------------------------------------------------------------------
-   1. Masthead, brand, menu button      7. Figures and gallery
+   1. Masthead, brand, menu button      7. Figures and story layouts
    2. Drawer and navigation             8. Credits and project pager
    3. Tools, colophon, back to top      9. Buttons and form fields
    4. Inline links and icons           10. Dialogs (lightbox, form styles)
@@ -419,6 +419,13 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
 }
 
 
+/* Small phones: tighter header so the name stays on one line beside the icons. */
+@media (max-width: 26rem) {
+  .masthead { gap: var(--space-xs); }
+  .tools { --tool: 2.25rem; }
+  .tools { margin-block-start: calc((var(--fs-nav) * var(--lh-snug) - var(--tool)) / 2); }
+}
+
 /* Back to top: appears bottom right after scrolling, on every screen size. */
 .to-top {
   position: fixed;
@@ -647,18 +654,16 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
 }
 
 
-/* 7. FIGURES AND GALLERY --------------------------------------------------- */
-.gallery {
-  display: grid;
-  gap: var(--space-xl);
-}
-
-.figure { margin: 0; }
+/* 7. FIGURES AND STORY LAYOUTS ---------------------------------------------
+   A project page is words and pictures woven together (see data.js). Each
+   picture is a .figure; the layouts below arrange them. */
+.figure { margin: 0; min-width: 0; }
 
 .figure__trigger {
   display: block;
   position: relative;
   width: 100%;
+  aspect-ratio: var(--ar, 16 / 9);
   padding: 0;
   overflow: hidden;
   border: 0;
@@ -667,21 +672,227 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
 }
 
 .figure__trigger img {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   transition: transform var(--dur-slow) var(--ease-out);
   -webkit-user-drag: none;
 }
 
 .figure__trigger:hover img { transform: scale(1.015); }
 
-.figure figcaption {
+.figure figcaption,
+.story-caption {
   max-width: var(--measure);
   margin-block-start: var(--space-xs);
   font-family: var(--font-mono);
   font-size: var(--fs-mono);
   line-height: 1.55;
   color: var(--color-text-muted);
+}
+
+.story-caption { margin-block-end: 0; }
+
+.story-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* A row: pictures side by side, scaled to share one height. */
+.row {
+  display: flex;
+  gap: var(--media-gap);
+  align-items: flex-start;
+}
+
+.row > .figure { flex: var(--ar) 1 0%; }
+
+/* A black band: product shots photographed on black run edge to edge. */
+.story-media--stage { background: var(--color-stage); }
+.story-media--stage .figure__trigger { background: var(--color-stage); }
+.story-media--stage .row { gap: 0; }
+
+/* A soft frame for website and app screenshots. */
+.story-media--frame .figure__trigger {
+  border-radius: var(--radius-m);
+  box-shadow: 0 0 0 1px var(--color-line), 0 1.25rem 2.5rem -1.5rem rgb(0 0 0 / 0.35);
+}
+
+/* An even grid. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr));
+  gap: var(--media-gap);
+}
+
+/* Staggered columns, for pictures of many shapes. */
+.masonry {
+  columns: var(--cols, 3);
+  column-gap: var(--media-gap);
+}
+
+.masonry > .figure {
+  break-inside: avoid;
+  margin-block-end: var(--media-gap);
+}
+
+/* A mosaic: one big picture and two small ones, cropped to fit. */
+.mosaic {
+  display: grid;
+  gap: var(--media-gap);
+}
+
+.mosaic > .figure { display: flex; flex-direction: column; min-height: 0; }
+.mosaic > .figure .figure__trigger { flex: 1; aspect-ratio: auto; min-height: 0; }
+
+.mosaic--feature-left {
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  aspect-ratio: 8 / 3;
+}
+
+.mosaic--feature-left > :first-child { grid-row: 1 / span 2; }
+
+.mosaic--feature-right {
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 1fr 1fr;
+  aspect-ratio: 8 / 3;
+}
+
+.mosaic--feature-right > :first-child { grid-column: 2; grid-row: 1 / span 2; }
+
+/* A collage: three pictures overlap like prints on a table, each edged in
+   the page color so they separate cleanly. */
+.collage {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  aspect-ratio: 16 / 9.6;
+}
+
+.collage > .figure { display: flex; flex-direction: column; min-height: 0; position: relative; }
+.collage > .figure .figure__trigger {
+  flex: 1;
+  aspect-ratio: auto;
+  min-height: 0;
+  box-shadow: 0 0 0 clamp(0.3rem, 0.2rem + 0.4vw, 0.6rem) var(--color-bg);
+}
+
+.collage > :nth-child(1) { grid-column: 1 / 7;  grid-row: 1 / 8;  z-index: 1; }
+.collage > :nth-child(2) { grid-column: 5 / 10; grid-row: 3 / 11; z-index: 2; }
+.collage > :nth-child(3) { grid-column: 8 / 13; grid-row: 1 / 7;  z-index: 3; }
+
+/* A split: a paragraph beside a tall picture that stays in view. */
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+.split--left { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr); }
+.split--left .split__media { order: -1; }
+
+.split__text { align-self: center; }
+
+.split__media {
+  position: sticky;
+  inset-block-start: var(--space-xl);
+}
+
+/* A narrow split suits tall, slim pieces such as banner ads. */
+.split--narrow { grid-template-columns: minmax(0, 1fr) min(100%, 15rem); }
+.split--narrow.split--left { grid-template-columns: min(100%, 15rem) minmax(0, 1fr); }
+
+/* A carousel: swipeable slides with a caption bar beneath. */
+.carousel__viewport {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.carousel__viewport::-webkit-scrollbar { display: none; }
+
+.carousel__slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
+
+.carousel__slide .figure__trigger { aspect-ratio: var(--carousel-ratio, 16 / 9); }
+.carousel__slide img { object-fit: contain; }
+.carousel--cover .carousel__slide img { object-fit: cover; }
+
+.carousel__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+  margin-block-start: var(--space-xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.carousel__btn {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  padding: 0;
+  border: 1px solid var(--color-line);
+  border-radius: 50%;
+  background: none;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: color var(--dur-fast), border-color var(--dur-fast), opacity var(--dur-fast);
+}
+
+.carousel__btn svg {
+  inline-size: 1.1rem;
+  block-size: 1.1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.carousel__btn:hover:not(:disabled),
+.carousel__btn:focus-visible { color: var(--color-accent); border-color: currentColor; }
+.carousel__btn:disabled { opacity: 0.35; cursor: default; }
+
+.carousel__count { flex: none; }
+.carousel__caption { min-width: 0; margin: 0; }
+
+/* Narrow screens: pictures stack or pair up, and the special layouts relax
+   into plain columns. */
+@media (max-width: 51.999rem) {
+  .row { flex-wrap: wrap; }
+  .row > .figure { flex: 1 1 calc(50% - var(--media-gap)); }
+  .row > .figure--wide { flex-basis: 100%; }
+  .story-media--stage .row > .figure { flex-basis: 50%; }
+
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .masonry { columns: 2; }
+
+  .mosaic,
+  .collage { display: flex; flex-direction: column; aspect-ratio: auto; gap: var(--media-gap); }
+  .mosaic > .figure .figure__trigger,
+  .collage > .figure .figure__trigger { flex: none; aspect-ratio: var(--ar, 16 / 9); box-shadow: none; }
+
+  .split,
+  .split--left { grid-template-columns: minmax(0, 1fr); gap: var(--space-m); }
+  .split--left .split__media { order: 0; }
+  .split__media { position: static; }
+  .split--narrow .split__media { max-inline-size: 15rem; }
 }
 
 .photo { inline-size: clamp(16rem, 62%, 34rem); }

@@ -20,16 +20,21 @@ Project URLs work two ways: `project.html?p=stord` and, on Netlify,
 
 ## Editing content
 
-- **Projects and slideshow:** `js/data.js`. Every project's copy, credits,
-  images, and alt text live there, with comments explaining each field. The
-  "Work" menu is plain HTML in each page, so if you add or rename a project,
-  update the `<ul class="nav__projects">` in `index.html`, `about.html`, `project.html`, and
-  `design-system.html` as well.
+- **Project stories:** `js/data.js`. Each project is a `story`: your words
+  and pictures in the order they appear on the page. The comment at the top of
+  that file lists every layout (full-width picture, row, grid, mosaic, collage,
+  masonry, carousel, and a paragraph beside a tall picture). To rearrange a
+  page, reorder the entries; to add a picture, add its id to one.
+- **Pictures:** `js/images.js` lists every project picture by id, with its
+  file in `assets/img/work/<project>/`, its pixel size, and its alt text. To
+  add one, put the file in that folder, add an entry, and use the id in a
+  story. Export web images around 2200px on the long edge, as WebP (or JPEG
+  at quality ~80). Always write meaningful alt text.
+- **Slideshow:** the `SLIDES` list in `js/data.js`.
+- The "Work" menu is plain HTML in each page, so if you add or rename a
+  project, update the `<ul class="nav__projects">` in `index.html`,
+  `about.html`, `project.html`, and `design-system.html` as well.
 - **Home and About copy:** plain text in `index.html` and `about.html`.
-- **Images:** put files in `assets/img/` and point `js/data.js` at them.
-  Always write meaningful `alt` text. Export web images at roughly 1920px
-  wide (JPEG, quality ~80): big enough to look great, small enough to load
-  fast.
 
 ## Design system
 
@@ -81,8 +86,8 @@ and isolates failures, so one broken feature never takes the page down.
 
 `theme.js` · `nav.js` (mobile menu) · `accordion.js` (the "Work" menu item and the About page tabs) · `chrome.js` (back-to-top button) · `motion.js` (font-ready gate, reveals, image fade, page fade) ·
 `slider.js` · `floaties.js` (the draggable emoji) · `copy.js` (the Contact menu's copy buttons) ·
-`lightbox.js` · `project.js` · `guard.js` (image-drag deterrent) ·
-`data.js` (content) · `design-system.js`
+`lightbox.js` · `project.js` (builds a project page) · `blocks.js` (the story layouts) · `carousel.js` · `guard.js` (image-drag deterrent) ·
+`data.js` (content) · `images.js` (picture library) · `design-system.js`
 
 Content from `data.js` is inserted with `textContent`, never as HTML.
 
@@ -113,4 +118,4 @@ attributes: keep it that way when editing.
 ## Still placeholder
 
 - Google Search project copy (cleaned up from your outline) and images
-- Slideshow and project images are the current set; swap in the new Drive images
+- The Google Search page still uses placeholder images; the other five projects use your Drive images

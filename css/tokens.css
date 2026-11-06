@@ -29,6 +29,7 @@
   --ink-900: #1a1916;     /* primary text */
   --ink-600: #55544f;     /* secondary text, 6:1 on paper-100 */
 
+  --black: #000000;       /* photography stage: matches pure-black product shots */
   --night-950: #0d0d0c;
   --night-900: #121211;   /* dark page background */
   --night-800: #1c1c1a;   /* dark raised surface */
@@ -61,6 +62,7 @@
   --color-on-lightbox: #f3f2ee;
   --color-focus:       var(--color-accent);
 
+  --color-stage:       var(--black);          /* behind black-background photography */
   --color-tool:        var(--ink-900);         /* icon buttons */
   --color-chrome:      rgb(231 230 224 / 0.94); /* backing for floating controls */
 
@@ -87,6 +89,7 @@
   --color-lightbox:    rgb(6 6 5 / 0.96);
   --color-on-lightbox: #f3f2ee;
 
+  --color-stage:       var(--black);
   --color-tool:        var(--orange-300);
   --color-chrome:      rgb(18 18 17 / 0.94);
 
@@ -149,6 +152,7 @@
   --sidebar-width: max(34%, 21rem);                         /* left column  */
   --pad-x: clamp(1.5rem, 1.31rem + 0.8vw, 3.5rem);          /* page gutter  */
   --pad-y: clamp(1.5rem, 1.05rem + 0.9vw, 2.5rem);
+  --media-gap: clamp(0.5rem, 0.32rem + 0.55vw, 0.9rem);   /* between pictures in a project */
   --measure: 72ch;                                          /* reading width */
   --bp-split: 52rem;       /* documented here; CSS can't read it in @media */
 }

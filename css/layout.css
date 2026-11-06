@@ -95,9 +95,17 @@
 [data-page="home"] .content > h1 { margin-block-end: var(--space-l); }
 [data-page="about"] .content > h1 { margin-block-end: var(--space-m); }   /* the line beneath tucks right under */
 
-/* Project pages stack copy, credits, gallery, and pager with a wider gap
+/* Project pages stack story blocks, credits, and the pager with a wider gap
    than the paragraphs inside the copy. */
 #project-body > * + * { margin-block-start: var(--space-xl); }
+
+/* Pictures that follow each other sit close, like a contact sheet; a new
+   paragraph or label opens a wider gap. Consecutive paragraphs read as one
+   passage. */
+#project-body > .story-media + .story-media { margin-block-start: var(--media-gap); }
+#project-body > .story-media--stage + .story-media--stage { margin-block-start: 0; }
+#project-body > .story-text + .story-text { margin-block-start: var(--flow); }
+#project-body > .story-label + .story-media { margin-block-start: var(--space-xs); }
 
 /* The skip link focuses <main>; it needs no visible outline of its own. */
 main:focus { outline: none; }

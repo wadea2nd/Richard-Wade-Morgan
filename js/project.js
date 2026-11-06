@@ -3,7 +3,7 @@
    Content is inserted with textContent / DOM nodes only, never as HTML. */
 
 import { PROJECTS, SITE } from "./data.js";
-import { openLightbox } from "./lightbox.js";
+import { renderStory } from "./blocks.js";
 import { markCurrent } from "./nav.js";
 
 function slugFromLocation() {
@@ -46,7 +46,7 @@ export function initProject() {
   const project = PROJECTS[index];
 
   document.title = `${project.title} | ${SITE.name}, Creative Director`;
-  const lead = project.summary.find((part) => typeof part === "string") || "";
+  const lead = (project.story.find((block) => typeof block.text === "string") || {}).text || "";
   const description = lead.length > 155 ? `${lead.slice(0, 152).trimEnd()}…` : lead;
   setMeta('meta[name="description"]', description);
   setMeta('meta[property="og:title"]', document.title);
@@ -55,21 +55,8 @@ export function initProject() {
 
   titleEl.textContent = project.title;
 
-  /* Copy */
-  const prose = el("div", "prose flow");
-  project.summary.forEach((part) => {
-    if (Array.isArray(part)) {
-      const list = el("ul", "plain-list");
-      part.forEach((line) => list.append(el("li", "", line)));
-      list.dataset.reveal = "";
-      prose.append(list);
-    } else {
-      const p = el("p", "", part);
-      p.dataset.reveal = "";
-      prose.append(p);
-    }
-  });
-  bodyEl.append(prose);
+  /* The story: words and pictures, in order. */
+  renderStory(project.story).forEach((node) => bodyEl.append(node));
 
   /* Credits */
   if (project.credits.length) {
@@ -83,32 +70,6 @@ export function initProject() {
     });
     bodyEl.append(credits);
   }
-
-  /* Gallery: every image opens in the lightbox. */
-  const gallery = el("div", "gallery");
-  project.images.forEach((image, i) => {
-    const figure = el("figure", "figure");
-    figure.dataset.reveal = "";
-
-    const trigger = el("button", "figure__trigger");
-    trigger.type = "button";
-    trigger.setAttribute("aria-label", `Enlarge image ${i + 1} of ${project.images.length}: ${image.alt}`);
-
-    const img = document.createElement("img");
-    img.src = image.src;
-    img.alt = "";                       /* the button already carries the description */
-    img.width = image.width;
-    img.height = image.height;
-    img.decoding = "async";
-    if (i > 0) img.loading = "lazy";
-    trigger.append(img);
-    trigger.addEventListener("click", () => openLightbox(project.images, i));
-    figure.append(trigger);
-
-    if (image.caption) figure.append(el("figcaption", "", image.caption));
-    gallery.append(figure);
-  });
-  bodyEl.append(gallery);
 
   /* Next / previous project */
   const prev = PROJECTS[(index - 1 + PROJECTS.length) % PROJECTS.length];
