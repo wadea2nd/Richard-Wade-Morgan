@@ -1,6 +1,8 @@
 /* Motion: the gentle scroll reveal and the page-leave fade.
    Everything is skipped for visitors who prefer reduced motion. */
 
+import { closeMenu } from "./nav.js";
+
 const root = document.documentElement;
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -69,8 +71,11 @@ export function initPageLeave() {
     if (prefersReducedMotion()) return;
 
     event.preventDefault();
+    /* On a phone the full-screen menu fades away first, then the page changes;
+       on desktop the sidebar simply stays while the content eases out. */
+    const menuWasOpen = closeMenu();
     root.classList.add("is-leaving");
-    window.setTimeout(() => { window.location.href = link.href; }, 230);
+    window.setTimeout(() => { window.location.href = link.href; }, menuWasOpen ? 340 : 240);
   });
 
   /* Coming back with the browser's back button restores the page as it was. */

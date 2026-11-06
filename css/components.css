@@ -422,7 +422,32 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
 
 
 /* 4. INLINE LINKS AND ICONS ------------------------------------------------ */
-.hand { font-family: var(--font-body); }
+.hand {
+  display: inline-block;
+  font-family: var(--font-body);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-standard), transform var(--dur-base) var(--ease-out);
+}
+
+.hand:hover,
+.hand:focus-visible {
+  color: var(--color-accent);
+  transform: translateX(0.12em);
+}
+
+/* "Work" stays open (or closed) as the page changes: theme-init.js adds
+   .work-open before first paint, so the menu never jolts shut and reopens.
+   accordion.js takes over once it runs. */
+html.work-open #work-menu {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition: none;
+}
+
+html.work-open [aria-controls="work-menu"] .acc__chevron {
+  transform: translateY(0.1em) rotate(225deg);
+  transition: none;
+}
 
 .inline-link {
   display: inline-flex;

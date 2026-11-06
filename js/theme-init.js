@@ -20,6 +20,14 @@
      a visit; after that they are simply there while pages change. */
   try { if (sessionStorage.getItem("rwm-entered")) root.classList.add("chrome-seen"); } catch (e) { /* ignore */ }
 
+  /* The "Work" menu keeps the state the visitor left it in. On project pages
+     it starts open, unless they closed it themselves. */
+  try {
+    var work = sessionStorage.getItem("rwm-work");
+    var onProject = /(^|\/)(project\.html|google-search|delta-centennial|delta-pride|stord|outsports|design-archive)\/?$/.test(location.pathname);
+    if (work === "open" || (work === null && onProject)) root.classList.add("work-open");
+  } catch (e) { /* ignore */ }
+
   setTimeout(function () {
     if (!root.classList.contains("motion-ready")) root.classList.add("motion-failed", "is-ready");
   }, 3000);

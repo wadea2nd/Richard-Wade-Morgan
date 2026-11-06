@@ -1,6 +1,11 @@
 /* Navigation: the mobile menu and the footer year. */
 
-import { openAccordion } from "./accordion.js";
+let closeMenuFn = null;
+
+/* Closes the full-screen menu if it is open; returns whether it was. */
+export function closeMenu() {
+  return closeMenuFn ? closeMenuFn() : false;
+}
 
 export function initNav() {
   const button = document.querySelector(".menu-toggle");
@@ -18,6 +23,12 @@ export function initNav() {
     /* While the menu covers the page, the page behind it is inert. */
     if (main) main.inert = open && narrow.matches;
   }
+
+  closeMenuFn = () => {
+    const wasOpen = drawer.classList.contains("is-open");
+    if (wasOpen) setOpen(false);
+    return wasOpen;
+  };
 
   button.addEventListener("click", () => setOpen(!drawer.classList.contains("is-open")));
 
@@ -40,13 +51,18 @@ export function initYear() {
   });
 }
 
-/* Marks the nav link for the current project as the current page, and opens
-   the Work list so it is visible. */
+/* Marks the nav link for the current project as the current page. */
 export function markCurrent(slug) {
-  let found = false;
   document.querySelectorAll(".nav__link[data-slug]").forEach((link) => {
-    if (link.dataset.slug === slug) { link.setAttribute("aria-current", "page"); found = true; }
+    if (link.dataset.slug === slug) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
   });
-  if (found) openAccordion(document.querySelector(".nav__group"));
+}
+
+/* Marks the current project straight away from the address, so the menu is
+   already right while the page itself is still being built. */
+export function markCurrentFromLocation() {
+  const query = new URLSearchParams(window.location.search).get("p");
+  const last = window.location.pathname.split("/").filter(Boolean).pop() || "";
+  markCurrent(query || last.replace(/\.html$/, ""));
 }

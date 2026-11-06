@@ -4,7 +4,8 @@
    [data-accordion-toggle] (aria-controls → the panel's id) and the panel.
 
    Firm click-on, click-off: a click, tap, or Enter/Space opens one, and it
-   stays open until it is clicked again. Nothing opens or closes on hover. */
+   stays open until it is clicked again. Nothing opens or closes on hover.
+   [data-accordion-remember="work"] also keeps the state across pages. */
 
 function parts(group) {
   const toggle = group.querySelector("[data-accordion-toggle]");
@@ -19,17 +20,25 @@ function setOpen(group, open) {
   p.panel.classList.toggle("is-open", open);
 }
 
-/* Used by the nav to open "Work" on a project page. */
-export function openAccordion(group) {
-  if (group) setOpen(group, true);
-}
-
 export function initAccordions() {
   document.querySelectorAll("[data-accordion]").forEach((group) => {
     const p = parts(group);
     if (!p) return;
+
+    /* The menu's "Work" item remembers its state for the visit, so it stays
+       as it is while pages change. */
+    const memory = group.dataset.accordionRemember;
+    if (memory && document.documentElement.classList.contains("work-open")) {
+      setOpen(group, true);
+      document.documentElement.classList.remove("work-open");   /* same look, no animation */
+    }
+
     p.toggle.addEventListener("click", () => {
-      setOpen(group, p.toggle.getAttribute("aria-expanded") !== "true");
+      const open = p.toggle.getAttribute("aria-expanded") !== "true";
+      setOpen(group, open);
+      if (memory) {
+        try { sessionStorage.setItem("rwm-" + memory, open ? "open" : "closed"); } catch (e) { /* ignore */ }
+      }
     });
   });
 }
