@@ -80,7 +80,7 @@ switching themes always does too.
 and isolates failures, so one broken feature never takes the page down.
 
 `theme.js` · `nav.js` (mobile menu) · `accordion.js` (the "Work" menu item and the About page tabs) · `chrome.js` (back-to-top button) · `motion.js` (font-ready gate, reveals, image fade, page fade) ·
-`slider.js` · `floaties.js` (the draggable emoji) · `contact.js` ·
+`slider.js` · `floaties.js` (the draggable emoji) · `copy.js` (the Contact menu's copy buttons) ·
 `lightbox.js` · `project.js` · `guard.js` (image-drag deterrent) ·
 `data.js` (content) · `design-system.js`
 
@@ -90,25 +90,18 @@ Content from `data.js` is inserted with `textContent`, never as HTML.
 
 Semantic landmarks, one `h1` per page, a skip link, visible focus rings,
 keyboard access everywhere, 4.5:1 contrast in both themes, a pausable
-slideshow, native `<dialog>` for the contact form and lightbox, an inert page
+slideshow, native `<dialog>` for the lightbox, an inert page
 behind the open mobile menu, and full support for `prefers-reduced-motion`.
 The floating emoji are decoration and hidden from assistive technology.
 
-## Contact form
+## Contact menu
 
-"Contact" opens a message form. It posts to **Netlify Forms** (the hidden
-form in `index.html` is how Netlify finds it). Netlify only accepts the
-messages once these are set up in its dashboard:
-
-1. *Site configuration → Forms*: turn on **form detection**, then redeploy the
-   site so Netlify re-reads the pages. A form that Netlify hasn't detected
-   answers every send with an error 404.
-2. *Forms → Form notifications → Add notification → Email*: choose the
-   address that should receive messages. Without this, messages are stored
-   in the dashboard but nothing arrives in your inbox.
-
-If a send fails, the dialog says why (for example "error 404") and offers a
-`mailto:` link and a "copy my address" button, so nothing is lost.
+"Contact" in the menu opens a short list: **LinkedIn** (opens in a new tab) and
+**Email** (opens the visitor's mail app). Each has a small copy button that puts
+the link or address on the clipboard, for pasting somewhere else. To change
+either address, edit it in the Contact `<li>` of the menu in `index.html`,
+`about.html`, `project.html`, and `design-system.html` (the link and its
+`data-copy` value).
 
 ## Security
 

@@ -8,7 +8,7 @@
 import { initTheme } from "./theme.js";
 import { initNav, initYear, markCurrentFromLocation } from "./nav.js";
 import { initAccordions } from "./accordion.js";
-import { initContact } from "./contact.js";
+import { initCopy } from "./copy.js";
 import { initMotion, initPageLeave, initReplay, initImageFade, whenFontsReady } from "./motion.js";
 import { initChrome } from "./chrome.js";
 import { initFloaties } from "./floaties.js";
@@ -41,7 +41,7 @@ async function boot() {
   if (page === "project") safe("currentLink", markCurrentFromLocation);
   safe("accordions", initAccordions);
   safe("year", initYear);
-  safe("contact", initContact);
+  safe("copy", initCopy);
   safe("guard", initGuard);
 
   /* Page content must exist before motion looks for things to animate. */

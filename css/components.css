@@ -4,7 +4,7 @@
    1. Masthead, brand, menu button      7. Figures and gallery
    2. Drawer and navigation             8. Credits and project pager
    3. Tools, colophon, back to top      9. Buttons and form fields
-   4. Inline links and icons           10. Dialogs (contact, lightbox)
+   4. Inline links and icons           10. Dialogs (lightbox, form styles)
    5. Lists                            11. Floating emoji
    6. Slider
    ========================================================================== */
@@ -196,6 +196,48 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
 .nav__projects > li { padding-block: 0.06em; }
 .nav__projects > li:last-child { padding-block-end: 0.55em; }
 
+/* Contact menu: each option is a link plus a button that copies it. */
+.nav__contact > li {
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+}
+
+.copy-btn {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 1.9rem;
+  block-size: 1.9rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-standard), background-color var(--dur-fast) var(--ease-standard);
+}
+
+.copy-btn:hover,
+.copy-btn:focus-visible {
+  color: var(--color-accent);
+  background: var(--color-fill);
+}
+
+.copy-btn svg {
+  inline-size: 1rem;
+  block-size: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.copy-btn__check { display: none; }
+.copy-btn.is-copied { color: var(--color-accent); }
+.copy-btn.is-copied .copy-btn__copy { display: none; }
+.copy-btn.is-copied .copy-btn__check { display: block; }
+
 /* Narrow screens: the drawer is a full-screen menu. */
 @media (max-width: 51.999rem) {
   .menu-toggle { display: grid; }
@@ -231,6 +273,7 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
   .nav__list { font-size: var(--fs-nav-mobile); }
   .nav__link { padding-block: 0.3rem; }
   .nav__toggle { padding-block: 0.3rem; }
+  .copy-btn { inline-size: 2.5rem; block-size: 2.5rem; }
   .nav__projects { padding-inline-start: 1.1em; }
 }
 
@@ -480,6 +523,14 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
   list-style: none;
   line-height: 1.5;
 }
+
+/* The "I believe in" list carries bullets. */
+.plain-list--bulleted {
+  list-style: disc;
+  padding-inline-start: 1.15em;
+}
+
+.plain-list--bulleted li::marker { color: var(--color-accent); }
 
 .list-block h2 { line-height: 1.5; }
 
