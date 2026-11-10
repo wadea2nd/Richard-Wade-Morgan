@@ -22,15 +22,20 @@ Project URLs work two ways: `project.html?p=stord` and, on Netlify,
 
 - **Project stories:** `js/data.js`. Each project is a `story`: your words
   and pictures in the order they appear on the page. The comment at the top of
-  that file lists every layout (full-width picture, row, grid, mosaic, collage,
-  masonry, carousel, and a paragraph beside a tall picture). To rearrange a
+  that file lists every layout (full-width picture, row, grid, collage, three
+  kinds of carousel, a paragraph beside a picture, and video), plus the hover
+  zoom options. To rearrange a
   page, reorder the entries; to add a picture, add its id to one.
 - **Pictures:** `js/images.js` lists every project picture by id, with its
   file in `assets/img/work/<project>/`, its pixel size, and its alt text. To
   add one, put the file in that folder, add an entry, and use the id in a
   story. Export web images around 2200px on the long edge, as WebP (or JPEG
   at quality ~80). Always write meaningful alt text.
-- **Slideshow:** the `SLIDES` list in `js/data.js`.
+- **Slideshow:** the `SLIDES` list in `js/data.js`; its pictures are in
+  `assets/img/slides/`.
+- **Videos:** `assets/video/` holds H.264 MP4 files (with `faststart`, so they
+  begin quickly) and a poster picture for each. Encode new ones at 1600px wide,
+  quality ~25, which turns a 2-minute film into roughly 15 to 25 MB.
 - The "Work" menu is plain HTML in each page, so if you add or rename a
   project, update the `<ul class="nav__projects">` in `index.html`,
   `about.html`, `project.html`, and `design-system.html` as well.
@@ -86,7 +91,7 @@ and isolates failures, so one broken feature never takes the page down.
 
 `theme.js` · `nav.js` (mobile menu) · `accordion.js` (the "Work" menu item and the About page tabs) · `chrome.js` (back-to-top button) · `motion.js` (font-ready gate, reveals, image fade, page fade) ·
 `slider.js` · `floaties.js` (the draggable emoji) · `copy.js` (the Contact menu's copy buttons) ·
-`lightbox.js` · `project.js` (builds a project page) · `blocks.js` (the story layouts) · `carousel.js` · `guard.js` (image-drag deterrent) ·
+`lightbox.js` · `project.js` (builds a project page) · `blocks.js` (the story layouts, including video) · `carousel.js` (default, thumbs, peek, and strip) · `zoom.js` (hover lens and pan zoom) · `guard.js` (image-drag deterrent) ·
 `data.js` (content) · `images.js` (picture library) · `design-system.js`
 
 Content from `data.js` is inserted with `textContent`, never as HTML.
@@ -118,4 +123,4 @@ attributes: keep it that way when editing.
 ## Still placeholder
 
 - Google Search project copy (cleaned up from your outline) and images
-- The Google Search page still uses placeholder images; the other five projects use your Drive images
+- The Google Search page still uses placeholder images; the other five projects use your newest Drive images and videos

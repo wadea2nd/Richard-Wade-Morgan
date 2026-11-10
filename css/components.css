@@ -888,6 +888,167 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
 .carousel__count { flex: none; }
 .carousel__caption { min-width: 0; margin: 0; }
 
+/* Carousel variants ----------------------------------------------------------- */
+
+/* peek: the current slide sits at the center and its neighbors show at the
+   edges, dimmed, inviting a swipe. */
+.carousel--peek .carousel__viewport {
+  gap: var(--media-gap);
+  padding-inline: 8%;
+}
+
+.carousel--peek .carousel__slide {
+  flex: 0 0 84%;
+  scroll-snap-align: center;
+  opacity: 0.42;
+  transition: opacity var(--dur-slow) var(--ease-standard);
+}
+
+.carousel--peek .carousel__slide.is-current { opacity: 1; }
+
+/* strip: a film strip. Pictures of any shape share one height, so a tall ad
+   and a wide one sit side by side without either being squeezed. */
+.carousel--strip { --strip-h: clamp(15rem, 11rem + 15vw, 27rem); }
+
+.carousel--strip .carousel__viewport {
+  gap: var(--media-gap);
+  scroll-snap-type: x proximity;
+}
+
+.carousel--strip .carousel__slide {
+  flex: none;
+  scroll-snap-align: start;
+}
+
+.carousel--strip .carousel__slide .figure__trigger {
+  width: calc(var(--strip-h) * var(--ar));
+  height: var(--strip-h);
+}
+
+.carousel--strip .carousel__slide .figure__trigger::before { display: none; }
+
+.carousel__progress {
+  position: relative;
+  flex: 1;
+  block-size: 2px;
+  background: var(--color-line);
+}
+
+.carousel__progress i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  inline-size: var(--p, 0%);
+  background: var(--color-accent);
+  transition: inline-size var(--dur-base) var(--ease-standard);
+}
+
+/* thumbs: one large slide and a rail of small ones to jump between. */
+.carousel__thumbs {
+  display: flex;
+  gap: var(--space-xs);
+  margin-block-start: var(--space-xs);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.carousel__thumb {
+  flex: 0 0 clamp(4.5rem, 9vw, 7rem);
+  padding: 0;
+  border: 2px solid transparent;
+  background: var(--color-media-bg);
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity var(--dur-fast), border-color var(--dur-fast);
+}
+
+.carousel__thumb img {
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.carousel__thumb:hover,
+.carousel__thumb:focus-visible { opacity: 1; }
+
+.carousel__thumb[aria-current="true"] {
+  opacity: 1;
+  border-color: var(--color-accent);
+}
+
+/* Hover zoom ------------------------------------------------------------------ */
+.zoom-lens {
+  --lens: clamp(8rem, 13vw, 12rem);
+  position: absolute;
+  z-index: 3;
+  inline-size: var(--lens);
+  block-size: var(--lens);
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  background-repeat: no-repeat;
+  box-shadow: 0 0 0 3px var(--color-surface), 0 0 0 4px var(--color-line), 0 1rem 2.25rem -0.5rem rgb(0 0 0 / 0.45);
+  opacity: 0;
+  transform: scale(0.85);
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease-standard), transform var(--dur-base) var(--ease-out);
+}
+
+.is-zoom-lens.is-zooming .zoom-lens { opacity: 1; transform: none; }
+
+.figure__trigger.is-zoomable:hover img { transform: none; }
+
+.is-zoom-pan img { transition: transform var(--dur-base) var(--ease-out); }
+.is-zoom-pan.is-zooming img { transform: scale(var(--zoom, 2.5)); transition-duration: 120ms; }
+
+/* A soft panel behind transparent product shots: they sit on the surface like
+   things on a shelf, and meet edge to edge. */
+.story-media--panel { background: var(--color-media-bg); }
+.story-media--panel .figure__trigger { background: transparent; }
+.story-media--panel .row { gap: 0; }
+#project-body > .story-media--panel + .story-media--panel { margin-block-start: 0; }
+
+/* Video ---------------------------------------------------------------------- */
+.video {
+  position: relative;
+  background: var(--black);
+}
+
+.video::before {
+  content: "";
+  display: block;
+  padding-top: calc(100% / var(--ar, 1.7778));
+}
+
+.video video {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  display: block;
+  background: var(--black);
+}
+
+.video__toggle {
+  position: absolute;
+  inset-block-end: var(--space-s);
+  inset-inline-end: var(--space-s);
+  padding: 0.3rem 0.7rem;
+  border: 1px solid rgb(255 255 255 / 0.5);
+  border-radius: var(--radius-pill);
+  background: rgb(0 0 0 / 0.55);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--dur-fast);
+}
+
+.video:hover .video__toggle,
+.video__toggle:focus-visible { opacity: 1; }
+
+@media (hover: none) { .video__toggle { opacity: 1; } }
+
 /* Narrow screens: pictures stack or pair up, and the special layouts relax
    into plain columns. */
 @media (max-width: 51.999rem) {
@@ -911,6 +1072,9 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
   .split--left .split__media { order: 0; }
   .split__media { position: static; }
   .split--narrow .split__media { max-inline-size: 15rem; }
+
+  .carousel--peek .carousel__viewport { padding-inline: 5%; }
+  .carousel--peek .carousel__slide { flex-basis: 90%; }
 }
 
 .photo { inline-size: clamp(16rem, 62%, 34rem); }

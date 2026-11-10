@@ -149,7 +149,7 @@
 
 /* 6. LAYOUT ---------------------------------------------------------------- */
 :root {
-  --sidebar-width: max(34%, 21rem);                         /* left column  */
+  --sidebar-width: max(29%, 21rem);                         /* left column  */
   --pad-x: clamp(1.5rem, 1.31rem + 0.8vw, 3.5rem);          /* page gutter  */
   --pad-y: clamp(1.5rem, 1.05rem + 0.9vw, 2.5rem);
   --media-gap: clamp(0.5rem, 0.32rem + 0.55vw, 0.9rem);   /* between pictures in a project */

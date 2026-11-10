@@ -7,6 +7,7 @@
 import { IMAGES } from "./images.js";
 import { openLightbox } from "./lightbox.js";
 import { initCarousel } from "./carousel.js";
+import { enableZoom } from "./zoom.js";
 
 function el(tag, className, text) {
   const node = document.createElement(tag);
@@ -65,8 +66,56 @@ export function renderStory(story) {
     return { node, item };
   }
 
-  function figures(entries, options) {
-    return entries.map((entry) => figure(entry, options)).filter(Boolean);
+  function figures(entries, options, block) {
+    const list = entries.map((entry) => figure(entry, options)).filter(Boolean);
+    if (block && block.zoom) list.forEach((f) => enableZoom(f.node, block.zoom, block.zoomLevel));
+    return list;
+  }
+
+  /* A video: a poster that plays on demand, or a silent loop that plays only
+     while it is on screen (with a pause button, and never under reduced motion). */
+  function videoFigure(block) {
+    const outer = el("div", `story-media${block.frame ? " story-media--frame" : ""}`);
+    const box = el("div", "video");
+    box.style.setProperty("--ar", (block.width / block.height).toFixed(4));
+
+    const video = document.createElement("video");
+    video.src = block.src;
+    video.poster = block.poster;
+    video.playsInline = true;
+    video.setAttribute("aria-label", block.title || "Video");
+    video.preload = block.loop ? "metadata" : "none";
+    box.append(video);
+
+    if (block.loop) {
+      video.muted = true;
+      video.loop = true;
+      const toggle = el("button", "video__toggle", "Pause");
+      toggle.type = "button";
+      toggle.setAttribute("aria-label", "Pause or play the animation");
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let userPaused = reduced;
+      const sync = () => { toggle.textContent = video.paused ? "Play" : "Pause"; };
+      toggle.addEventListener("click", () => {
+        if (video.paused) { userPaused = false; video.play().catch(() => {}); }
+        else { userPaused = true; video.pause(); }
+      });
+      video.addEventListener("play", sync);
+      video.addEventListener("pause", sync);
+      new IntersectionObserver((entries) => {
+        const visible = entries[0].isIntersecting;
+        if (visible && !userPaused) video.play().catch(() => {});
+        if (!visible) video.pause();
+      }, { threshold: 0.35 }).observe(box);
+      box.append(toggle);
+      sync();
+    } else {
+      video.controls = true;
+    }
+
+    outer.append(box);
+    if (block.caption) outer.append(el("p", "story-caption", block.caption));
+    return outer;
   }
 
   const reveal = (node) => { node.dataset.reveal = ""; return node; };
@@ -86,21 +135,23 @@ export function renderStory(story) {
     full(block) {
       const f = figure({ id: block.image, caption: block.caption });
       if (!f) return null;
-      const outer = el("div", `story-media story-media--full ${frameClass(block)}`.trim());
+      if (block.zoom) enableZoom(f.node, block.zoom, block.zoomLevel);
+      const outer = el("div", `story-media story-media--full ${block.tone === "panel" ? "story-media--panel" : ""} ${frameClass(block)}`.trim());
       outer.append(f.node);
       return outer;
     },
 
     row(block) {
       const layout = el("div", "row");
-      figures(block.images).forEach((f) => layout.append(f.node));
-      return wrap(layout, block, `${block.tone === "stage" ? "story-media--stage" : ""} ${frameClass(block)}`.trim());
+      figures(block.images, undefined, block).forEach((f) => layout.append(f.node));
+      const tone = block.tone === "stage" ? "story-media--stage" : block.tone === "panel" ? "story-media--panel" : "";
+      return wrap(layout, block, `${tone} ${frameClass(block)}`.trim());
     },
 
     grid(block) {
       const layout = el("div", "grid");
       layout.style.setProperty("--cols", String(block.columns || 4));
-      figures(block.images).forEach((f) => layout.append(f.node));
+      figures(block.images, undefined, block).forEach((f) => layout.append(f.node));
       return wrap(layout, block);
     },
 
@@ -135,14 +186,18 @@ export function renderStory(story) {
       return outer;
     },
 
+    video(block) {
+      return videoFigure(block);
+    },
+
     carousel(block) {
-      const slides = figures(block.images);
+      const slides = figures(block.images, undefined, block);
       if (!slides.length) return null;
       const outer = el("div", "story-media carousel");
       const [rw, rh] = String(block.ratio || "16 / 9").split("/").map((n) => parseFloat(n));
       outer.style.setProperty("--carousel-ar", (rw / (rh || 1)).toFixed(4));
       if (block.fit === "cover") outer.classList.add("carousel--cover");
-      initCarousel(outer, slides, block.label || "Gallery");
+      initCarousel(outer, slides, block.label || "Gallery", block.variant || "default");
       return outer;
     },
   };
