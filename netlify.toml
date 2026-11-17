@@ -46,6 +46,19 @@
   [headers.values]
     Cache-Control = "public, max-age=86400, must-revalidate"
 
+# Pictures and videos are re-checked on each visit (a quick "has it changed?"
+# question, not a re-download), so a replaced image shows up right after a
+# deploy instead of waiting out a day-long browser cache.
+[[headers]]
+  for = "/assets/img/*"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/assets/video/*"
+  [headers.values]
+    Cache-Control = "no-cache"
+
 [[headers]]
   for = "/assets/fonts/*"
   [headers.values]

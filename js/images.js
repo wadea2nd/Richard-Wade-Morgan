@@ -220,9 +220,9 @@ export const IMAGES = {
     alt: "A laptop covered with Pride at Stord and Stord stickers." },
 
   /* outsports */
-  "os-header": { src: "assets/img/work/outsports/header.webp", width: 1920, height: 1080,
+  "os-header": { src: "assets/img/work/outsports/header-v2.webp", width: 1920, height: 1080,
     alt: "The Outsports logo in white with the line “Courage is contagious” on a pink, purple, and blue gradient." },
-  "os-history": { src: "assets/img/work/outsports/history.webp", width: 1920, height: 1080,
+  "os-history": { src: "assets/img/work/outsports/history-v2.webp", width: 1920, height: 1080,
     alt: "A collage of the Outsports story: the former website, logos from across its history, a social post, a group holding a Courage Is Contagious banner, and the SB Nation Outsports homepage." },
   "os-sketches-low": { src: "assets/img/work/outsports/sketches-low.webp", width: 750, height: 422,
     alt: "A page of rough pencil sketches of Outsports logo ideas." },
