@@ -27,6 +27,28 @@ function resolve(entry) {
   return { id, ...base, caption: typeof entry === "object" && entry.caption ? entry.caption : "" };
 }
 
+/* Splits pictures into rows so that every row, scaled to fill the width, comes
+   out as close as possible to the target height (a small dynamic program). */
+function partitionRows(ratios, width, gap, targetHeight) {
+  const n = ratios.length;
+  const best = new Array(n + 1).fill(Infinity);
+  const from = new Array(n + 1).fill(0);
+  best[0] = 0;
+  for (let j = 1; j <= n; j += 1) {
+    let sum = 0;
+    for (let i = j - 1; i >= Math.max(0, j - 6); i -= 1) {
+      sum += ratios[i];
+      const fit = (width - gap * (j - i - 1)) / sum;           /* the row's height if it fills the width */
+      const dev = (fit - targetHeight) / targetHeight;
+      const cost = dev * dev * (dev < 0 ? 1.4 : 1) + 0.02;
+      if (best[i] + cost < best[j]) { best[j] = best[i] + cost; from[j] = i; }
+    }
+  }
+  const rows = [];
+  for (let j = n; j > 0; j = from[j]) rows.unshift(Array.from({ length: j - from[j] }, (_, k) => from[j] + k));
+  return rows;
+}
+
 export function renderStory(story) {
   const lightbox = [];                         /* every picture, in page order */
   let count = 0;
@@ -68,7 +90,7 @@ export function renderStory(story) {
 
   function figures(entries, options, block) {
     const list = entries.map((entry) => figure(entry, options)).filter(Boolean);
-    if (block && block.zoom) list.forEach((f) => enableZoom(f.node, block.zoom, block.zoomLevel));
+    if (block && block.zoom) list.forEach((f) => enableZoom(f.node, block.zoomLevel));
     return list;
   }
 
@@ -135,8 +157,8 @@ export function renderStory(story) {
     full(block) {
       const f = figure({ id: block.image, caption: block.caption });
       if (!f) return null;
-      if (block.zoom) enableZoom(f.node, block.zoom, block.zoomLevel);
-      const outer = el("div", `story-media story-media--full ${block.tone === "panel" ? "story-media--panel" : ""} ${frameClass(block)}`.trim());
+      if (block.zoom) enableZoom(f.node, block.zoomLevel);
+      const outer = el("div", `story-media story-media--full ${block.tone === "panel" ? "story-media--panel" : ""} ${frameClass(block)} ${block.still ? "story-media--still" : ""}`.replace(/\s+/g, " ").trim());
       outer.append(f.node);
       return outer;
     },
@@ -186,6 +208,40 @@ export function renderStory(story) {
       return outer;
     },
 
+    /* A gallery: pictures of any shape packed into rows of one height each,
+       at their own proportions. It re-flows to fit the width of the screen. */
+    gallery(block) {
+      const items = figures(block.images);
+      if (!items.length) return null;
+      const layout = el("div", "gallery");
+      const ratios = items.map((f) => f.item.width / f.item.height);
+      const target = block.rowHeight || 17;                     /* rem */
+      let packedFor = 0;
+
+      function pack() {
+        const width = layout.clientWidth;
+        if (!width || Math.abs(width - packedFor) < 2) return;
+        packedFor = width;
+        const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+        const gap = parseFloat(getComputedStyle(layout).rowGap) || 12;
+        const rows = partitionRows(ratios, width, gap, (width < 600 ? target * 0.62 : target) * rem);
+        layout.replaceChildren();
+        rows.forEach((indexes) => {
+          const rowEl = el("div", "gallery__row");
+          indexes.forEach((i) => rowEl.append(items[i].node));
+          layout.append(rowEl);
+        });
+      }
+
+      new ResizeObserver(pack).observe(layout);
+      window.addEventListener("resize", pack);
+      /* the layout is measured once it is on the page */
+      const wait = setInterval(() => {
+        if (layout.isConnected && layout.clientWidth) { clearInterval(wait); pack(); }
+      }, 50);
+      return wrap(layout, block);
+    },
+
     video(block) {
       return videoFigure(block);
     },
@@ -225,5 +281,29 @@ export function renderStory(story) {
     if (node) elements.push(node);
   });
 
-  return elements;
+  /* Neighboring paragraphs read as one passage. On a wide screen a passage of
+     of two or more paragraphs runs in two columns across the full width of the
+     pictures (see .story-passage in components.css); a lone paragraph or note
+     simply spans that width in one column. */
+  const passages = [];
+  elements.forEach((node) => {
+    const last = passages[passages.length - 1];
+    if (node.classList.contains("story-text") && node.tagName === "P") {
+      if (last && last.isPassage) last.items.push(node);
+      else passages.push({ isPassage: true, items: [node] });
+    } else {
+      passages.push(node);
+    }
+  });
+
+  return passages.map((entry) => {
+    if (!entry.isPassage) {
+      return entry;
+    }
+    if (entry.items.length === 1) return entry.items[0];        /* a lone paragraph just spans the width */
+    const wrapper = el("div", "story-passage story-text");
+    wrapper.dataset.reveal = "";
+    entry.items.forEach((p) => { delete p.dataset.reveal; p.classList.remove("prose"); wrapper.append(p); });
+    return wrapper;
+  });
 }

@@ -91,7 +91,7 @@ and isolates failures, so one broken feature never takes the page down.
 
 `theme.js` · `nav.js` (mobile menu) · `accordion.js` (the "Work" menu item and the About page tabs) · `chrome.js` (back-to-top button) · `motion.js` (font-ready gate, reveals, image fade, page fade) ·
 `slider.js` · `floaties.js` (the draggable emoji) · `copy.js` (the Contact menu's copy buttons) ·
-`lightbox.js` · `project.js` (builds a project page) · `blocks.js` (the story layouts, including video) · `carousel.js` (default, thumbs, peek, and strip) · `zoom.js` (hover lens and pan zoom) · `guard.js` (image-drag deterrent) ·
+`lightbox.js` · `project.js` (builds a project page) · `blocks.js` (the story layouts, including `gallery` and video) · `carousel.js` (default, thumbs, peek, and strip) · `zoom.js` (hover pan zoom) · `guard.js` (image-drag deterrent) ·
 `data.js` (content) · `images.js` (picture library) · `design-system.js`
 
 Content from `data.js` is inserted with `textContent`, never as HTML.

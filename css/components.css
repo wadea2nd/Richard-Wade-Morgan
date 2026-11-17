@@ -689,6 +689,7 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
 }
 
 .figure__trigger:hover img { transform: scale(1.015); }
+.story-media--still .figure__trigger:hover img { transform: none; }
 
 .figure figcaption,
 .story-caption {
@@ -709,6 +710,18 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
   line-height: 1.6;
   color: var(--color-text-muted);
 }
+
+/* A passage: neighboring paragraphs, set in two columns across the full width
+   of the pictures on a wide screen. */
+.story-passage > p { margin: 0; }
+.story-passage > p + p { margin-block-start: var(--flow); }
+
+@media (min-width: 72rem) {
+  .story-passage { column-count: 2; column-gap: var(--space-l); }
+}
+
+#project-body > p.story-text,
+#project-body > .story-note { max-width: none; }
 
 .story-label {
   font-family: var(--font-mono);
@@ -977,28 +990,10 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
 }
 
 /* Hover zoom ------------------------------------------------------------------ */
-.zoom-lens {
-  --lens: clamp(8rem, 13vw, 12rem);
-  position: absolute;
-  z-index: 3;
-  inline-size: var(--lens);
-  block-size: var(--lens);
-  border-radius: 50%;
-  background-color: var(--color-surface);
-  background-repeat: no-repeat;
-  box-shadow: 0 0 0 3px var(--color-surface), 0 0 0 4px var(--color-line), 0 1rem 2.25rem -0.5rem rgb(0 0 0 / 0.45);
-  opacity: 0;
-  transform: scale(0.85);
-  pointer-events: none;
-  transition: opacity var(--dur-fast) var(--ease-standard), transform var(--dur-base) var(--ease-out);
-}
-
-.is-zoom-lens.is-zooming .zoom-lens { opacity: 1; transform: none; }
-
 .figure__trigger.is-zoomable:hover img { transform: none; }
 
-.is-zoom-pan img { transition: transform var(--dur-base) var(--ease-out); }
-.is-zoom-pan.is-zooming img { transform: scale(var(--zoom, 2.5)); transition-duration: 120ms; }
+.is-zoomable img { transition: transform var(--dur-base) var(--ease-out); }
+.is-zoomable.is-zooming img { transform: scale(var(--zoom, 2.5)); transition-duration: 120ms; }
 
 /* A soft panel behind transparent product shots: they sit on the surface like
    things on a shelf, and meet edge to edge. */
@@ -1048,6 +1043,21 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
 .video__toggle:focus-visible { opacity: 1; }
 
 @media (hover: none) { .video__toggle { opacity: 1; } }
+
+/* Gallery: rows are packed by js/blocks.js, each row one height. */
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: var(--media-gap);
+}
+
+.gallery__row {
+  display: flex;
+  gap: var(--media-gap);
+  align-items: flex-start;
+}
+
+.gallery__row > .figure { flex: var(--ar) 1 0%; }
 
 /* Narrow screens: pictures stack or pair up, and the special layouts relax
    into plain columns. */

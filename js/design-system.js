@@ -1,6 +1,9 @@
 /* Design-system page: fills in live token values and computed type sizes
    straight from the stylesheet, so the page can never drift from the site. */
 
+import { PROJECTS } from "./data.js";
+import { renderStory } from "./blocks.js";
+
 export function initDesignSystem() {
   const root = document.documentElement;
 
@@ -26,6 +29,12 @@ export function initDesignSystem() {
       if (read) el.textContent = `${Math.round(parseFloat(read()) * 10) / 10}px`;
     });
   };
+
+  /* The live carousel specimen: the Centennial ideation carousel itself. */
+  const demo = document.getElementById("ds-carousel-demo");
+  const centennial = PROJECTS.find((project) => project.slug === "delta-centennial");
+  const block = centennial && centennial.story.find((item) => item.type === "carousel" && item.variant === "thumbs");
+  if (demo && block) renderStory([block]).forEach((node) => demo.append(node));
 
   fill();
   fillSizes();
