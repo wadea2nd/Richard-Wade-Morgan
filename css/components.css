@@ -1058,6 +1058,7 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
 }
 
 .gallery__row > .figure { flex: var(--ar) 1 0%; }
+.gallery__row--loose > .figure { flex: none; width: calc(var(--ar) * var(--h)); }
 
 /* Narrow screens: pictures stack or pair up, and the special layouts relax
    into plain columns. */

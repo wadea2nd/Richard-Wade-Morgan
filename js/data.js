@@ -21,7 +21,7 @@
        { type: "row",      images: [...] }                         pictures side by side, matched in height
        { type: "grid",     columns: 4, images: [...] }             an even grid
        { type: "collage",  images: [...] }                         three overlapping pictures
-       { type: "gallery",  images: [...] }                         pictures packed into even rows at their own shapes
+       { type: "gallery",  images: [...], rhythm: [1.2, 0.8] }     pictures packed into rows at their own shapes (rhythm varies row heights)
        { type: "carousel", label: "…", images: [...] }            swipeable slides (see variants below)
        { type: "split",    text: "…", image: "id", side: "right" }      a paragraph beside a picture
        { type: "video",    src, poster, width, height, title }     a video that plays on demand
@@ -215,32 +215,18 @@ export const PROJECTS = [
     credits: [],
     story: [
       { text: "An assortment of design work and projects from 2014 to 2024." },
-      { label: "Morrison" },
-      { type: "row", images: ["da-morrison", "da-holiday-card", "da-bobs-sticker"] },
-      { label: "Gig posters" },
-      { type: "row", images: ["da-poster-eyes", "da-poster-death-stuff", "da-poster-julien-baker"] },
-      { type: "row", images: ["da-poster-hiss", "da-poster-mothers", "da-poster-tenement"] },
-      { label: "Marks" },
-      { type: "row", images: ["da-hunks", "da-tacitus", "da-rhino"] },
-      { label: "Brand systems" },
-      { type: "row", images: ["da-hooters-guides", "da-hooters-system"] },
-      { type: "full", image: "da-hoa" },
-      { label: "Thesis" },
-      { type: "row", images: ["da-thesis", "da-thesis-animation"] },
-      { label: "Zine" },
-      { type: "full", image: "da-zine" },
-      { label: "AT&T" },
-      { type: "full", image: "da-coffee" },
-      { type: "row", images: ["da-headspace-cloud", "da-headspace-record"] },
-      { label: "Cause and campaign posters" },
-      { type: "row", images: ["da-lulu", "da-acs"] },
-      { type: "row", images: ["da-trustpac", "da-engagepac"] },
-      { label: "Vinny's mutual aid bakery" },
-      { type: "row", images: ["da-vinnys-social", "da-vinnys-feast", "da-vinnys-pattern"] },
-      { label: "Delta and Team USA" },
-      { type: "row", images: ["da-team-usa-card", "da-team-usa-pin"] },
-      { label: "Odds and ends" },
-      { type: "row", images: ["da-fernbank", "da-double-click"] },
+      { type: "gallery", rowHeight: 17, rhythm: [1.2, 0.8, 1.05, 0.9], images: [
+        "da-morrison", "da-holiday-card", "da-bobs-sticker",
+        "da-poster-eyes", "da-poster-death-stuff", "da-poster-julien-baker", "da-poster-hiss", "da-poster-mothers", "da-poster-tenement",
+        "da-hunks", "da-tacitus", "da-rhino",
+        "da-hooters-guides", "da-hooters-system", "da-hoa",
+        "da-thesis", "da-thesis-animation", "da-zine",
+        "da-coffee", "da-headspace-cloud", "da-headspace-record",
+        "da-lulu", "da-acs", "da-trustpac", "da-engagepac",
+        "da-vinnys-social", "da-vinnys-feast", "da-vinnys-pattern",
+        "da-team-usa-card", "da-team-usa-pin",
+        "da-fernbank", "da-double-click"
+      ] },
     ]
   },
 ];

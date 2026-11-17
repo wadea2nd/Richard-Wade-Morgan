@@ -28,24 +28,38 @@ function resolve(entry) {
 }
 
 /* Splits pictures into rows so that every row, scaled to fill the width, comes
-   out as close as possible to the target height (a small dynamic program). */
-function partitionRows(ratios, width, gap, targetHeight) {
+   out close to a target height (a small dynamic program). The targets can
+   follow a rhythm, say [1, 0.8, 1.25], so the rows vary in height and the
+   gallery feels loose and asymmetrical. Returns each row's picture numbers and
+   the height it was aiming for. */
+function partitionRows(ratios, width, gap, targetHeight, rhythm = [1]) {
   const n = ratios.length;
-  const best = new Array(n + 1).fill(Infinity);
-  const from = new Array(n + 1).fill(0);
-  best[0] = 0;
+  const k = rhythm.length;
+  const best = Array.from({ length: n + 1 }, () => new Array(k).fill(Infinity));
+  const back = Array.from({ length: n + 1 }, () => new Array(k).fill(null));
+  best[0][0] = 0;
   for (let j = 1; j <= n; j += 1) {
-    let sum = 0;
-    for (let i = j - 1; i >= Math.max(0, j - 6); i -= 1) {
-      sum += ratios[i];
-      const fit = (width - gap * (j - i - 1)) / sum;           /* the row's height if it fills the width */
-      const dev = (fit - targetHeight) / targetHeight;
-      const cost = dev * dev * (dev < 0 ? 1.4 : 1) + 0.02;
-      if (best[i] + cost < best[j]) { best[j] = best[i] + cost; from[j] = i; }
+    for (let m = 0; m < k; m += 1) {                           /* m: which rhythm step the row ending at j used */
+      const target = targetHeight * rhythm[m];
+      const prevStep = (m + k - 1) % k;
+      let sum = 0;
+      for (let i = j - 1; i >= Math.max(0, j - 6); i -= 1) {
+        sum += ratios[i];
+        if (best[i][prevStep] === Infinity) continue;
+        const fit = (width - gap * (j - i - 1)) / sum;         /* the row's height if it fills the width */
+        const dev = (fit - target) / target;
+        const cost = dev * dev * (dev < 0 ? 1.4 : 1) + 0.02;
+        if (best[i][prevStep] + cost < best[j][m]) { best[j][m] = best[i][prevStep] + cost; back[j][m] = [i, prevStep]; }
+      }
     }
   }
+  let m = best[n].indexOf(Math.min(...best[n]));
   const rows = [];
-  for (let j = n; j > 0; j = from[j]) rows.unshift(Array.from({ length: j - from[j] }, (_, k) => from[j] + k));
+  for (let j = n; j > 0;) {
+    const [i, prev] = back[j][m];
+    rows.unshift({ indexes: Array.from({ length: j - i }, (_, q) => i + q), target: targetHeight * rhythm[m] });
+    j = i; m = prev;
+  }
   return rows;
 }
 
@@ -224,11 +238,19 @@ export function renderStory(story) {
         packedFor = width;
         const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
         const gap = parseFloat(getComputedStyle(layout).rowGap) || 12;
-        const rows = partitionRows(ratios, width, gap, (width < 600 ? target * 0.62 : target) * rem);
+        const small = width < 600;
+        const rows = partitionRows(ratios, width, gap, (small ? target * 0.8 : target) * rem, small ? [1.1, 0.9] : block.rhythm || [1]);
         layout.replaceChildren();
-        rows.forEach((indexes) => {
+        rows.forEach((row, at) => {
           const rowEl = el("div", "gallery__row");
-          indexes.forEach((i) => rowEl.append(items[i].node));
+          row.indexes.forEach((i) => rowEl.append(items[i].node));
+          /* a short last row keeps its natural size instead of stretching */
+          const sum = row.indexes.reduce((total, i) => total + ratios[i], 0);
+          const fit = (width - gap * (row.indexes.length - 1)) / sum;
+          if (at === rows.length - 1 && fit > row.target * 1.35) {
+            rowEl.classList.add("gallery__row--loose");
+            rowEl.style.setProperty("--h", `${row.target}px`);
+          }
           layout.append(rowEl);
         });
       }

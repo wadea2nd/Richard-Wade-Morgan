@@ -322,7 +322,7 @@ export const IMAGES = {
     alt: "A blue poster of crumpled paper squares with red type: “the transformation of an idea.”" },
   "da-thesis-animation": { src: "assets/img/work/design-archive/thesis-animation.gif", width: 800, height: 800,
     alt: "An animation of a sheet of white paper crumpling into a ball and unfolding again." },
-  "da-zine": { src: "assets/img/work/design-archive/zine.webp", width: 2200, height: 1650,
+  "da-zine": { src: "assets/img/work/design-archive/zine-v2.webp", width: 1650, height: 2200,
     alt: "A hand holding open the How I’d Fix Atlanta zine to an orange and teal illustration of a chain-link fence." },
 
   /* google-search (placeholders until real work is added) */
