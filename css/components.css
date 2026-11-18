@@ -1129,16 +1129,51 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
 
 
 /* 8. CREDITS AND PROJECT PAGER --------------------------------------------- */
+/* The opening passage of a project: a headline sentence, the rest of the words
+   in two columns, then the team credits, all under the header picture. */
+.project-intro {
+  display: grid;
+  gap: var(--space-xl);
+}
+
+.project-intro__lead {
+  max-width: 40rem;
+  font-size: clamp(1.125rem, 0.95rem + 0.6vw, 1.5rem);   /* 18 → 24px */
+  font-weight: 400;
+  line-height: 1.32;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--color-text);
+}
+
+.project-intro__body { color: var(--color-text-body); }
+.project-intro__body p { margin: 0; }
+.project-intro__body p + p { margin-block-start: var(--flow); }
+
+@media (min-width: 72rem) {
+  .project-intro__body { column-count: 2; column-gap: var(--space-l); }
+}
+
+/* Credits: small mono type under a hairline, laid out on the same two columns
+   as the text above (label on the left, names on the right). */
 .credits {
-  max-width: var(--measure);
+  padding-block-start: var(--space-m);
+  border-block-start: 1px solid var(--color-line);
   font-family: var(--font-mono);
   letter-spacing: 0;
   font-size: var(--fs-mono);
-  line-height: 1.55;
+  line-height: 1.6;
+  color: var(--color-text-muted);
 }
 
-.credits__label { display: block; }
-.credits > * + * { margin-block-start: var(--space-s); }
+.credits__row { display: grid; gap: var(--space-2xs); }
+.credits__row + .credits__row { margin-block-start: var(--space-s); }
+.credits__label { text-transform: uppercase; letter-spacing: 0.06em; }
+.credits__row p { margin: 0; color: var(--color-text); }
+
+@media (min-width: 52rem) {
+  .credits__row { grid-template-columns: 1fr 1fr; column-gap: var(--space-l); }
+}
 
 .pager {
   display: flex;

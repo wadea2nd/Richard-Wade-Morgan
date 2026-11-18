@@ -113,6 +113,7 @@
 #project-body > .story-passage + .story-passage,
 #project-body > .story-text + .story-text { margin-block-start: var(--flow); }
 #project-body > .story-note { margin-block: var(--space-xl); }
+#project-body > .project-intro { margin-block: var(--space-text); }
 #project-body > .story-label + .story-text,
 #project-body > .story-label + .story-passage { margin-block-start: var(--space-m); }
 #project-body > .story-label + .story-media { margin-block-start: var(--space-xs); }

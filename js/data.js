@@ -201,6 +201,7 @@ export const PROJECTS = [
       { type: "carousel", label: "Logo exploration", variant: "thumbs", ratio: "16 / 9", fit: "contain", images: ["os-logo", "os-arrows-scatter", "os-arrows-outline", "os-lockups-type", "os-lockups-color"] },
       { label: "Final logo and brand" },
       { type: "carousel", label: "The final logo and brand", variant: "thumbs", ratio: "16 / 9", fit: "contain", images: ["os-logo-blue", "os-logo-sky", "os-palette", "os-courage", "os-fearless", "os-news-graphic", "os-logo-color"] },
+      { label: "Design system" },
       { type: "full", image: "os-toolkit" },
       { text: "The rebrand received great acclaim, with positive reactions from the founders, the publisher of SB Nation, internal partners, Vox Media’s Chief Creative Officer, and plenty of fans online. The brand will be used for years to come and brings a previously sidelined name out into the open." },
       { label: "In use" },

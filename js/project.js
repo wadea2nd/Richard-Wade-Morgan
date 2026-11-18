@@ -55,21 +55,44 @@ export function initProject() {
 
   titleEl.textContent = project.title;
 
-  /* The story: words and pictures, in order. */
-  renderStory(project.story).forEach((node) => bodyEl.append(node));
+  /* The page opens with the header picture, then all the words in one
+     passage (a headline sentence, the rest in two columns, then the team
+     credits), and then the pictures begin. The words are gathered from the
+     story in the order they were written. */
+  const story = project.story;
+  const words = story.filter((block) => !block.type && (typeof block.text === "string" || typeof block.note === "string"));
+  const pictures = story.filter((block) => !words.includes(block));
+  const nodes = renderStory(pictures);                 /* one call, so the viewer steps through every picture */
+  const hasHeader = pictures[0] && pictures[0].type === "full";
+  if (hasHeader) bodyEl.append(nodes.shift());
 
-  /* Credits */
-  if (project.credits.length) {
-    const credits = el("div", "credits");
-    credits.dataset.reveal = "";
-    project.credits.forEach((entry) => {
-      const block = el("p");
-      if (entry.label) block.append(el("span", "credits__label", entry.label));
-      block.append(document.createTextNode(entry.text));
-      credits.append(block);
-    });
-    bodyEl.append(credits);
+  const paragraphs = words.map((block) => (typeof block.text === "string" ? block.text : block.note));
+  if (paragraphs.length || project.credits.length) {
+    const intro = el("section", "project-intro");
+    intro.dataset.reveal = "";
+
+    if (paragraphs.length) {
+      intro.append(el("h2", "project-intro__lead", paragraphs[0]));
+      if (paragraphs.length > 1) {
+        const body = el("div", "project-intro__body");
+        paragraphs.slice(1).forEach((text) => body.append(el("p", "", text)));
+        intro.append(body);
+      }
+    }
+
+    if (project.credits.length) {
+      const credits = el("div", "credits");
+      project.credits.forEach((entry) => {
+        const row = el("div", "credits__row");
+        row.append(el("span", "credits__label", entry.label || ""), el("p", "", entry.text));
+        credits.append(row);
+      });
+      intro.append(credits);
+    }
+    bodyEl.append(intro);
   }
+
+  nodes.forEach((node) => bodyEl.append(node));
 
   /* Next / previous project */
   const prev = PROJECTS[(index - 1 + PROJECTS.length) % PROJECTS.length];
