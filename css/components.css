@@ -260,6 +260,12 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
       visibility 0s linear var(--dur-base);
   }
 
+  /* A closed menu is invisible AND untouchable. Without this, the open "Work"
+     list inside it (which sets its own visibility, so it shows through the
+     hidden menu) could still catch taps and send a visitor to another
+     project. Everything inside inherits this. */
+  .drawer:not(.is-open) { pointer-events: none; }
+
   .drawer.is-open {
     visibility: visible;
     opacity: 1;
@@ -268,15 +274,6 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
   }
 
   .nav { margin-block-start: var(--space-m); }
-
-  /* Following a link from the open menu: a slow, even fade with no sliding, so
-     the menu melts away while the next page comes in. */
-  html.is-leaving .drawer {
-    transform: none;
-    transition:
-      opacity var(--dur-menu-out) var(--ease-standard),
-      visibility 0s linear var(--dur-menu-out);
-  }
 
   /* Slightly larger type in the full-screen menu, with roomier tap targets. */
   .nav__list { font-size: var(--fs-nav-mobile); }
@@ -845,6 +842,8 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;       /* a swipe stays in the carousel; it never turns into "back" */
+  touch-action: pan-x pan-y;
 }
 
 .carousel__viewport::-webkit-scrollbar { display: none; }
@@ -900,6 +899,19 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
 
 .carousel__count { flex: none; }
 .carousel__caption { min-width: 0; margin: 0; }
+
+/* On a phone the caption gets its own line, smaller, under the buttons and
+   counter, instead of being squeezed in beside them. */
+@media (max-width: 51.999rem) {
+  .carousel__bar { flex-wrap: wrap; row-gap: var(--space-xs); }
+  .carousel__caption {
+    flex: 1 0 100%;
+    order: 3;
+    font-size: 0.72rem;
+    line-height: 1.5;
+    letter-spacing: 0;
+  }
+}
 
 /* Carousel variants ----------------------------------------------------------- */
 
@@ -1305,6 +1317,9 @@ dialog::backdrop { background: var(--color-scrim); }
   block-size: 100dvh;
   background: var(--color-lightbox);
   color: var(--color-on-lightbox);
+  overflow: hidden;
+  touch-action: none;                   /* our own swipe, pinch, and pan (see js/lightbox.js) */
+  overscroll-behavior: contain;
 }
 
 .lightbox[open] {
@@ -1327,7 +1342,14 @@ dialog::backdrop { background: var(--color-scrim); }
   block-size: auto;
   object-fit: contain;
   -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transform-origin: center;
+  will-change: transform;
 }
+
+.lightbox.is-zoomed { cursor: grab; }
+.lightbox.is-zoomed .lightbox__caption { opacity: 0; }
 
 .lightbox__caption {
   max-inline-size: 60ch;

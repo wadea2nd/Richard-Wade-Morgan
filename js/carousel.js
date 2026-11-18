@@ -97,11 +97,15 @@ export function initCarousel(root, slides, label, variant = "default") {
   let index = 0;
 
   function nearest() {
-    const mid = viewport.scrollLeft + viewport.clientWidth / 2;
+    /* Measured on screen, relative to the viewport, so it holds wherever the
+       carousel sits on the page. */
+    const box = viewport.getBoundingClientRect();
+    const mid = box.left + box.width / 2;
     let best = 0;
     let bestGap = Infinity;
     slides.forEach((slide, i) => {
-      const gap = Math.abs(slide.node.offsetLeft + slide.node.offsetWidth / 2 - mid);
+      const r = slide.node.getBoundingClientRect();
+      const gap = Math.abs(r.left + r.width / 2 - mid);
       if (gap < bestGap) { bestGap = gap; best = i; }
     });
     return best;
@@ -157,6 +161,31 @@ export function initCarousel(root, slides, label, variant = "default") {
       if (i !== index) show(i);
     });
   }, { passive: true });
+
+  /* Swiping: the strip scrolls natively. As a safety net for phones where the
+     native scroll does not take (for example when a finger starts on a
+     picture), a clear horizontal flick that did not move the strip steps to
+     the next or previous slide. */
+  if (!strip) {
+    let start = null;
+    viewport.addEventListener("touchstart", (event) => {
+      const t = event.touches[0];
+      start = { x: t.clientX, y: t.clientY, left: viewport.scrollLeft, at: Date.now() };
+    }, { passive: true });
+    viewport.addEventListener("touchend", (event) => {
+      if (!start) return;
+      const t = event.changedTouches[0];
+      const dx = t.clientX - start.x;
+      const dy = t.clientY - start.y;
+      const began = start;
+      start = null;
+      if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy) * 1.5 || Date.now() - began.at > 900) return;
+      window.setTimeout(() => {
+        if (Math.abs(viewport.scrollLeft - began.left) > 8) return;   /* it scrolled by itself */
+        goTo(index + (dx < 0 ? 1 : -1));
+      }, 160);
+    }, { passive: true });
+  }
 
   prev.addEventListener("click", () => (strip ? scrollStrip(-1) : goTo(index - 1)));
   next.addEventListener("click", () => (strip ? scrollStrip(1) : goTo(index + 1)));

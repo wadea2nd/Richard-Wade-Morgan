@@ -7,6 +7,11 @@ export function closeMenu() {
   return closeMenuFn ? closeMenuFn() : false;
 }
 
+/* Whether the full-screen phone menu is showing right now. */
+export function isMenuOpen() {
+  return document.body.classList.contains("menu-open");
+}
+
 export function initNav() {
   const button = document.querySelector(".menu-toggle");
   const drawer = document.getElementById("drawer");
@@ -22,6 +27,9 @@ export function initNav() {
     document.body.classList.toggle("menu-open", open);
     /* While the menu covers the page, the page behind it is inert. */
     if (main) main.inert = open && narrow.matches;
+    /* Likewise the closed menu: on a phone it must not catch taps or focus
+       even though it is invisible. */
+    drawer.inert = narrow.matches && !open;
   }
 
   closeMenuFn = () => {

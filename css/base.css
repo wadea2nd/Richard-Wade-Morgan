@@ -49,19 +49,6 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Smooth light ⇄ dark: colors ease for a moment around a theme change
-   (theme.js adds the class, then removes it). */
-html.theme-transition,
-html.theme-transition *,
-html.theme-transition *::before,
-html.theme-transition *::after {
-  transition:
-    background-color var(--dur-theme) var(--ease-standard),
-    color var(--dur-theme) var(--ease-standard),
-    border-color var(--dur-theme) var(--ease-standard),
-    fill var(--dur-theme) var(--ease-standard) !important;
-}
-
 /* Text styles ------------------------------------------------------------- */
 h1 {
   font-family: var(--font-body);

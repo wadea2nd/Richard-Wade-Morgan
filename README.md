@@ -65,8 +65,9 @@ fluid `clamp()` values between a 375px phone and a 1920px desktop.
 
 **Themes:** light and dark, toggled by the half-moon at the top right of
 the window (in the pinned header on phones). In dark mode both header icons are light orange. The site always opens in
-light mode; the choice is saved in the browser, and the page crossfades
-between the two. `js/theme-init.js` runs before the first paint so a returning
+light mode; the choice is saved in the browser, and every color eases between the two
+together as one shared set of color values (`css/tokens.css`, section 0), so
+the header, body, and menus switch in step with no seams. `js/theme-init.js` runs before the first paint so a returning
 dark-mode visitor never sees a flash of light.
 
 **Motion:** deliberately quiet. Nothing appears until the fonts are ready, then

@@ -19,6 +19,24 @@
    ========================================================================== */
 
 
+/* 0. THE COLOR COMPONENT ----------------------------------------------------
+   Every theme color is registered as a real color value that can animate, and
+   :root eases all of them together (see the end of section 3). Because every
+   header, body, menu, and panel reads the same animating value, they all move
+   between light and dark on exactly the same frame, with no seams between
+   layout areas. */
+@property --color-bg { syntax: "<color>"; inherits: true; initial-value: #e7e6e0; }
+@property --color-surface { syntax: "<color>"; inherits: true; initial-value: #ffffff; }
+@property --color-text { syntax: "<color>"; inherits: true; initial-value: #1a1916; }
+@property --color-text-muted { syntax: "<color>"; inherits: true; initial-value: #55544f; }
+@property --color-accent { syntax: "<color>"; inherits: true; initial-value: #ad4500; }
+@property --color-line { syntax: "<color>"; inherits: true; initial-value: rgb(26 25 22 / 0.2); }
+@property --color-fill { syntax: "<color>"; inherits: true; initial-value: rgb(26 25 22 / 0.08); }
+@property --color-media-bg { syntax: "<color>"; inherits: true; initial-value: #dddcd5; }
+@property --color-chrome { syntax: "<color>"; inherits: true; initial-value: rgb(231 230 224 / 0.94); }
+@property --color-tool { syntax: "<color>"; inherits: true; initial-value: #1a1916; }
+
+
 /* 1. PRIMITIVE PALETTE ----------------------------------------------------- */
 :root {
   --paper-0:   #ffffff;
@@ -97,6 +115,22 @@
 }
 
 
+/* The one place the light ⇄ dark crossfade is defined. */
+:root {
+  transition:
+    --color-bg var(--dur-theme) var(--ease-standard),
+    --color-surface var(--dur-theme) var(--ease-standard),
+    --color-text var(--dur-theme) var(--ease-standard),
+    --color-text-muted var(--dur-theme) var(--ease-standard),
+    --color-accent var(--dur-theme) var(--ease-standard),
+    --color-line var(--dur-theme) var(--ease-standard),
+    --color-fill var(--dur-theme) var(--ease-standard),
+    --color-media-bg var(--dur-theme) var(--ease-standard),
+    --color-chrome var(--dur-theme) var(--ease-standard),
+    --color-tool var(--dur-theme) var(--ease-standard);
+}
+
+
 /* 4. TYPOGRAPHY ------------------------------------------------------------
    Faculty Glyphic: ONLY the site name and the intro statements (the h1 on
    the home and About pages). It is decorative, so it is used sparingly.
@@ -172,7 +206,6 @@
   --dur-slow:  600ms;
   --dur-slide: 900ms;
   --dur-theme: 700ms;     /* light ⇄ dark crossfade */
-  --dur-menu-out: 600ms;  /* phone menu fading away as a new page loads */
   --dur-enter: 1000ms;    /* entrance of the page chrome and content */
 
   --z-content:  1;

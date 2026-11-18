@@ -1,11 +1,10 @@
 /* Light / dark toggle.
    - The saved choice (localStorage) wins; otherwise the site opens in light.
-   - The whole page crossfades between the two (View Transitions API where
-     supported; otherwise every color eases over the same duration). */
+   - Every color eases between the two together (tokens.css, section 0), so
+     header, body, and menus never fall out of step. */
 
 const KEY = "rwm-theme";
 const root = document.documentElement;
-const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const current = () => (root.dataset.theme === "dark" ? "dark" : "light");
 
@@ -16,7 +15,7 @@ function syncChrome() {
   });
   /* Tint the browser UI (mobile address bar) to the page color. */
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute("content", getComputedStyle(root).getPropertyValue("--color-bg").trim());
+  if (meta) meta.setAttribute("content", getComputedStyle(root).getPropertyValue(dark ? "--night-900" : "--paper-100").trim());
 }
 
 function apply(next) {
@@ -27,22 +26,9 @@ function apply(next) {
 }
 
 function toggle() {
-  const next = current() === "dark" ? "light" : "dark";
-
-  if (prefersReducedMotion()) { apply(next); return; }
-
-  if (document.startViewTransition) {
-    /* The crossfade can be skipped (for example if the tab is hidden); the
-       theme still changes, so those rejections are safe to ignore. */
-    const transition = document.startViewTransition(() => apply(next));
-    transition.ready.catch(() => {});
-    transition.finished.catch(() => {});
-    return;
-  }
-
-  root.classList.add("theme-transition");
-  apply(next);
-  window.setTimeout(() => root.classList.remove("theme-transition"), 800);
+  /* The colors themselves ease between the two themes (see tokens.css), so
+     switching is just a change of the theme name. */
+  apply(current() === "dark" ? "light" : "dark");
 }
 
 export function initTheme() {

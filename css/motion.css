@@ -100,20 +100,9 @@ dialog[open]::backdrop { animation: fade-in var(--dur-base) var(--ease-standard)
     transform 220ms var(--ease-standard);
 }
 
-html.is-leaving-menu .content { transition-duration: var(--dur-menu-out); }
-
 html.is-leaving .content {
   opacity: 0;
   transform: translateY(0.5rem);
-}
-
-
-/* Theme change ---------------------------------------------------------------
-   Where the browser supports View Transitions, the whole page crossfades
-   between light and dark. Elsewhere, colors ease (see base.css). */
-::view-transition-group(root) {
-  animation-duration: var(--dur-theme);
-  animation-timing-function: var(--ease-standard);
 }
 
 

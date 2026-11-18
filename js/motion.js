@@ -1,7 +1,7 @@
 /* Motion: the gentle scroll reveal and the page-leave fade.
    Everything is skipped for visitors who prefer reduced motion. */
 
-import { closeMenu } from "./nav.js";
+import { closeMenu, isMenuOpen } from "./nav.js";
 
 const root = document.documentElement;
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -56,7 +56,8 @@ export function initMotion() {
   reveals.forEach((el) => io.observe(el));
 }
 
-/* Fade the content column out before following an internal link. */
+/* Fade the content column out before following an internal link (on a phone,
+   a link in the open menu skips this and goes straight there). */
 export function initPageLeave() {
   document.addEventListener("click", (event) => {
     if (event.defaultPrevented || event.button !== 0) return;
@@ -68,20 +69,21 @@ export function initPageLeave() {
     const url = new URL(link.href, window.location.href);
     if (!/^https?:$/.test(url.protocol) || url.origin !== window.location.origin) return;
     if (url.pathname === window.location.pathname && url.search === window.location.search) return;
+    /* From the open phone menu, go straight there: the menu already covers the
+       old page, so it simply stays in place until the new page is ready, and
+       only the new page fades in. No waiting, no outgoing fade. */
+    if (isMenuOpen()) return;
     if (prefersReducedMotion()) return;
 
     event.preventDefault();
-    /* On a phone the full-screen menu fades away first, then the page changes;
-       on desktop the sidebar simply stays while the content eases out. */
-    const menuWasOpen = closeMenu();
-    if (menuWasOpen) root.classList.add("is-leaving-menu");
+    /* Otherwise the content column eases out first (the sidebar stays put). */
     root.classList.add("is-leaving");
-    window.setTimeout(() => { window.location.href = link.href; }, menuWasOpen ? 640 : 240);
+    window.setTimeout(() => { window.location.href = link.href; }, 240);
   });
 
   /* Coming back with the browser's back button restores the page as it was. */
   window.addEventListener("pageshow", (event) => {
-    if (event.persisted) root.classList.remove("is-leaving", "is-leaving-menu");
+    if (event.persisted) { root.classList.remove("is-leaving"); closeMenu(); }
   });
 }
 
