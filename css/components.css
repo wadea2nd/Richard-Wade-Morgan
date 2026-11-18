@@ -448,7 +448,7 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
   .tools { margin-block-start: calc((var(--fs-nav) * var(--lh-snug) - var(--tool)) / 2); }
 }
 
-/* Back to top: appears bottom right after scrolling, on every screen size. */
+/* Back to top: appears bottom right after scrolling (bottom center on a phone). */
 .to-top {
   position: fixed;
   inset-block-end: calc(var(--pad-y) + env(safe-area-inset-bottom, 0px));
@@ -473,6 +473,15 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
     color var(--dur-fast),
     border-color var(--dur-fast),
     visibility 0s linear var(--dur-base);
+}
+
+/* On a phone the button sits at the bottom center, clear of the Previous and
+   Next links at the foot of each page. */
+@media (max-width: 51.999rem) {
+  .to-top {
+    inset-inline: 0;
+    margin-inline: auto;
+  }
 }
 
 .to-top.is-visible {

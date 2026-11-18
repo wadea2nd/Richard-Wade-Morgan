@@ -119,6 +119,8 @@ export function initFloaties() {
       }
       draw(item);
     });
+    /* Once the page has laid out, settle anything that landed on the button. */
+    requestAnimationFrame(() => items.forEach((item) => { clearTopButton(item, topButtonZone()); draw(item); }));
   }
 
   /* Physics --------------------------------------------------------------- */
@@ -238,6 +240,48 @@ export function initFloaties() {
     }
   }
 
+  /* The back-to-top button is off limits: an emoji never rests on it, drifts
+     over it, or blocks a tap on it. It is bounced or slid clear of it. */
+  function topButtonZone() {
+    const button = document.querySelector(".to-top");
+    if (!button) return null;
+    const r = button.getBoundingClientRect();
+    return r.width ? { x: r.left + r.width / 2, y: r.top + r.height / 2, r: r.width / 2 } : null;
+  }
+
+  function clearTopButton(item, zone) {
+    if (!zone || item.gone || item.wait > 0) return;
+    const half = item.size / 2;
+    const cx = item.x + half;
+    const cy = item.y + half;
+    const reach = zone.r + half * 0.85 + 12;
+    let dx = cx - zone.x;
+    const dy = cy - zone.y;
+    if (Math.hypot(dx, dy) >= reach) return;
+
+    if (mode === "swatted") {
+      /* On the floor: slide sideways to whichever side is nearer. */
+      if (Math.abs(dx) < 1) dx = item.i % 2 ? 1 : -1;
+      const side = dx > 0 ? 1 : -1;
+      item.x = zone.x + side * Math.sqrt(Math.max(0, reach * reach - dy * dy)) - half;
+      item.vx = side * Math.max(Math.abs(item.vx), 60);
+      return;
+    }
+
+    /* Floating or swarming: push out along the line from the button and
+       bounce off it. */
+    const d = Math.hypot(dx, dy) || 1;
+    const nx = dx / d;
+    const ny = dy / d;
+    item.x = zone.x + nx * reach - half;
+    item.y = zone.y + ny * reach - half;
+    const into = item.vx * nx + item.vy * ny;
+    if (into < 0) {
+      item.vx -= 1.6 * into * nx;
+      item.vy -= 1.6 * into * ny;
+    }
+  }
+
   function frame(now) {
     const dt = Math.min(0.05, (now - last) / 1000);
     last = now;
@@ -251,6 +295,8 @@ export function initFloaties() {
       else stepFloat(item, dt);
     });
     collide();
+    const zone = topButtonZone();
+    items.forEach((item) => { if (!item.dragging) clearTopButton(item, zone); });
     items.forEach((item) => { if (!item.gone) draw(item); });
     requestAnimationFrame(frame);
   }
@@ -367,6 +413,7 @@ export function initFloaties() {
         item.y = floorOf(item);
         item.vx = 0; item.vy = 0;
         item.x = Math.min(Math.max(item.x, 0), bounds().w - item.size);
+        clearTopButton(item, topButtonZone());
         draw(item);
         return;
       }
@@ -434,6 +481,7 @@ export function initFloaties() {
         const goal = orbitGoal(item, lightCenter(), 0);
         item.x = goal.x; item.y = goal.y;
       }
+      clearTopButton(item, topButtonZone());
       draw(item);
     });
   });

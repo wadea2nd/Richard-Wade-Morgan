@@ -136,6 +136,11 @@
     --color-tool var(--dur-theme) var(--ease-standard);
 }
 
+/* On a phone the theme changes instantly (js/theme.js), so no easing. */
+@media (max-width: 51.999rem) {
+  :root { transition: none; }
+}
+
 
 /* 4. TYPOGRAPHY ------------------------------------------------------------
    Faculty Glyphic: ONLY the site name and the intro statements (the h1 on

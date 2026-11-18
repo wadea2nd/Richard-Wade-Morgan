@@ -154,7 +154,7 @@ export const PROJECTS = [
       { text: "After initial stakeholder fact-finding, it was clear the brand needed to be disruptive, boundary-pushing, and founded on a design system that could span every form of media and space." },
       { label: "Early explorations" },
       { type: "row", images: ["st-early-boards", "st-early-logos"] },
-      { text: "A design audit determined the “box” mark was susceptible to collapse, much like corrugated cardboard itself. Stord needed to be strong, indomitable, and clear. The roundedness of the S and circular, pointed shapes emerged as front runners. The final mark displays the strength of the trust you can place in Stord to make your supply chain a competitive advantage. We then brought in 3D artist Tom Hoying to render elements showing what logistics could look like in our new ethos." },
+      { text: "A design audit determined the “box” mark was susceptible to collapse, much like corrugated cardboard itself. Stord needed to be strong, indomitable, and clear. The roundedness of the S and circular, pointed shapes emerged as frontrunners. The final mark displays the strength of the trust you can place in Stord to make your supply chain a competitive advantage. We then brought in 3D artist Tom Hoying to render elements showing what logistics could look like in our new ethos." },
       { label: "The new system" },
       { type: "grid", columns: 2, images: ["st-final-logo", "st-final-type"] },
       { type: "full", image: "st-final-system" },

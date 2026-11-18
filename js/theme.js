@@ -26,16 +26,20 @@ function apply(next) {
   document.dispatchEvent(new CustomEvent("themechange", { detail: { theme: next } }));
 }
 
-/* Switching themes. Where the browser supports View Transitions, the new theme
-   is revealed by a circle that grows out of the button: the page (and the
-   phone's status bar) goes straight from one theme to the other with no grey
-   half-way blend. Elsewhere the colors ease between the two (tokens.css). */
+/* Switching themes. On a phone the change is instant (the status bar and page
+   switch together on the next frame). On a larger screen, where the browser
+   supports View Transitions, the new theme is revealed by a circle growing out
+   of the button, with no grey half-way blend. Elsewhere the colors ease between
+   the two (tokens.css). */
+const phone = window.matchMedia("(max-width: 51.999rem)");
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function toggle(event) {
   const next = current() === "dark" ? "light" : "dark";
 
-  if (prefersReducedMotion() || !document.startViewTransition) {
+  /* On a phone the change is instant: the status bar and the page take the new
+     theme on the very next frame, with no reveal to wait for. */
+  if (prefersReducedMotion() || phone.matches || !document.startViewTransition) {
     apply(next);
     return;
   }

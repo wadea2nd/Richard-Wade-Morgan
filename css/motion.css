@@ -2,7 +2,7 @@
    MOTION
    --------------------------------------------------------------------------
    Deliberately quiet. Content eases up a few pixels as it fades in, nothing
-   bounces, and the light ⇄ dark switch is a circle growing from the toggle.
+   bounces, and the light ⇄ dark switch is a circle growing from the toggle (instant on phones).
 
    The page appears in three passes, all started only once the fonts are
    ready, so text never flashes in a fallback face and then jumps:
