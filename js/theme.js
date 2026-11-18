@@ -1,7 +1,8 @@
 /* Light / dark toggle.
    - The saved choice (localStorage) wins; otherwise the site opens in light.
-   - Every color eases between the two together (tokens.css, section 0), so
-     header, body, and menus never fall out of step. */
+   - The new theme is revealed by a growing circle from the button (View
+     Transitions); elsewhere every color eases together (tokens.css,
+     section 0), so header, body, and menus never fall out of step. */
 
 const KEY = "rwm-theme";
 const root = document.documentElement;
@@ -25,10 +26,34 @@ function apply(next) {
   document.dispatchEvent(new CustomEvent("themechange", { detail: { theme: next } }));
 }
 
-function toggle() {
-  /* The colors themselves ease between the two themes (see tokens.css), so
-     switching is just a change of the theme name. */
-  apply(current() === "dark" ? "light" : "dark");
+/* Switching themes. Where the browser supports View Transitions, the new theme
+   is revealed by a circle that grows out of the button: the page (and the
+   phone's status bar) goes straight from one theme to the other with no grey
+   half-way blend. Elsewhere the colors ease between the two (tokens.css). */
+const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function toggle(event) {
+  const next = current() === "dark" ? "light" : "dark";
+
+  if (prefersReducedMotion() || !document.startViewTransition) {
+    apply(next);
+    return;
+  }
+
+  const box = (event.currentTarget || document.body).getBoundingClientRect();
+  const x = box.left + box.width / 2;
+  const y = box.top + box.height / 2;
+  const reach = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+
+  root.classList.add("theme-reveal");           /* no color easing underneath the reveal */
+  const transition = document.startViewTransition(() => apply(next));
+  transition.ready.then(() => {
+    root.animate(
+      { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${Math.ceil(reach)}px at ${x}px ${y}px)`] },
+      { duration: 800, easing: "cubic-bezier(0.22, 1, 0.36, 1)", pseudoElement: "::view-transition-new(root)" }
+    );
+  }).catch(() => {});
+  transition.finished.catch(() => {}).finally(() => root.classList.remove("theme-reveal"));
 }
 
 export function initTheme() {

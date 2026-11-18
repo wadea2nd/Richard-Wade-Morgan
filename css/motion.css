@@ -2,7 +2,7 @@
    MOTION
    --------------------------------------------------------------------------
    Deliberately quiet. Content eases up a few pixels as it fades in, nothing
-   bounces, and the light ⇄ dark switch is a slow crossfade.
+   bounces, and the light ⇄ dark switch is a circle growing from the toggle.
 
    The page appears in three passes, all started only once the fonts are
    ready, so text never flashes in a fallback face and then jumps:
@@ -104,6 +104,23 @@ html.is-leaving .content {
   opacity: 0;
   transform: translateY(0.5rem);
 }
+
+
+/* Theme change ---------------------------------------------------------------
+   The new theme is revealed by a circle growing out of the toggle (js/theme.js
+   animates ::view-transition-new). The old page stays as it was underneath, so
+   nothing ever blends through grey. While it runs, the color easing in
+   tokens.css is switched off so the new picture is the finished theme. */
+html.theme-reveal { transition: none; }
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 2; }
 
 
 /* Reduced motion: no movement, no waiting ---------------------------------- */

@@ -294,7 +294,7 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
 
 /* 3. TOOLS, COLOPHON ------------------------------------------------------ */
 
-/* The swatter and half-moon sit together at the top right of the window on
+/* The swatter and moon/sun sit together at the top right of the window on
    wide screens (backed so they stay legible over images) and in the pinned
    masthead, between the name and "•••", on narrow ones. */
 .tools {
@@ -326,27 +326,43 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
 
 .tool-btn:hover { background: var(--color-fill); }
 
-/* A half-filled circle (half moon). It turns over when the theme changes. */
+/* The theme icon: a crescent moon in dark mode that opens toward its upper
+   right corner, its bite sliding away and the disc shrinking into a sun with
+   rays, and back again. The colors and shapes come from the theme name on
+   <html>, so the drawing always matches the page. */
 .theme-toggle__icon {
-  inline-size: 1.1rem;
-  block-size: 1.1rem;
-  border: 1.5px solid currentColor;
-  border-radius: 50%;
-  background: linear-gradient(90deg, currentColor 50%, transparent 50%);
-  transition: transform var(--dur-theme) var(--ease-out);
+  inline-size: 1.45rem;
+  block-size: 1.45rem;
+  overflow: visible;
 }
 
-.theme-toggle[aria-pressed="true"] .theme-toggle__icon { transform: rotate(180deg); }
-
-/* Windows high-contrast mode drops background fills, which would erase the
-   half-moon, so it is redrawn with system colors there. */
-@media (forced-colors: active) {
-  .theme-toggle__icon {
-    forced-color-adjust: none;
-    border-color: ButtonText;
-    background: linear-gradient(90deg, ButtonText 50%, transparent 50%);
-  }
+.theme-toggle__disc,
+.theme-toggle__cut,
+.theme-toggle__rays {
+  transform-origin: 12px 12px;
+  transition:
+    transform var(--dur-theme) var(--ease-out),
+    opacity var(--dur-theme) var(--ease-out);
 }
+
+.theme-toggle__disc { fill: currentColor; }
+
+.theme-toggle__rays {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+}
+
+/* Light mode: a sun. The bite has slid off to the upper right. */
+.theme-toggle__cut { transform: translate(17px, -17px); }
+.theme-toggle__disc { transform: scale(0.7); }
+.theme-toggle__rays { opacity: 1; transform: rotate(0deg) scale(1); }
+
+/* Dark mode: a crescent moon, bitten from the upper right. */
+:root[data-theme="dark"] .theme-toggle__cut { transform: none; }
+:root[data-theme="dark"] .theme-toggle__disc { transform: scale(1); }
+:root[data-theme="dark"] .theme-toggle__rays { opacity: 0; transform: rotate(-70deg) scale(0.55); }
 
 /* The fly swatter: line work. It tips over and the gnat disappears once the
    gnats have been swatted. */

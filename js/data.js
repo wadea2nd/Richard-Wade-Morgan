@@ -239,6 +239,5 @@ export const SLIDES = [
   { src: "assets/img/slides/delta-pride.webp", alt: "The Delta and KLM Pride float on an Amsterdam canal, a white barge with rainbow-colored fuselage windows.", title: "Delta Pride 2024", project: "delta-pride" },
   { src: "assets/img/slides/stord-site.webp", alt: "The Stord website: an oversized black Stord wordmark above an isometric illustration of a city.", title: "Stord", project: "stord" },
   { src: "assets/img/slides/outsports-site.webp", alt: "The Outsports homepage with its upward-arrow logo above a grid of news stories.", title: "Outsports", project: "outsports" },
-  { src: "assets/img/slides/hooters-brand.webp", alt: "A grid of Hooters brand work: logo, packaging, menus, merchandise, billboards, and social posts.", title: "Hooters", project: "design-archive" },
   { src: "assets/img/slides/morrison-work.webp", alt: "A “Bob’s your uncle.” sticker held up in front of a red wall printed with large letters.", title: "Morrison", project: "design-archive" }
 ];

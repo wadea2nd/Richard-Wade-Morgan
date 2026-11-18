@@ -63,10 +63,14 @@ Grotesk variable handles everything else: navigation, project titles, body
 copy, and h2 labels. Space Mono is for captions and credits. All sizes are
 fluid `clamp()` values between a 375px phone and a 1920px desktop.
 
-**Themes:** light and dark, toggled by the half-moon at the top right of
+**Themes:** light and dark, toggled by the moon/sun icon at the top right of
 the window (in the pinned header on phones). In dark mode both header icons are light orange. The site always opens in
-light mode; the choice is saved in the browser, and every color eases between the two
-together as one shared set of color values (`css/tokens.css`, section 0), so
+light mode; the choice is saved in the browser. The icon is a crescent moon in dark mode
+that opens toward its upper right corner and turns into a sun. Where the browser
+supports View Transitions, the new theme is revealed by a circle growing out of
+the icon, so the page and a phone's status bar go straight from one theme to the
+other with no grey blend (`js/theme.js`). Elsewhere every color eases between the
+two together as one shared set of color values (`css/tokens.css`, section 0), so
 the header, body, and menus switch in step with no seams. `js/theme-init.js` runs before the first paint so a returning
 dark-mode visitor never sees a flash of light.
 
@@ -79,7 +83,7 @@ motion.
 
 **Floating emoji:** four emoji drift across the window, floating in at one
 edge and out another, and can be dragged and thrown. In light mode
-the fly-swatter icon (next to the half-moon) drops them to the bottom of the
+the fly-swatter icon (next to the moon/sun) drops them to the bottom of the
 screen, where they stay until each is dragged off the left, right, or top
 edge. In dark mode the icon becomes a lightbulb: it lights up and the emoji
 swarm around it like moths. Either way, "Release gnats" sets them free, and
