@@ -2,12 +2,12 @@
    BASE
    --------------------------------------------------------------------------
    Reset, document defaults, and the three core text styles:
-     h1    Instrument Sans 400, fluid 24 → 36px (page and project titles)
+     h1    Wix Madefor Text 400, fluid 24 → 36px (page and project titles)
            .intro: Faculty Glyphic, fluid 26 → 42px (the home and About
            intro statements, the only place that font is used besides
            the site name)
-     h2    Instrument Sans 600, body size        (section labels)
-     body  Instrument Sans 400, fluid 16 → 18px  (everything else)
+     h2    Wix Madefor Text 600, body size        (section labels)
+     body  Wix Madefor Text 400, 14px            (everything else)
    ========================================================================== */
 
 /* Reset ------------------------------------------------------------------- */

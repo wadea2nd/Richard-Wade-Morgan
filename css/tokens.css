@@ -28,6 +28,7 @@
 @property --color-bg { syntax: "<color>"; inherits: true; initial-value: #e7e6e0; }
 @property --color-surface { syntax: "<color>"; inherits: true; initial-value: #ffffff; }
 @property --color-text { syntax: "<color>"; inherits: true; initial-value: #1a1916; }
+@property --color-text-body { syntax: "<color>"; inherits: true; initial-value: #3b3a36; }
 @property --color-text-muted { syntax: "<color>"; inherits: true; initial-value: #55544f; }
 @property --color-accent { syntax: "<color>"; inherits: true; initial-value: #ad4500; }
 @property --color-line { syntax: "<color>"; inherits: true; initial-value: rgb(26 25 22 / 0.2); }
@@ -45,6 +46,7 @@
   --paper-300: #cfcdc6;
 
   --ink-900: #1a1916;     /* primary text */
+  --ink-800: #3b3a36;     /* project body copy: softer than ink-900, 9.1:1 on paper-100 */
   --ink-600: #55544f;     /* secondary text, 6:1 on paper-100 */
 
   --black: #000000;       /* photography stage: matches pure-black product shots */
@@ -54,6 +56,7 @@
   --night-700: #2b2b28;
 
   --bone-100: #ecebe5;    /* dark primary text */
+  --bone-200: #cfcec7;    /* dark project body copy, 11.9:1 on night-900 */
   --bone-400: #a9a8a1;    /* dark secondary text */
 
   /* Highlight orange, in two strengths. Each is tuned to clear 4.5:1 on the
@@ -70,6 +73,7 @@
   --color-bg:          var(--paper-100);
   --color-surface:     var(--paper-0);        /* menus, dialogs */
   --color-text:        var(--ink-900);
+  --color-text-body:   var(--ink-800);        /* project body copy only */
   --color-text-muted:  var(--ink-600);
   --color-accent:      var(--orange-700);     /* highlight: hover, current page, focus, tabs */
   --color-line:        rgb(26 25 22 / 0.2);   /* hairlines */
@@ -98,6 +102,7 @@
   --color-bg:          var(--night-900);
   --color-surface:     var(--night-800);
   --color-text:        var(--bone-100);
+  --color-text-body:   var(--bone-200);
   --color-text-muted:  var(--bone-400);
   --color-accent:      var(--orange-300);
   --color-line:        rgb(236 235 229 / 0.22);
@@ -121,6 +126,7 @@
     --color-bg var(--dur-theme) var(--ease-standard),
     --color-surface var(--dur-theme) var(--ease-standard),
     --color-text var(--dur-theme) var(--ease-standard),
+    --color-text-body var(--dur-theme) var(--ease-standard),
     --color-text-muted var(--dur-theme) var(--ease-standard),
     --color-accent var(--dur-theme) var(--ease-standard),
     --color-line var(--dur-theme) var(--ease-standard),
@@ -134,7 +140,7 @@
 /* 4. TYPOGRAPHY ------------------------------------------------------------
    Faculty Glyphic: ONLY the site name and the intro statements (the h1 on
    the home and About pages). It is decorative, so it is used sparingly.
-   Instrument Sans (variable, 400–700): everything else, including the
+   Wix Madefor Text (variable, 400–800): everything else, including the
    navigation, project titles, body copy, and h2 labels.
    Space Mono: captions, credits, small print.
 
@@ -143,11 +149,11 @@
    jumping at breakpoints. */
 :root {
   --font-intro:   "Faculty Glyphic", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
-  --font-body:    "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body:    "Wix Madefor Text", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono:    "Space Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-  --fs-mono: clamp(0.75rem, 0.73rem + 0.1vw, 0.8125rem);  /* 12 → 13px   */
-  --fs-body: clamp(1rem, 0.97rem + 0.13vw, 1.125rem);     /* 16 → 18px   */
+  --fs-mono:  clamp(0.6875rem, 0.67rem + 0.08vw, 0.72rem); /* 11 → 11.5px */
+  --fs-body:  0.875rem;                                    /* 14px        */
   --fs-h2:   var(--fs-body);                              /* label style */
   --fs-nav:  clamp(1.125rem, 1.09rem + 0.1vw, 1.3125rem); /* 18 → 21px   */
   --fs-nav-mobile: clamp(1.3125rem, 1.24rem + 0.35vw, 1.5rem); /* 21 → 24px, full-screen menu */
@@ -156,13 +162,13 @@
 
   --lh-tight: 1.2;
   --lh-snug:  1.25;
-  --lh-body:  1.45;
+  --lh-body:  1.6;
 
   --track-display: -0.018em;
   --track-body:    -0.012em;
 
   --weight-regular: 400;
-  --weight-title:   400;   /* Instrument Sans starts at 400 */
+  --weight-title:   400;
   --weight-label:   600;
 }
 

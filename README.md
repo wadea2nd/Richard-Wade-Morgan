@@ -58,7 +58,7 @@ contains a raw color, font size, spacing value, or duration.
 | `css/design-system.css` | Styles for the style-guide page only |
 
 **Type:** Faculty Glyphic is used only for the site name and the intro
-statement (the large `h1` on the home and About pages, class `intro`). Instrument Sans
+statement (the large `h1` on the home and About pages, class `intro`). Wix Madefor Text
 Grotesk variable handles everything else: navigation, project titles, body
 copy, and h2 labels. Space Mono is for captions and credits. All sizes are
 fluid `clamp()` values between a 375px phone and a 1920px desktop.

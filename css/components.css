@@ -21,11 +21,19 @@
 }
 
 .brand {
+  position: relative;
   font-family: var(--font-intro);
   font-size: var(--fs-nav);
   line-height: var(--lh-snug);
   letter-spacing: var(--track-display);
   text-decoration: none;
+}
+
+/* A larger invisible tap area around the site name (the text itself stays put). */
+.brand::after {
+  content: "";
+  position: absolute;
+  inset: -0.6rem -0.5rem;
 }
 
 .brand:hover { color: var(--color-accent); }
@@ -912,7 +920,7 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
   .carousel__caption {
     flex: 1 0 100%;
     order: 3;
-    font-size: 0.72rem;
+    font-size: 0.6875rem;
     line-height: 1.5;
     letter-spacing: 0;
   }
