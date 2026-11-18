@@ -399,6 +399,7 @@ html:not(.js) .acc__panel { grid-template-rows: 1fr; visibility: visible; }
   gap: var(--space-xs);
   margin-block-start: var(--space-l);
   font-family: var(--font-mono);
+  letter-spacing: 0;
   font-size: var(--fs-mono);
   line-height: 1.4;
 }
@@ -646,6 +647,7 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
 .slider__meta {
   margin-block-start: var(--space-xs);
   font-family: var(--font-mono);
+  letter-spacing: 0;
   font-size: var(--fs-mono);
   line-height: 1.5;
 }
@@ -693,6 +695,7 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
   max-width: var(--measure);
   margin-block-start: var(--space-xs);
   font-family: var(--font-mono);
+  letter-spacing: 0;
   font-size: var(--fs-mono);
   line-height: 1.55;
   color: var(--color-text-muted);
@@ -703,6 +706,7 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
 .story-note {
   max-width: var(--measure);
   font-family: var(--font-mono);
+  letter-spacing: 0;
   font-size: var(--fs-mono);
   line-height: 1.6;
   color: var(--color-text-muted);
@@ -863,6 +867,7 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
   gap: var(--space-s);
   margin-block-start: var(--space-xs);
   font-family: var(--font-mono);
+  letter-spacing: 0;
   font-size: var(--fs-mono);
   line-height: 1.5;
   color: var(--color-text-muted);
@@ -1045,6 +1050,7 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
   background: rgb(0 0 0 / 0.55);
   color: #fff;
   font-family: var(--font-mono);
+  letter-spacing: 0;
   font-size: var(--fs-mono);
   cursor: pointer;
   opacity: 0;
@@ -1118,6 +1124,7 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
 .credits {
   max-width: var(--measure);
   font-family: var(--font-mono);
+  letter-spacing: 0;
   font-size: var(--fs-mono);
   line-height: 1.55;
 }
@@ -1149,6 +1156,7 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
   display: block;
   margin-block-end: var(--space-2xs);
   font-family: var(--font-mono);
+  letter-spacing: 0;
   font-size: var(--fs-mono);
   color: var(--color-text-muted);
 }
@@ -1354,6 +1362,7 @@ dialog::backdrop { background: var(--color-scrim); }
 .lightbox__caption {
   max-inline-size: 60ch;
   font-family: var(--font-mono);
+  letter-spacing: 0;
   font-size: var(--fs-mono);
   line-height: 1.5;
   text-align: center;

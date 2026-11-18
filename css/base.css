@@ -2,12 +2,12 @@
    BASE
    --------------------------------------------------------------------------
    Reset, document defaults, and the three core text styles:
-     h1    Hanken Grotesk 340, fluid 24 → 36px (page and project titles)
+     h1    Instrument Sans 400, fluid 24 → 36px (page and project titles)
            .intro: Faculty Glyphic, fluid 26 → 42px (the home and About
            intro statements, the only place that font is used besides
            the site name)
-     h2    Hanken Grotesk 600, body size        (section labels)
-     body  Hanken Grotesk 400, fluid 16 → 18px  (everything else)
+     h2    Instrument Sans 600, body size        (section labels)
+     body  Instrument Sans 400, fluid 16 → 18px  (everything else)
    ========================================================================== */
 
 /* Reset ------------------------------------------------------------------- */
@@ -44,6 +44,7 @@ body {
   font-size: var(--fs-body);
   font-weight: var(--weight-regular);
   line-height: var(--lh-body);
+  letter-spacing: var(--track-body);
   font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -85,6 +86,7 @@ a {
 
 .mono {
   font-family: var(--font-mono);
+  letter-spacing: 0;
   font-size: var(--fs-mono);
   line-height: 1.5;
 }
@@ -129,6 +131,7 @@ a {
   color: var(--color-bg);
   font-size: var(--fs-mono);
   font-family: var(--font-mono);
+  letter-spacing: 0;
   text-decoration: none;
   transform: translateY(-200%);
 }

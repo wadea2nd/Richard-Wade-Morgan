@@ -134,7 +134,7 @@
 /* 4. TYPOGRAPHY ------------------------------------------------------------
    Faculty Glyphic: ONLY the site name and the intro statements (the h1 on
    the home and About pages). It is decorative, so it is used sparingly.
-   Hanken Grotesk (variable, 100–900): everything else, including the
+   Instrument Sans (variable, 400–700): everything else, including the
    navigation, project titles, body copy, and h2 labels.
    Space Mono: captions, credits, small print.
 
@@ -143,7 +143,7 @@
    jumping at breakpoints. */
 :root {
   --font-intro:   "Faculty Glyphic", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
-  --font-body:    "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body:    "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono:    "Space Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   --fs-mono: clamp(0.75rem, 0.73rem + 0.1vw, 0.8125rem);  /* 12 → 13px   */
@@ -156,12 +156,13 @@
 
   --lh-tight: 1.2;
   --lh-snug:  1.25;
-  --lh-body:  1.55;
+  --lh-body:  1.45;
 
-  --track-display: -0.01em;
+  --track-display: -0.018em;
+  --track-body:    -0.012em;
 
   --weight-regular: 400;
-  --weight-title:   340;   /* Hanken is variable: light, elegant titles */
+  --weight-title:   400;   /* Instrument Sans starts at 400 */
   --weight-label:   600;
 }
 
@@ -176,8 +177,9 @@
   --space-xl:  clamp(2rem, 1.6rem + 1vw, 3rem);
   --space-2xl: clamp(3rem, 2.2rem + 2vw, 5rem);
   --space-3xl: clamp(4rem, 2.8rem + 4vw, 8rem);
+  --space-text: clamp(3rem, 2.3rem + 3vw, 6.5rem);   /* air above and below a block of text */
 
-  --flow: 1.5em;          /* default vertical rhythm between text blocks */
+  --flow: 1.35em;          /* default vertical rhythm between text blocks */
 }
 
 
