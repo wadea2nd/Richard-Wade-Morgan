@@ -551,6 +551,13 @@ html.work-open [aria-controls="work-menu"] .acc__chevron {
 .inline-link:hover,
 .inline-link:focus-visible { color: var(--color-accent); }
 
+/* A link inside a list or sentence is underlined, so it never relies on color alone. */
+.plain-list .inline-link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
 .icon {
   width: 1.15em;
   height: 1.15em;
