@@ -61,13 +61,20 @@ export const PROJECTS = [
   {
     slug: "google-search",
     title: "Google Search",
-    credits: [],
+    /* Placeholder: lorem ipsum laid out like Delta Centennial (a headline
+       sentence, four paragraphs, team credits, then pictures). */
+    credits: [
+      {
+        label: "Team Credits:",
+        text: "Lorem Ipsum (Director), Dolor Sitamet (Sr AD), Consectetur Elit (Sr AD), Adipiscing Sed (Sr AD), Eiusmod Tempor (AD), Incididunt Labore (AD), Magna Aliqua (Design), Enim Minim (Design), Veniam Quis (Design), Nostrud Ullamco (Design), Laboris Nisi (Copy Lead), Aliquip Commodo (Copy), Consequat Duis (PM Lead), Aute Irure (PM), Voluptate Velit (PM), Cillum Dolore (PM), Fugiat Nulla (PM), Pariatur Sint (Production Lead), Occaecat Cupidatat (Production), Proident Sunt (Production), Culpa Officia (Production), Deserunt Mollit (Production), Anim Laborum (Strategy), Perspiciatis Unde (Strategy), Omnis Natus (Photography), Voluptatem Totam (Production), Aperiam Eaque (Merch Production)"
+      }],
     story: [
-      { text: "As an internal-facing design lead, I look for the strategic problems worth fixing and smooth them out." },
-      { text: "I partner with team leads and directors to learn their goals and the persistent thorns they never had time to solve, the kind of work that always gets delegated away from P0 tasks." },
-      { list: ["Vibe-coded project 1", "Vibe-coded project 2", "Vibe-coded project 3"] },
-      { text: "Plus a smattering of brand identities for internal teams." },
       { type: "full", image: "gs-placeholder-1" },
+      { text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+      { text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." },
+      { text: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt." },
+      { text: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur." },
+      { text: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident. Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga, et harum quidem rerum facilis est." },
       { type: "full", image: "gs-placeholder-2" },
     ]
   },
