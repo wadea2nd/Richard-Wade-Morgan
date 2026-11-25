@@ -1476,7 +1476,7 @@ dialog::backdrop { background: var(--color-scrim); }
   left: 0;
   z-index: var(--z-floaty);
   display: block;
-  font-size: clamp(2rem, 1.7rem + 1vw, 3rem);
+  font-size: 1.875rem;                  /* 30px */
   line-height: 1;
   cursor: grab;
   opacity: 0;
@@ -1485,6 +1485,10 @@ dialog::backdrop { background: var(--color-scrim); }
   -webkit-user-select: none;
   will-change: transform;
   transition: opacity 0.9s var(--ease-standard);
+}
+
+@media (max-width: 51.999rem) {
+  .floaty { font-size: 1.5rem; }        /* 24px on phones */
 }
 
 .floaty.is-ready { opacity: 1; }
