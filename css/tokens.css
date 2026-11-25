@@ -170,6 +170,7 @@
   --lh-body:  1.6;
 
   --track-display: -0.018em;
+  --track-intro:   0em;       /* Faculty Glyphic headlines keep their own spacing */
   --track-body:    -0.012em;
 
   --weight-regular: 400;
